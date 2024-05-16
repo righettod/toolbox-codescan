@@ -39,7 +39,7 @@ docker run --rm -v "C:/Temp:/work" --network none -it ghcr.io/righettod/toolbox-
 
 ### Script 'scan_semgrep.sh'
 
-Script to scan the current folder using a set of SEMGREP rules
+Script to scan the current folder using a set of SEMGREP rules.
 
 💻 Usage & Example:
 
@@ -66,13 +66,13 @@ $ /tools/scan_semgrep.sh java
 │ 1 Code Finding │
 └────────────────┘
 
-    src/burp/ActivityLogger.java
-   ❯❯❱ tools.semgrep-rules.java.lang.security.audit.formatted-sql-string
-          Detected a formatted string in a SQL statement. This could lead to SQL injection if variables in the
-          SQL statement are not properly sanitized. Use a prepared statements (java.sql.PreparedStatement)
-          instead. You can obtain a PreparedStatement using 'connection.prepareStatement'.
+ src/burp/ActivityLogger.java
+❯❯❱ tools.semgrep-rules.java.lang.security.audit.formatted-sql-string
+       Detected a formatted string in a SQL statement. This could lead to SQL injection if variables in the
+       SQL statement are not properly sanitized. Use a prepared statements (java.sql.PreparedStatement)
+       instead. You can obtain a PreparedStatement using 'connection.prepareStatement'.
 
-           91┆ stmt.execute(SQL_TABLE_CREATE);
+        91┆ stmt.execute(SQL_TABLE_CREATE);
 ```
 
 ## 🤝 Sources & credits
