@@ -29,7 +29,7 @@ docker build . -t righettod/toolbox-codescan
 Use the following command to create a container of the toolbox:
 
 ```bash
-docker run --rm -v "C:/Temp:/work" --network none -it toolbox-codescan:main
+docker run --rm -v "C:/Temp:/work" --network none -it ghcr.io/righettod/toolbox-codescan:main
 # From here, use one of the provided script...
 ```
 
