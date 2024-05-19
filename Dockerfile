@@ -23,6 +23,7 @@ RUN bash /tmp/add_semgrep.sh
 RUN echo "source /tools/pyenv/bin/activate" >> /root/.zshrc
 RUN find /usr/share/nano/ -iname "*.nanorc" -exec echo include {} \; >> /root/.nanorc
 RUN echo "export SEMGREP_RULES_HOME=/tools/semgrep-rules" >> /root/.zshrc
+RUN echo "alias scan='bash /tools/scan_semgrep.sh'" >> /root/.zshrc
 WORKDIR /work
 RUN rm -rf /tmp/*
 CMD ["/bin/zsh"]
