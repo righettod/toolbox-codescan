@@ -17,10 +17,10 @@ COPY scripts /tools/scripts
 RUN chmod +x /tools/scripts/*.sh
 RUN ( find /tools/scripts -type f -name "*.sh") | xargs dos2unix
 RUN bash /tools/scripts/install.sh
-RUN echo "source /tools/pyenv/bin/activate" >> /root/.zshrc
 RUN find /usr/share/nano/ -iname "*.nanorc" -exec echo include {} \; >> /root/.nanorc
 RUN echo "export SEMGREP_RULES_HOME=/tools/semgrep-rules" >> /root/.zshrc
 RUN echo "export PATH=$PATH:/tools/scripts" >> /root/.zshrc
+RUN echo "source /tools/pyenv/bin/activate" >> /root/.zshrc
 WORKDIR /work
 RUN rm -rf /tmp/*
 RUN rm /tools/scripts/install.sh

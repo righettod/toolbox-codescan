@@ -37,7 +37,9 @@ docker run --rm -v "C:/Temp:/work" --network none -it ghcr.io/righettod/toolbox-
 
 > 💡 [jq](https://jqlang.github.io/jq/) is installed and can be used to manipulate the result of a scan.
 
-### Script 'scan_semgrep.sh'
+> 📦All scripts are stored in the folder `/tools/scripts`.
+
+### Script 'scan.sh'
 
 Script to scan the current folder using a set of SEMGREP rules.
 
@@ -47,20 +49,20 @@ Script to scan the current folder using a set of SEMGREP rules.
 $ pwd
 /work/sample
 
-$ /tools/scan_semgrep.sh
+$ scan.sh
 Usage:
-   scan_semgrep.sh [RULES_FOLDER_NAME]
+   scan.sh [RULES_FOLDER_NAME]
 
 Call example:
-    scan_semgrep.sh java
-    scan_semgrep.sh php
-    scan_semgrep.sh json
+    scan.sh java
+    scan.sh php
+    scan.sh json
 
 See sub folders in '/tools/semgrep-rules'.
 
 Findings will be stored in file 'findings.json'.
 
-$ /tools/scan_semgrep.sh java
+$ scan.sh java
 
 ┌────────────────┐
 │ 1 Code Finding │
