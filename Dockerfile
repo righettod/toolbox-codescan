@@ -23,4 +23,5 @@ RUN echo "export SEMGREP_RULES_HOME=/tools/semgrep-rules" >> /root/.zshrc
 RUN echo "export PATH=$PATH:/tools/scripts" >> /root/.zshrc
 WORKDIR /work
 RUN rm -rf /tmp/*
+RUN rm /tools/scripts/install.sh
 CMD ["/bin/zsh"]
