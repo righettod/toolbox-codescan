@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "[+] Remove caches..."
-source pyenv/bin/activate
+source /tools/pyenv/bin/activate
 go clean -modcache
 go clean -cache
 apk del go make

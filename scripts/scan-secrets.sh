@@ -3,4 +3,7 @@
 # Script to scan the current folder using 
 # gitleaks to find credentials/secrets/...
 ################################################
-gitleaks --repo-path=$(pwd) --config=/tools/gitleaks-custom-config.toml --verbose --report=leaks.json
+if [ -d ".git" ]; then
+    gitleaks detect --config /tools/gitleaks-custom-config.toml --no-banner --report-format json --report-path leaks-gitfiles.json --source $(pwd) --verbose
+fi
+gitleaks detect --no-git --config /tools/gitleaks-custom-config.toml --no-banner --report-format json --report-path leaks-sourcefiles.json --source $(pwd) --verbose
