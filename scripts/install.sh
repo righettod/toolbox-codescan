@@ -12,6 +12,11 @@ semgrep --version
 echo "[+] Clone Semgrep rules repo..."
 git clone --depth 1 https://github.com/semgrep/semgrep-rules.git /tools/semgrep-rules
 echo "[+] Install GitLeaks..."
-go install github.com/zricethezav/gitleaks@latest
+git clone https://github.com/gitleaks/gitleaks.git /tools/gitleaks
+cd /tools/gitleaks
+make build
+mv gitleaks /usr/bin/gitleaks
+chmod +x /usr/bin/gitleaks
+rm -rf /tools/gitleaks
+gitleaks version
 wget -q -O /tools/gitleaks-custom-config.toml https://raw.githubusercontent.com/righettod/toolbox-pentest-web/master/templates/gitleaks-custom-config.toml
-/root/go/bin/gitleaks --version
