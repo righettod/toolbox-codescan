@@ -47,7 +47,9 @@ docker run --rm -v "C:/Temp:/work" --network none -it ghcr.io/righettod/toolbox-
 > [!IMPORTANT]
 > This [custom configuration file](https://github.com/righettod/toolbox-pentest-web/blob/master/templates/gitleaks-custom-config.toml) is used to define detection expressions.
 
-Script to scan the current folder using [GITLEAKS](https://github.com/gitleaks/gitleaks) to find secrets into source files and git files.
+Script to scan the current folder using [GITLEAKS](https://github.com/gitleaks/gitleaks) to find secrets into source files and git files. Git files scanning is only performed if a folder `.git` is present.
+
+🐜 Findings will be stored in files `leaks-gitfiles.json` and `leaks-sourcefiles.json`.
 
 💻 Usage & Example:
 
@@ -63,6 +65,8 @@ $ scan-secrets.sh
 ### Script 'scan.sh'
 
 Script to scan the current folder using a set of [SEMGREP rules](https://github.com/semgrep/semgrep-rules) with [SEMGREP](https://semgrep.dev/) OSS version.
+
+🐜 Findings will be stored in file `findings.json`.
 
 💻 Usage & Example:
 
