@@ -40,7 +40,7 @@ docker run --rm -v "C:/Temp:/work" --network none -it ghcr.io/righettod/toolbox-
 > 💡 [jq](https://jqlang.github.io/jq/) is installed and can be used to manipulate the result of a scan.
 
 > [!TIP]
-> 📦All scripts are stored in the folder `/tools/scripts` but are referenced into the `PATH` environement variable.
+> 📦 All scripts are stored in the folder `/tools/scripts` but they are referenced into the `PATH` environment variable.
 
 ### Script 'scan-secrets.sh'
 
