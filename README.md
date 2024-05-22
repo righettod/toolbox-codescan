@@ -4,13 +4,13 @@
 
 ## 🎯 Description
 
-The goal of this image is to provide a ready-to-use toolbox to perform offline scanning of a code base using [Semgrep](https://semgrep.dev/) OSS version.
+The goal of this image is to provide a ready-to-use toolbox to perform **offline scanning** of a code base.
 
-💡 The goal is to prevent any disclosure of the code base scanned.
+💡 The goal is to **prevent any disclosure** of the code base scanned.
 
 ## 📦 Build
 
-Use the following set of command to build the docker image of the toolbox:
+💻 Use the following set of command to build the docker image of the toolbox:
 
 ```bash
 git clone https://github.com/righettod/toolbox-codescan.git
@@ -24,9 +24,10 @@ docker build . -t righettod/toolbox-codescan
 
 ## 👨‍💻 Usage
 
-> 🛑 it is important to add the option `--network none` to prevent any IO.
+>[!CAUTION]
+> It is important to add the option `--network none` to prevent any IO.
 
-Use the following command to create a container of the toolbox:
+💻 Use the following command to create a container of the toolbox:
 
 ```bash
 docker run --rm -v "C:/Temp:/work" --network none -it ghcr.io/righettod/toolbox-codescan:main
@@ -35,13 +36,33 @@ docker run --rm -v "C:/Temp:/work" --network none -it ghcr.io/righettod/toolbox-
 
 ## 📋 Scripts
 
+> [!NOTE]
 > 💡 [jq](https://jqlang.github.io/jq/) is installed and can be used to manipulate the result of a scan.
 
-> 📦All scripts are stored in the folder `/tools/scripts`.
+> [!TIP]
+> 📦All scripts are stored in the folder `/tools/scripts` but are referenced into the `PATH` environement variable.
+
+### Script 'scan-secrets.sh'
+
+> [!IMPORTANT]
+> This [custom configuration file](https://github.com/righettod/toolbox-pentest-web/blob/master/templates/gitleaks-custom-config.toml) is used to define detection expressions.
+
+Script to scan the current folder using [GITLEAKS](https://github.com/gitleaks/gitleaks) to find secrets into source files and git files.
+
+💻 Usage & Example:
+
+```bash
+$ pwd
+/work/sample
+
+$ scan-secrets.sh
+5:47PM INF scan completed in 78.1ms
+5:47PM INF no leaks found
+```
 
 ### Script 'scan.sh'
 
-Script to scan the current folder using a set of SEMGREP rules.
+Script to scan the current folder using a set of [SEMGREP rules](https://github.com/semgrep/semgrep-rules) with [SEMGREP](https://semgrep.dev/) OSS version.
 
 💻 Usage & Example:
 
@@ -83,3 +104,4 @@ $ scan.sh java
 * <https://github.com/semgrep/semgrep-rules>
 * <https://semgrep.dev/docs/getting-started/quickstart-oss>
 * <https://semgrep.dev/docs/ignore-oss>
+* <https://gitleaks.io/>
