@@ -49,7 +49,9 @@ docker run --rm -v "C:/Temp:/work" --network none -it ghcr.io/righettod/toolbox-
 
 Script to scan the current folder using [GITLEAKS](https://github.com/gitleaks/gitleaks) to find secrets into source files and git files. Git files scanning is only performed if a folder `.git` is present.
 
-🐜 Findings will be stored in files `leaks-gitfiles.json` and `leaks-sourcefiles.json`.
+🐜 Leaks will be stored in files `leaks-gitfiles.json` and `leaks-sourcefiles.json`.
+
+💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-gitleaks.py) can be used to obtains an overview of the leaks identified and stored into the files `leaks-*.json`.
 
 💻 Usage & Example:
 
