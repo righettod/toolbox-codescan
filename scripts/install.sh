@@ -20,3 +20,4 @@ chmod +x /usr/bin/gitleaks
 rm -rf /tools/gitleaks
 gitleaks version
 wget -q -O /tools/gitleaks-custom-config.toml https://raw.githubusercontent.com/righettod/toolbox-pentest-web/master/templates/gitleaks-custom-config.toml
+wget -q -O /tools/scripts/report-secrets.sh https://raw.githubusercontent.com/righettod/toolbox-pentest-web/master/scripts/generate-report-gitleaks.py
