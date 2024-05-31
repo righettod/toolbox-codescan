@@ -26,4 +26,4 @@ echo "│ Initialization │"
 echo "└────────────────┘"
 echo "Loading recursively all rules contained in folder '$rules_folder' ($rules_count files)..."
 rm findings.json 2>/dev/null
-semgrep scan --force-color --text --metrics=off --disable-version-check --oss-only --json-output=findings.json --config "$rules_folder"
+semgrep scan --no-git-ignore --force-color --text --metrics=off --disable-version-check --oss-only --json-output=findings.json --config "$rules_folder"
