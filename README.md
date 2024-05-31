@@ -51,7 +51,7 @@ Script to scan the current folder using [GITLEAKS](https://github.com/gitleaks/g
 
 🐜 Leaks will be stored in files `leaks-gitfiles.json` and `leaks-sourcefiles.json`.
 
-💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-gitleaks.py) can be used to obtains an overview of the leaks identified and stored into the files `leaks-*.json`. It is imported as the file `/tools/scripts/report-secrets.sh`. 
+💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-gitleaks.py) can be used to obtains an overview of the leaks identified and stored into the files `leaks-*.json`. It is imported as the file `/tools/scripts/report-secrets.py`. 
 
 💻 Usage & Example:
 
@@ -69,6 +69,8 @@ $ scan-secrets.sh
 Script to scan the current folder using a set of [SEMGREP rules](https://github.com/semgrep/semgrep-rules) with [SEMGREP](https://semgrep.dev/) OSS version.
 
 🐜 Findings will be stored in file `findings.json`.
+
+💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-semgrep.py) can be used to obtains an overview of the findings identified and stored into the file `findings.json`. It is imported as the file `/tools/scripts/report.py`. 
 
 💻 Usage & Example:
 
