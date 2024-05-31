@@ -25,6 +25,6 @@ WORKDIR /work
 RUN rm -rf /tmp/*
 RUN bash /tools/scripts/clean.sh
 RUN rm /tools/scripts/install.sh /tools/scripts/clean.sh
-RUN ( find /tools/scripts -type f -name "*.sh") | xargs dos2unix
-RUN chmod +x /tools/scripts/*.sh
+RUN ( find /tools/scripts -type f) | xargs dos2unix
+RUN chmod +x /tools/scripts/*
 CMD ["/bin/zsh"]
