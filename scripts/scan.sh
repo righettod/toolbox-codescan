@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################################
-# Script to scan the current folder using 
+# Script to scan the current folder using
 # a set of SEMGREP rules
 ################################################
 # Entry point
@@ -19,4 +19,11 @@ if [ "$#" -lt 1 ]; then
     echo "Findings will be stored in file 'findings.json'."
     exit 1
 fi
-semgrep scan --force-color --text --metrics off --disable-version-check --oss-only --quiet --json-output=findings.json --config $SEMGREP_RULES_HOME/java
+rules_folder="$SEMGREP_RULES_HOME/$1"
+rules_count=$(find "$rules_folder" | wc -l)
+echo "┌────────────────┐"
+echo "│ Initialization │"
+echo "└────────────────┘"
+echo "Loading recursively all rules contained in folder '$rules_folder' ($rules_count files)..."
+rm findings.json 2>/dev/null
+semgrep scan --force-color --text --metrics off --disable-version-check --oss-only --json-output=findings.json --config "$rules_folder"
