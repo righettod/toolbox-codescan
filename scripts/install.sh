@@ -7,7 +7,7 @@ echo "[+] Python version:"
 which python
 echo "[+] Install Semgrep..."
 python -m pip install --upgrade pip
-python -m pip install wheel semgrep pipreqs tabulate colorama termcolor
+python -m pip install wheel semgrep pipreqs tabulate colorama termcolor regexploit
 semgrep --version
 echo "[+] Clone Semgrep rules repo..."
 git clone --depth 1 https://github.com/semgrep/semgrep-rules.git /tools/semgrep-rules
