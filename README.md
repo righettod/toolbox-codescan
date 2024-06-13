@@ -39,6 +39,9 @@ docker run --rm -v "C:/Temp:/work" --network none -it ghcr.io/righettod/toolbox-
 > [!NOTE]
 > 💡 [jq](https://jqlang.github.io/jq/) is installed and can be used to manipulate the result of a scan.
 
+> [!NOTE]
+> 💡 [regexploit](https://github.com/doyensec/regexploit) is installed and can be used to test exposure of a regular expression to [ReDOS](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS).
+
 > [!TIP]
 > 📦 All scripts are stored in the folder `/tools/scripts` but they are referenced into the `PATH` environment variable.
 
