@@ -116,3 +116,4 @@ $ scan.sh java
 * <https://semgrep.dev/docs/getting-started/quickstart-oss>
 * <https://semgrep.dev/docs/ignore-oss>
 * <https://gitleaks.io/>
+* <https://github.com/doyensec/regexploit>
