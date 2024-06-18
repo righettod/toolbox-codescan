@@ -67,6 +67,22 @@ $ scan-secrets.sh
 5:47PM INF no leaks found
 ```
 
+### Script 'scan-secrets-extended.sh'
+
+Script to scan the current folder using a dictionary of **secret common variables names** ([source](https://gist.githubusercontent.com/EdOverflow/8bd2faad513626c413b8fc6e9d955669/raw/06a0ef0fd83920d513c65767aae258ecf8382bdf/gistfile1.txt)).
+
+💡 The dictionary of secret common variables names referenced above is imported, as the file `/tools/secret-common-variable-names.txt`, during the build time of the image.
+
+💻 Usage & Example:
+
+```bash
+$ pwd
+/work/sample
+
+$ scan-secrets-extended.sh
+./config/db.properties:50:DB_PASSWORD=Password2024
+```
+
 ### Script 'scan.sh'
 
 Script to scan the current folder using a set of [SEMGREP rules](https://github.com/semgrep/semgrep-rules) with [SEMGREP](https://semgrep.dev/) OSS version.
