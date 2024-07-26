@@ -10,7 +10,7 @@ LABEL org.opencontainers.image.description="Customized toolbox to perform offlin
 LABEL org.opencontainers.image.base.name="righettod/toolbox-codescan:main"
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apk update
-RUN apk add --no-cache bash bind-tools build-base coreutils curl curl-dev dos2unix git go grep jq make python3 python3-dev py3-setuptools py3-pip nano nano-syntax unzip vim wget zip zsh
+RUN apk add --no-cache bash bind-tools build-base coreutils curl curl-dev dos2unix git go grep highlight jq make python3 python3-dev py3-setuptools py3-pip nano nano-syntax unzip vim wget zip zsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 RUN mkdir /tools /work
 COPY scripts /tools/scripts
@@ -21,6 +21,7 @@ RUN find /usr/share/nano/ -iname "*.nanorc" -exec echo include {} \; >> /root/.n
 RUN echo "export SEMGREP_RULES_HOME=/tools/semgrep-rules" >> /root/.zshrc
 RUN echo "export PATH=$PATH:/tools/scripts" >> /root/.zshrc
 RUN echo "source /tools/pyenv/bin/activate" >> /root/.zshrc
+RUN echo "alias cat-colorized='highlight -O ansi --force'" >> /root/.zshrc
 WORKDIR /work
 RUN rm -rf /tmp/*
 RUN bash /tools/scripts/clean.sh
