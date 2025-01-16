@@ -132,6 +132,8 @@ Script to scan a collection of online git repositories using [GITLEAKS](https://
 
 💡 The script [scan-secrets.sh](scripts/scan-secrets.sh) is used for the scan of a git repository once cloned.
 
+💡 Use the script [online-scan-secrets-consolidate.py](scripts/online-scan-secrets-consolidate.py) to consolidate the generated data into a single file.
+
 💻 Usage & Example:
 
 ```bash
