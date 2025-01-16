@@ -126,6 +126,30 @@ $ scan.sh java
         91┆ stmt.execute(SQL_TABLE_CREATE);
 ```
 
+### Script 'online-scan-secrets.sh'
+
+Script to scan a collection of online git repositories using [GITLEAKS](https://github.com/gitleaks/gitleaks) to find secrets into source files and git files.
+
+💡 The script [scan-secrets.sh](scripts/scan-secrets.sh) is used for the scan of a git repository once cloned.
+
+💻 Usage & Example:
+
+```bash
+$ online-scan-secrets.sh
+Usage:
+   online-scan-secrets.sh [FILE_WITH_COLLECTION_OF_GIT_REPO_URLS]
+
+Call example:
+    online-scan-secrets.sh repositories.txt
+
+$ online-scan-secrets.sh repositories.txt
+[*] Execution context:
+List of git repositories URL   : repositories.txt (1030 entries)
+Data collection storage folder : /work/data-collected
+[*] Start repositories checking and data collection...
+...
+```
+
 ## 🤝 Sources & credits
 
 * <https://github.com/semgrep/semgrep-rules>
