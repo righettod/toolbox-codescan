@@ -12,7 +12,7 @@ for gitleaks_file in os.scandir(base):
             entries = json.load(f)
             if len(entries) > 0:
                 repo_url = gitleaks_file.name.split("-")[0]
-                repo_url = bytes.fromhex(repo_url).decode('utf-8')
+                repo_url = bytes.fromhex(repo_url).decode("utf-8")
                 for entry in entries:
                     entry["RepositoryURL"] = repo_url.strip("\n\r\t ")
                     leaks.append(entry)
