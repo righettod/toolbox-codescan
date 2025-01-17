@@ -1,6 +1,6 @@
 import os
 import json
-# Generate a single Gitleaks consildated data file
+# Generate a single Gitleaks consolidated data file
 # from differents ones generated with the script "online-scan-secrets.sh"
 base = "data-collected"
 output = "leaks-consolidated.json"
