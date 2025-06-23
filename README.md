@@ -171,3 +171,4 @@ $ filters-secrets.py leaks-consolidated.json
 * <https://semgrep.dev/docs/ignore-oss>
 * <https://gitleaks.io/>
 * <https://github.com/doyensec/regexploit>
+* <https://github.com/trailofbits/semgrep-rules>
