@@ -52,7 +52,7 @@ docker run --rm -v "C:/Temp:/work" --network none -it ghcr.io/righettod/toolbox-
 
 Script to scan the current folder using [GITLEAKS](https://github.com/gitleaks/gitleaks) to find secrets into source files and git files. Git files scanning is only performed if a folder `.git` is present.
 
-🐜 Leaks will be stored in files `leaks-gitfiles.json` and `leaks-sourcefiles.json`.
+🐞 Leaks will be stored in files `leaks-gitfiles.json` and `leaks-sourcefiles.json`.
 
 💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-gitleaks.py) can be used to obtains an overview of the leaks identified and stored into the files `leaks-*.json`. It is imported as the file `/tools/scripts/report-secrets.py`. 
 
@@ -85,9 +85,12 @@ $ scan-secrets-extended.sh
 
 ### Script 'scan.sh'
 
+> [!TIP]
+> Semgrem rules from other providers are stored into the corresponding folder using the naming convention `semgrep-rules-[github-org-name]`. Use `../semgrep-rules-[github-org-name]/[rules_folder_name]` as `[RULES_FOLDER_NAME]` parameter to use them instead of the rules from the Semgrep registry.
+
 Script to scan the current folder using a set of [SEMGREP rules](https://github.com/semgrep/semgrep-rules) with [SEMGREP](https://semgrep.dev/) OSS version.
 
-🐜 Findings will be stored in file `findings.json`.
+🐞 Findings will be stored in file `findings.json`.
 
 💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-semgrep.py) can be used to obtains an overview of the findings identified and stored into the file `findings.json`. It is imported as the file `/tools/scripts/report.py`. 
 
