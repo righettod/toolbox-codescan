@@ -9,8 +9,10 @@ echo "[+] Install Semgrep..."
 python -m pip install --upgrade pip
 python -m pip install wheel semgrep pipreqs tabulate colorama termcolor regexploit
 semgrep --version
-echo "[+] Clone Semgrep rules repo..."
+echo "[+] Clone Semgrep rules repo from 'Semgrep' provider..."
 git clone --depth 1 https://github.com/semgrep/semgrep-rules.git /tools/semgrep-rules
+echo "[+] Clone Semgrep rules repo from 'Trail of Bits' provider..."
+git clone --depth 1 https://github.com/trailofbits/semgrep-rules.git /tools/semgrep-rules-trailofbits
 echo "[+] Install GitLeaks..."
 git clone https://github.com/gitleaks/gitleaks.git /tools/gitleaks
 cd /tools/gitleaks
