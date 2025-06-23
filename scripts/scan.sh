@@ -19,6 +19,7 @@ if [ "$#" -lt 1 ]; then
     echo "Findings will be stored in file 'findings.json'."
     exit 1
 fi
+export PYTHONWARNINGS="ignore"
 rules_folder="$SEMGREP_RULES_HOME/$1"
 rules_count=$(find "$rules_folder" | wc -l)
 echo "┌────────────────┐"
