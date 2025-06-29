@@ -8,6 +8,18 @@ The goal of this image is to provide a ready-to-use toolbox to perform **offline
 
 💡 The goal is to **prevent any disclosure** of the code base scanned.
 
+## 🛠️ Tools used
+
+| Tool                                             | Usage                                                                                               |
+|--------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| [Semgrep](https://github.com/semgrep/semgrep)    | Code scanning ([SAST](https://en.wikipedia.org/wiki/Static_application_security_testing) activity). |
+| [Gitleaks](https://github.com/gitleaks/gitleaks) | Search for secrets/credentials/...                                                                  |
+
+
+🔬 When **Semgrep** fails to detect a problem that I know exists, I try to suggest a new rule to the Semgrep [rules registry](https://github.com/semgrep/semgrep-rules):
+
+* <https://github.com/semgrep/semgrep-rules/pull/3646>
+
 ## 📦 Build
 
 💻 Use the following set of command to build the docker image of the toolbox:
