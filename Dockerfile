@@ -15,13 +15,15 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master
 RUN mkdir /tools /work
 COPY scripts /tools/scripts
 RUN chmod +x /tools/scripts/*.sh
-RUN ( find /tools/scripts -type f -name "*.sh") | xargs dos2unix
+RUN (find /tools/scripts -type f -name "*.sh") | xargs dos2unix
 RUN bash /tools/scripts/install.sh
 RUN find /usr/share/nano/ -iname "*.nanorc" -exec echo include {} \; >> /root/.nanorc
 RUN echo "export SEMGREP_RULES_HOME=/tools/semgrep-rules" >> /root/.zshrc
 RUN echo "export PATH=$PATH:/tools/scripts" >> /root/.zshrc
 RUN echo "source /tools/pyenv/bin/activate" >> /root/.zshrc
 RUN echo "alias cat-colorized='highlight -O ansi --force'" >> /root/.zshrc
+COPY semgrep-rules-righettod /tools/semgrep-rules-righettod
+RUN (find /tools/semgrep-rules-righettod -type f -name "*.yaml") | xargs dos2unix
 WORKDIR /work
 RUN rm -rf /tmp/*
 RUN bash /tools/scripts/clean.sh
