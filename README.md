@@ -20,6 +20,13 @@ The goal of this image is to provide a ready-to-use toolbox to perform **offline
 
 * <https://github.com/semgrep/semgrep-rules/pull/3646>
 
+💡 In order to be able to use proposed rules during the period in which corresponding PR are pending, all proposed rules are imported into the folder `/tools/semgrep-rules-righettod`:
+
+* If a rules has its PR rejected then it stay permanently into this folder.
+* If a rules has its PR merged then it is removed this folder as it become part of the semgrep rules registry.
+
+😉 The folder `/tools/semgrep-rules-righettod` represent my cutom semgrep rules registry.
+
 ## 📦 Build
 
 💻 Use the following set of command to build the docker image of the toolbox:
