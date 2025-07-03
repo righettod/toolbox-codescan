@@ -19,6 +19,7 @@ The goal of this image is to provide a ready-to-use toolbox to perform **offline
 🔬 When **Semgrep** fails to detect a problem that I know exists, I try to suggest a new rule to the Semgrep [rules registry](https://github.com/semgrep/semgrep-rules):
 
 * <https://github.com/semgrep/semgrep-rules/pull/3646>
+* <https://github.com/semgrep/semgrep-rules/pull/3648>
 
 💡 In order to be able to use proposed rules during the period in which corresponding PR are pending, all proposed rules are imported into the folder `/tools/semgrep-rules-righettod`:
 
