@@ -8,8 +8,10 @@ public class Cases {
         String data = "a".repeat(50) + "!";
         //ruleid: java-pattern-matches-from-string-parameter
         Pattern.matches(regex,data);
-        //ok: java-pattern-matches-from-string-parameter
+        //ruleid: java-pattern-matches-from-string-parameter
         Pattern.compile(regex);
+        //ruleid: java-pattern-matches-from-string-parameter
+        Pattern.compile(regex,Pattern.CASE_INSENSITIVE);        
         //ok: java-pattern-matches-from-string-parameter
         data.matches("[a-z]+");
     }
@@ -18,8 +20,10 @@ public class Cases {
         String data = "a".repeat(50) + "!";
         //ruleid: java-pattern-matches-from-string-parameter
         Pattern.matches(regex,data);
-        //ok: java-pattern-matches-from-string-parameter
+        //ruleid: java-pattern-matches-from-string-parameter
         Pattern.compile(regex);
+        //ruleid: java-pattern-matches-from-string-parameter
+        Pattern.compile(regex,Pattern.CASE_INSENSITIVE);        
         //ok: java-pattern-matches-from-string-parameter
         data.matches("[a-z]+");
     }
@@ -28,8 +32,10 @@ public class Cases {
         String data = "a".repeat(50) + "!";
         //ruleid: java-pattern-matches-from-string-parameter
         Pattern.matches(regex,data);
-        //ok: java-pattern-matches-from-string-parameter
+        //ruleid: java-pattern-matches-from-string-parameter
         Pattern.compile(regex);
+        //ruleid: java-pattern-matches-from-string-parameter
+        Pattern.compile(regex,Pattern.CASE_INSENSITIVE);        
         //ok: java-pattern-matches-from-string-parameter
         data.matches("[a-z]+");
     } 
@@ -38,9 +44,11 @@ public class Cases {
         String data = "a".repeat(50) + "!";
         //ruleid: java-pattern-matches-from-string-parameter
         Pattern.matches(regex,data);
-        //ok: java-pattern-matches-from-string-parameter
+        //ruleid: java-pattern-matches-from-string-parameter
         Pattern.compile(regex);
+        //ruleid: java-pattern-matches-from-string-parameter
+        Pattern.compile(regex,Pattern.CASE_INSENSITIVE);        
         //ok: java-pattern-matches-from-string-parameter
         data.matches("[a-z]+");
-    }         
+    }            
 }
