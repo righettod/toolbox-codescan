@@ -13,6 +13,11 @@ echo "[+] Clone Semgrep rules repo from 'Semgrep' provider..."
 git clone --depth 1 https://github.com/semgrep/semgrep-rules.git /tools/semgrep-rules
 echo "[+] Clone Semgrep rules repo from 'Trail of Bits' provider..."
 git clone --depth 1 https://github.com/trailofbits/semgrep-rules.git /tools/semgrep-rules-trailofbits
+echo "[+] Clone Semgrep rules repo from 'NJS Scan' provider..."
+mkdir /tools/semgrep-rules-njsscan
+git clone --depth 1 https://github.com/ajinabraham/njsscan.git
+mv njsscan/njsscan/rules/semantic_grep /tools/semgrep-rules-njsscan/javascript
+rm -rf njsscan
 echo "[+] Install GitLeaks..."
 git clone https://github.com/gitleaks/gitleaks.git /tools/gitleaks
 cd /tools/gitleaks
