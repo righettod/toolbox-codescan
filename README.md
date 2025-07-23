@@ -65,48 +65,13 @@ docker run --rm -v "C:/Temp:/work" --network none -it ghcr.io/righettod/toolbox-
 > [!TIP]
 > 📦 All scripts are stored in the folder `/tools/scripts` but they are referenced into the `PATH` environment variable.
 
-### Script 'scan-secrets.sh'
-
-> [!IMPORTANT]
-> This [custom configuration file](https://github.com/righettod/toolbox-pentest-web/blob/master/templates/gitleaks-custom-config.toml) is used to define detection expressions.
-
-Script to scan the current folder using [GITLEAKS](https://github.com/gitleaks/gitleaks) to find secrets into source files and git files. Git files scanning is only performed if a folder `.git` is present.
-
-🐞 Leaks will be stored in files `leaks-gitfiles.json` and `leaks-sourcefiles.json`.
-
-💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-gitleaks.py) can be used to obtains an overview of the leaks identified and stored into the files `leaks-*.json`. It is imported as the file `/tools/scripts/report-secrets.py`. 
-
-💻 Usage & Example:
-
-```bash
-$ pwd
-/work/sample
-
-$ scan-secrets.sh
-5:47PM INF scan completed in 78.1ms
-5:47PM INF no leaks found
-```
-
-### Script 'scan-secrets-extended.sh'
-
-Script to scan the current folder using a dictionary of **secret common variables names** ([source](https://gist.githubusercontent.com/EdOverflow/8bd2faad513626c413b8fc6e9d955669/raw/06a0ef0fd83920d513c65767aae258ecf8382bdf/gistfile1.txt)).
-
-💡 The dictionary of secret common variables names referenced above is imported, as the file `/tools/secret-common-variable-names.txt`, during the build time of the image.
-
-💻 Usage & Example:
-
-```bash
-$ pwd
-/work/sample
-
-$ scan-secrets-extended.sh
-./config/db.properties:50:DB_PASSWORD=Password2024
-```
-
 ### Script 'scan.sh'
 
 > [!TIP]
 > Semgrem rules from other providers are stored into the corresponding folder using the naming convention `semgrep-rules-[github-org-name]`. Use `../semgrep-rules-[github-org-name]/[rules_folder_name]` as `[RULES_FOLDER_NAME]` parameter to use them instead of the rules from the Semgrep registry.
+
+> [!NOTE]
+> Use the command `list-rules-providers` to see the list of rules imported from other providers.
 
 Script to scan the current folder using a set of [SEMGREP rules](https://github.com/semgrep/semgrep-rules) with [SEMGREP](https://semgrep.dev/) OSS version.
 
@@ -147,6 +112,44 @@ $ scan.sh java
        using 'connection.prepareStatement'.
 
         91┆ stmt.execute(SQL_TABLE_CREATE);
+```
+
+### Script 'scan-secrets.sh'
+
+> [!IMPORTANT]
+> This [custom configuration file](https://github.com/righettod/toolbox-pentest-web/blob/master/templates/gitleaks-custom-config.toml) is used to define detection expressions.
+
+Script to scan the current folder using [GITLEAKS](https://github.com/gitleaks/gitleaks) to find secrets into source files and git files. Git files scanning is only performed if a folder `.git` is present.
+
+🐞 Leaks will be stored in files `leaks-gitfiles.json` and `leaks-sourcefiles.json`.
+
+💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-gitleaks.py) can be used to obtains an overview of the leaks identified and stored into the files `leaks-*.json`. It is imported as the file `/tools/scripts/report-secrets.py`. 
+
+💻 Usage & Example:
+
+```bash
+$ pwd
+/work/sample
+
+$ scan-secrets.sh
+5:47PM INF scan completed in 78.1ms
+5:47PM INF no leaks found
+```
+
+### Script 'scan-secrets-extended.sh'
+
+Script to scan the current folder using a dictionary of **secret common variables names** ([source](https://gist.githubusercontent.com/EdOverflow/8bd2faad513626c413b8fc6e9d955669/raw/06a0ef0fd83920d513c65767aae258ecf8382bdf/gistfile1.txt)).
+
+💡 The dictionary of secret common variables names referenced above is imported, as the file `/tools/secret-common-variable-names.txt`, during the build time of the image.
+
+💻 Usage & Example:
+
+```bash
+$ pwd
+/work/sample
+
+$ scan-secrets-extended.sh
+./config/db.properties:50:DB_PASSWORD=Password2024
 ```
 
 ### Script 'online-scan-secrets.sh'
