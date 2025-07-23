@@ -22,6 +22,7 @@ RUN echo "export SEMGREP_RULES_HOME=/tools/semgrep-rules" >> /root/.zshrc
 RUN echo "export PATH=$PATH:/tools/scripts" >> /root/.zshrc
 RUN echo "source /tools/pyenv/bin/activate" >> /root/.zshrc
 RUN echo "alias cat-colorized='highlight -O ansi --force'" >> /root/.zshrc
+RUN echo "alias list-rules-providers='find /tools -type d -name \"semgrep-rules*\"'"  >> /root/.zshrc
 COPY semgrep-rules-righettod /tools/semgrep-rules-righettod
 RUN (find /tools/semgrep-rules-righettod -type f -name "*.yaml") | xargs dos2unix
 WORKDIR /work
