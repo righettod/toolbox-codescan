@@ -1,15 +1,15 @@
 [
     {
-        "Id": "sha256:3ecb6aa2091f95c69c02a6a113cbde823d26fa4d60823058f933b2332fca97dc",
+        "Id": "sha256:a8b02378a93db8d207b087bf435b3a0022505b37beedfef75124b6e885e10795",
         "RepoTags": [
             "ghcr.io/righettod/toolbox-codescan:main"
         ],
         "RepoDigests": [
-            "ghcr.io/righettod/toolbox-codescan@sha256:5f1d9faa574af5c134ab8ddc6bf340eb3d458bae994af3df0e6cec4fb25b96b8"
+            "ghcr.io/righettod/toolbox-codescan@sha256:83ebd627f4f81b4574ef855190de3370f8815a5471a2ae054b9ede659f989dc3"
         ],
         "Parent": "",
         "Comment": "buildkit.dockerfile.v0",
-        "Created": "2025-07-23T09:24:16.592859299Z",
+        "Created": "2025-07-23T09:35:10.671692578Z",
         "DockerVersion": "",
         "Author": "",
         "Config": {
@@ -38,11 +38,11 @@
             "Labels": {
                 "org.opencontainers.image.authors": "dominique.righetto@gmail.com",
                 "org.opencontainers.image.base.name": "righettod/toolbox-codescan:main",
-                "org.opencontainers.image.created": "2025-07-23T09:22:59.856Z",
+                "org.opencontainers.image.created": "2025-07-23T09:33:53.459Z",
                 "org.opencontainers.image.description": "Customized toolbox to perform offline scanning of a code base.",
                 "org.opencontainers.image.documentation": "https://github.com/righettod/toolbox-codescan",
                 "org.opencontainers.image.licenses": "GPL-3.0",
-                "org.opencontainers.image.revision": "4aa4e3bc23e4fcbaec88a79bdb1422add345c6eb",
+                "org.opencontainers.image.revision": "e876183876ac81825ecefa249fc6554aadf84f3d",
                 "org.opencontainers.image.source": "https://github.com/righettod/toolbox-codescan",
                 "org.opencontainers.image.title": "toolbox-codescan",
                 "org.opencontainers.image.url": "https://github.com/righettod/toolbox-codescan",
@@ -52,13 +52,13 @@
         },
         "Architecture": "amd64",
         "Os": "linux",
-        "Size": 1741800994,
+        "Size": 1741805665,
         "GraphDriver": {
             "Data": {
-                "LowerDir": "/var/lib/docker/overlay2/wkhpfuif2f9hcql4fn6xjwvvb/diff:/var/lib/docker/overlay2/vua2vv8kyn48k7m15ftniks56/diff:/var/lib/docker/overlay2/omtv6pbnogxfo89huv1btgxjj/diff:/var/lib/docker/overlay2/b4kn0i9ktmagomjwx9hrpnjob/diff:/var/lib/docker/overlay2/xxmag3bllveff0cxt92wjertx/diff:/var/lib/docker/overlay2/o79pmrvayo0y0o3or0eusqke9/diff:/var/lib/docker/overlay2/m99dqrqvrqoc16ywmr0yoy25u/diff:/var/lib/docker/overlay2/x2evznd6cn0ekjni62hzd1fud/diff:/var/lib/docker/overlay2/qd7ryfe7gdzthph3cje7nwxyi/diff:/var/lib/docker/overlay2/2ceymi15fqp4rtv5mgy87oj3z/diff:/var/lib/docker/overlay2/rwut4b3vyz4z955qp7g80mxif/diff:/var/lib/docker/overlay2/hyppcj9edthptedmipq8lwm6r/diff:/var/lib/docker/overlay2/70z98yexyhtffy6oqfsdg8dos/diff:/var/lib/docker/overlay2/wmsmi2jt8xo7wazs1gse8u1z2/diff:/var/lib/docker/overlay2/y4k727ee0rzd94y8dim97x99i/diff:/var/lib/docker/overlay2/adhj5lvfs3eyfzzeul1ufdcog/diff:/var/lib/docker/overlay2/kwx71mwol7otjgxribkn0tdhy/diff:/var/lib/docker/overlay2/5h9vogzeh2tjjrojldifvl82y/diff:/var/lib/docker/overlay2/x4blj3ecbfvi1zufg58wlhqi4/diff:/var/lib/docker/overlay2/h54lft98n98wcm2lml4pojxbh/diff:/var/lib/docker/overlay2/4ac4d3cc7a551e8f547c78c4df72444a6761508b997e300d613e45678333128c/diff",
-                "MergedDir": "/var/lib/docker/overlay2/ynbfotndz71mbtakmwk2eypdx/merged",
-                "UpperDir": "/var/lib/docker/overlay2/ynbfotndz71mbtakmwk2eypdx/diff",
-                "WorkDir": "/var/lib/docker/overlay2/ynbfotndz71mbtakmwk2eypdx/work"
+                "LowerDir": "/var/lib/docker/overlay2/fk3a5tqgwxi1qk3f3x8cnwqtb/diff:/var/lib/docker/overlay2/w78jm2vhiacbhy7gatfhiuhyg/diff:/var/lib/docker/overlay2/4yodwe7e6slk4po2vnce8x26a/diff:/var/lib/docker/overlay2/v8h9ss5094o98uvhtb59tnxm0/diff:/var/lib/docker/overlay2/avij7uv2ytmkiywilwmrsj8x7/diff:/var/lib/docker/overlay2/4gkrblqghe8c0m1g94nccog0r/diff:/var/lib/docker/overlay2/15dpvcuw2fmrl1khn1hl0kgij/diff:/var/lib/docker/overlay2/6mgg64joguvgkyherp45nv4g6/diff:/var/lib/docker/overlay2/1bpctysrrmxnytfuna3dkyqjr/diff:/var/lib/docker/overlay2/ex67mui2lwvcpp5vka80bpdlx/diff:/var/lib/docker/overlay2/uc8qhllcewn5mskntsjk6pa2v/diff:/var/lib/docker/overlay2/o48l37a9gp9gch5zest5gc7kc/diff:/var/lib/docker/overlay2/ei8qqzt709pfq6qynfllw2szh/diff:/var/lib/docker/overlay2/jeofd8poug7wp1k2i4kmk63n4/diff:/var/lib/docker/overlay2/hqem62i8awa4okaef1wr7tqqu/diff:/var/lib/docker/overlay2/mtk6nomfm6gcxyw2sh46d49au/diff:/var/lib/docker/overlay2/ofxrippj8iv61kof96z8i4yq1/diff:/var/lib/docker/overlay2/nllgagywbzyhyhzolnngopotg/diff:/var/lib/docker/overlay2/mzngxp9dwm02r5nh4guvhh4je/diff:/var/lib/docker/overlay2/0pwql5rnv6zpytz31llsi7nq2/diff:/var/lib/docker/overlay2/xb8pqinqgnv8zc72riq3fkn4g/diff:/var/lib/docker/overlay2/3ea839d0c92ff731919b90517b31e3ca3477684971ba3df820fc00f3a41050fb/diff",
+                "MergedDir": "/var/lib/docker/overlay2/kyj1ng6j7gyl2ecxfp9750wjr/merged",
+                "UpperDir": "/var/lib/docker/overlay2/kyj1ng6j7gyl2ecxfp9750wjr/diff",
+                "WorkDir": "/var/lib/docker/overlay2/kyj1ng6j7gyl2ecxfp9750wjr/work"
             },
             "Name": "overlay2"
         },
@@ -66,31 +66,32 @@
             "Type": "layers",
             "Layers": [
                 "sha256:418dccb7d85a63a6aa574439840f7a6fa6fd2321b3e2394568a317735e867d35",
-                "sha256:ad51fb1c91152a4f5a393f4f07f71fbc750df10e4b37ce84aab964bd168502a7",
-                "sha256:7a5f280f1b550299156614f486d7985d1be0dc92739cd97adecc7cf7224a200d",
-                "sha256:75c43663a97bcea0d8588b81b02c385dbe01c2bcababd8fc1a7b31a34f5d0587",
-                "sha256:8d3a038b7102dabb72bc09286cb08f85e8992ff4a14562b6453b3895ead75f0a",
-                "sha256:ecd23aa79643b547aa7ee282f7ca0c6f5a470093de7109d797f7dce21b6cc8c8",
-                "sha256:dbaa1962be2ff418593ab7b078f2a14c8c21f68ba0a2457dedb7791f3d3e4d4f",
-                "sha256:f9a660cb0f3dce5ffbb12f3cfe9aa8e23433ded06f54717b3bba693ea4b78a68",
-                "sha256:d23869d2cce38df4f472a1d1385e979ea7345f42c79af690773a3daf7638c00d",
-                "sha256:274ee14e4bc62faf052a8f4894709724cc08b0a438e9990129df1ca45bd004ac",
-                "sha256:af8ad0d8136a860c66b2bf1ee90e9bf81e075d62bb423de6cd37e4d80434bc8e",
-                "sha256:55037a23e3253f96c3506a489a277199ba4809205e48168f00dda30d6054cc0d",
-                "sha256:d0e250eae37d2d6cab613aedabcf2875396785aeee05a98aa64d7329cd3ebb35",
-                "sha256:62f3281f73ad4e8a38b55dda894ef19cf17c42b9fa0ec902cdfa56243dc28234",
-                "sha256:da35d6f2b17e8b7add2e4a4476e1a27c741c7d9f2d282814c8e4fb1bce6900f1",
-                "sha256:ad4f1ea7737a55ec907b5f12d55c30ea3a4c3171823e660a3e5aee7305e225a4",
+                "sha256:63ba78b3c381fd062a0e884e19efbcf22780a33adbe708b8c698585308efea44",
+                "sha256:3d038e35582f5f76088969a2bb21e70b748817df076abc5039c281d5e8df678d",
+                "sha256:98faaf0067a8dec37d859fb22ce2eb757ed0cb1ae826d18663e3b3ce36c5f828",
+                "sha256:1cc14f129c0ab7e9485085fd7e812cb5838ea5555dc659b1d6f66ab21bcc890a",
+                "sha256:8e68cc77e18c53d1dfb892f6f10026f255c3e4a56b8455e9dd8b39cc8c7e924e",
+                "sha256:b8ae63b63f0e930c17eb88cfdb2cfb1b9fca6341588db2a3d14987d740dbb5f4",
+                "sha256:f78516e31b07d0da5d0a126567b3ac5f86cf4e8579af0b4590c75ca9c30927cc",
+                "sha256:a1c0a2779ad470644144ed87658361d8554559bd251eda9db66fff8b3be20410",
+                "sha256:bd025fb496795750d9c96d871f33fce8a3df8552394862d4075ec295b0e0d486",
+                "sha256:a7ebffb584cc0d66c8036d132c2786beb3ff9647643161b16a100abe94673d4a",
+                "sha256:f10c0cb8fcf2bcaf574991bc1d069ae85e598cf2a88e92f8437db280e1d63af5",
+                "sha256:823dc64d47cc31a9eee9781b0db73074039838aca0aba9be973e957fbcc420e1",
+                "sha256:768b05e8e82edeb3cf41caa2c25ddf40e82c6847394578dacc5007bfe22d4b09",
+                "sha256:91619b0ff42b2b25f9c81fa97dbceea45b623a000e54a035a534404d507e1105",
+                "sha256:d1cdf5812322f3f1db480ef1078436033919271093d2d2b5f43b1cc501832280",
+                "sha256:03338620d3e5fae1d4f265113b4b52fa2dac9b51a08bb5d555926d15f04ea412",
                 "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
                 "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
-                "sha256:3e03e6c1be9aa233d46faf8bc49412d223e044f2ca72ce392eae486995aedbb2",
-                "sha256:6ae2c01e7479f09d563ba5710f312c648c484f052866c415894fc29575791242",
-                "sha256:cf9b815e32c1f39042ee1870673ba33a351f734070e25e691920cc885f8608e6",
-                "sha256:8055ff84cefa072178fc0e7b1d646588c634fee6c6ebbe1197b35d8fb500c9da"
+                "sha256:75f52e80c7fde6fd1fc29b6096af7837c82af8df40c3c7722affe12dc444f4b9",
+                "sha256:6378a1f691345ebdf20c5042308aff8ada2b42cf0cbcf4182b966e380d110726",
+                "sha256:608a705b9f071b3c2b4af920db88f3e3f07663837a8e54763d6f0db3c2dce25a",
+                "sha256:6795cfcac5faa95a6e1a0dec5c6ed149a11a0e1b2d7b36f598b85b7ed9fcbfa4"
             ]
         },
         "Metadata": {
-            "LastTagTime": "2025-07-23T09:24:32.635682193Z"
+            "LastTagTime": "2025-07-23T09:35:27.341137076Z"
         }
     }
 ]
