@@ -28,5 +28,5 @@ rm -rf /tools/gitleaks
 gitleaks version
 wget -q -O /tools/gitleaks-custom-config.toml https://raw.githubusercontent.com/righettod/toolbox-pentest-web/master/templates/gitleaks-custom-config.toml
 wget -q -O /tools/scripts/report-secrets.py https://raw.githubusercontent.com/righettod/toolbox-pentest-web/master/scripts/generate-report-gitleaks.py
-wget -q -O /tools/scripts/report.py https://raw.githubusercontent.com/righettod/toolbox-pentest-web/master/scripts/generate-report-semgrep.py
+wget -q -O /tools/scripts/report-code.py https://raw.githubusercontent.com/righettod/toolbox-pentest-web/master/scripts/generate-report-semgrep.py
 wget -q -O /tools/secret-common-variable-names.txt https://gist.githubusercontent.com/EdOverflow/8bd2faad513626c413b8fc6e9d955669/raw/06a0ef0fd83920d513c65767aae258ecf8382bdf/gistfile1.txt

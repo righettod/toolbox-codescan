@@ -77,7 +77,7 @@ Script to scan the current folder using a set of [SEMGREP rules](https://github.
 
 🐞 Findings will be stored in file `findings.json`.
 
-💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-semgrep.py) can be used to obtains an overview of the findings identified and stored into the file `findings.json`. It is imported as the file `/tools/scripts/report.py`. 
+💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-semgrep.py) can be used to obtains an overview of the findings identified and stored into the file `findings.json`. It is imported as the file `/tools/scripts/report-code.py`. 
 
 💻 Usage & Example:
 
