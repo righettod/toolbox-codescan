@@ -21,7 +21,7 @@ if [ "$#" -lt 1 ]; then
 fi
 export PYTHONWARNINGS="ignore"
 rules_folder="$SEMGREP_RULES_HOME/$1"
-rules_count=$(find "$rules_folder" | wc -l)
+rules_count=$(find "$rules_folder" -type f -name "*.yaml" | wc -l)
 echo "┌────────────────┐"
 echo "│ Initialization │"
 echo "└────────────────┘"

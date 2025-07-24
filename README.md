@@ -65,7 +65,7 @@ docker run --rm -v "C:/Temp:/work" --network none -it ghcr.io/righettod/toolbox-
 > [!TIP]
 > 📦 All scripts are stored in the folder `/tools/scripts` but they are referenced into the `PATH` environment variable.
 
-### Script 'scan.sh'
+### Script 'scan-code.sh'
 
 > [!TIP]
 > Semgrem rules from other providers are stored into the corresponding folder using the naming convention `semgrep-rules-[github-org-name]`. Use `../semgrep-rules-[github-org-name]/[rules_folder_name]` as `[RULES_FOLDER_NAME]` parameter to use them instead of the rules from the Semgrep registry.
@@ -85,20 +85,20 @@ Script to scan the current folder using a set of [SEMGREP rules](https://github.
 $ pwd
 /work/sample
 
-$ scan.sh
+$ scan-code.sh
 Usage:
-   scan.sh [RULES_FOLDER_NAME]
+   scan-code.sh [RULES_FOLDER_NAME]
 
 Call example:
-    scan.sh java
-    scan.sh php
-    scan.sh json
+    scan-code.sh java
+    scan-code.sh php
+    scan-code.sh json
 
 See sub folders in '/tools/semgrep-rules'.
 
 Findings will be stored in file 'findings.json'.
 
-$ scan.sh java
+$ scan-code.sh java
 
 ┌────────────────┐
 │ 1 Code Finding │
@@ -113,6 +113,15 @@ $ scan.sh java
 
         91┆ stmt.execute(SQL_TABLE_CREATE);
 ```
+
+### Script 'scan-code-extended.sh'
+
+> [!NOTE]
+> In this script the notion of **technology** is the same than the notion of **RULES_FOLDER_NAME** used by the script `scan-code.sh`.
+
+Perform the same processing than the script `scan-code.sh` but scan the current folder using all SEMGREP rules related to the target technology.
+
+This script first gather all rules provided by all rules providers for the target technology and then use this consolidated set of rules for the scan.
 
 ### Script 'scan-secrets.sh'
 
