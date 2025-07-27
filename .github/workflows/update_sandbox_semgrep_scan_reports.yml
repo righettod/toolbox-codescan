@@ -1,0 +1,16 @@
+name: Update the SemGrep scan reports of sandboxes codebase
+on:
+  workflow_dispatch:
+permissions: read-all   
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Update the scans
+        run: cd misc; chmod +x update-semgrep-scan-reports.sh; bash update-semgrep-scan-reports.sh
+      - name: Update image information file
+        run: git config --global user.email "gha@github.com"; git config --global user.name "GHActionBot"; git commit -m "Sync SemGrep repors file" misc/findings-*.json; git push
