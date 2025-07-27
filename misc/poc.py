@@ -25,14 +25,11 @@ INDEX_OF_TESTED_VULNERABILITY = 2
 with open("findings.json", mode="r", encoding=DEFAULT_ENCODING) as f:
     vulnerabilities = json.load(f)
 
-# Initialize the Ollama model
-llm = OllamaLLM(model=OLLAMA_MODEL)
-
 # Select one vulnerability for the POC
 vulnerability = vulnerabilities["results"][INDEX_OF_TESTED_VULNERABILITY]
 
 # Load the information of the vulnerability that
-# will be used for user prompt
+# will be used for the user prompt
 source_file_path = VULNERABLE_CODEBASE_FOLDER + vulnerability["path"]
 source_file_technology = "java"
 with open(source_file_path, mode="r", encoding=DEFAULT_ENCODING) as f:
@@ -81,6 +78,9 @@ user_prompt_values = {"vulnerability_description": vulnerability_description,
                       "start_line": start_line, "start_column": start_column, "end_line": end_line, "end_column": end_column,
                       "source_file_technology": source_file_technology,
                       "source_file_content": source_file_content}
+
+# Initialize the Ollama model
+llm = OllamaLLM(model=OLLAMA_MODEL)
 
 # Create the prompts templated
 prompt_template = ChatPromptTemplate.from_messages([("system", system_prompt), ("human", user_prompt_template)])
