@@ -18,6 +18,6 @@ do
 	cd vulnerable-codebase/$sandbox
 	semgrep scan --no-git-ignore --text --metrics=off --disable-version-check --oss-only --novcs --strict --json-output=findings.json --config="$rules_folder/$sandbox"
 	cd ../..
-	mv vulnerable-codebase/$sandbox/findings.json "findings-sandbox.json"
+	mv vulnerable-codebase/$sandbox/findings.json "findings-$sandbox.json"
 done
 exit 0
