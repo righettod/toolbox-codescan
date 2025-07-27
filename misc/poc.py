@@ -19,6 +19,7 @@ OLLAMA_MODEL = "qwen2.5-coder"
 CWE_XML_REFERENTIAL = "cwec_v4.17.xml"
 CWE_XML_REFERENTIAL_NAMESPACES = {"cwe": "http://cwe.mitre.org/cwe-7"}
 VULNERABLE_CODEBASE_FOLDER = "vulnerable-codebase/"
+INDEX_OF_TESTED_VULNERABILITY = 2
 
 # Load the SemGrep findings
 with open("findings.json", mode="r", encoding=DEFAULT_ENCODING) as f:
@@ -28,7 +29,7 @@ with open("findings.json", mode="r", encoding=DEFAULT_ENCODING) as f:
 llm = OllamaLLM(model=OLLAMA_MODEL)
 
 # Select one vulnerability for the POC
-vulnerability = vulnerabilities["results"][2]
+vulnerability = vulnerabilities["results"][INDEX_OF_TESTED_VULNERABILITY]
 
 # Load the information of the vulnerability that
 # will be used for user prompt
