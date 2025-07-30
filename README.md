@@ -199,6 +199,18 @@ Script to allow filtering a large leaks file that uses the [GITLEAKS](https://gi
 $ filters-secrets.py leaks-consolidated.json
 ```
 
+## 🔬 Analyse a .NET project
+
+🤔 I noticed that SemGrep, with the community set of rules for CSharp, is not very effective. To address this, I found the tool [DevSkim](https://github.com/microsoft/DevSkim) provided by Microsoft.
+
+🐳 I did not achieved to make it run on the alpine based image of the scan box. So, I created this dedicated [Dockerfile](Dockerfile-DevSkim) to be able to scan a .NET project **in a offline mode**:
+
+```powershell
+PS> docker build -f Dockerfile-DevSkim -t righettod/devskim .
+PS> docker run --rm -v "C:/Workspace:/work" --network none -it righettod/devskim
+➜ devskim analyze --source-code /work/[project-codebase] --output-file findings.json
+```
+
 ## 🤝 Sources & credits
 
 ### Semgrep analysis rules providers
@@ -213,4 +225,5 @@ $ filters-secrets.py leaks-consolidated.json
 * <https://semgrep.dev/docs/ignore-oss>
 * <https://gitleaks.io/>
 * <https://github.com/doyensec/regexploit>
+* <https://github.com/microsoft/DevSkim>
 
