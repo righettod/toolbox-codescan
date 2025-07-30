@@ -15,7 +15,6 @@ The goal of this image is to provide a ready-to-use toolbox to perform **offline
 | [Semgrep](https://github.com/semgrep/semgrep)    | Code scanning ([SAST](https://en.wikipedia.org/wiki/Static_application_security_testing) activity). |
 | [Gitleaks](https://github.com/gitleaks/gitleaks) | Search for secrets/credentials/...                                                                  |
 
-
 🔬 When **Semgrep** fails to detect a problem that I know exists, I try to suggest a new rule to the Semgrep [rules registry](https://github.com/semgrep/semgrep-rules):
 
 * ✅ <https://github.com/semgrep/semgrep-rules/pull/3649>
@@ -77,7 +76,7 @@ Script to scan the current folder using a set of [SEMGREP rules](https://github.
 
 🐞 Findings will be stored in file `findings.json`.
 
-💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-semgrep.py) can be used to obtains an overview of the findings identified and stored into the file `findings.json`. It is imported as the file `/tools/scripts/report-code.py`. 
+💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-semgrep.py) can be used to obtains an overview of the findings identified and stored into the file `findings.json`. It is imported as the file `/tools/scripts/report-code.py`.
 
 💻 Usage & Example:
 
@@ -132,7 +131,7 @@ Script to scan the current folder using [GITLEAKS](https://github.com/gitleaks/g
 
 🐞 Leaks will be stored in files `leaks-gitfiles.json` and `leaks-sourcefiles.json`.
 
-💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-gitleaks.py) can be used to obtains an overview of the leaks identified and stored into the files `leaks-*.json`. It is imported as the file `/tools/scripts/report-secrets.py`. 
+💡 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-gitleaks.py) can be used to obtains an overview of the leaks identified and stored into the files `leaks-*.json`. It is imported as the file `/tools/scripts/report-secrets.py`.
 
 💻 Usage & Example:
 
@@ -196,23 +195,18 @@ Script to allow filtering a large leaks file that uses the [GITLEAKS](https://gi
 💻 Usage:
 
 ```bash
-$ filters-secrets.py leaks-consolidated.json
+filters-secrets.py leaks-consolidated.json
 ```
 
 ## 🔬 Analyse a .NET project
 
-🤔 I noticed that SemGrep, with the community set of rules for CSharp, is not very effective. To address this, I found the tool [DevSkim](https://github.com/microsoft/DevSkim) provided by Microsoft.
+🤔 I noticed that SemGrep, with the community set of rules for CSharp, is not very effective.
 
-🐳 I did not achieved to make it run on the alpine based image of the scan box. So, I created this dedicated [Dockerfile](Dockerfile-DevSkim) to be able to scan a .NET project **in a offline mode**:
+💡 To address this:
 
-```powershell
-PS> curl -sk --output Dockerfile-DevSkim https://raw.githubusercontent.com/righettod/toolbox-codescan/refs/heads/main/Dockerfile-DevSkim
-PS> docker build -f Dockerfile-DevSkim -t righettod/devskim .
-PS> docker run --rm -v "C:/Workspace:/work" --network none -it righettod/devskim
-➜ devskim analyze --source-code /work/[project-codebase] --output-file findings.json
-```
-
-📋 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-devskim.py) can be used to explore the results of the scan.
+* I found the tool [DevSkim](https://github.com/microsoft/DevSkim) provided by Microsoft that I added to the box. It's why I moved, from *alpine* to *ubuntu* for the base image, as I did not achieved to make it run on the *alpine* based image.
+* I created and added this [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-devskim.py) as `report-code-devskim.py` to explore the results of the scan.
+* I created the alias `scan-code-devskim` to scan the current folder with `DevSkim` and generate the results in the json file `findings.json` to stay consistent with other scripts of the toolbox.
 
 ## 🤝 Sources & credits
 
@@ -229,4 +223,3 @@ PS> docker run --rm -v "C:/Workspace:/work" --network none -it righettod/devskim
 * <https://gitleaks.io/>
 * <https://github.com/doyensec/regexploit>
 * <https://github.com/microsoft/DevSkim>
-

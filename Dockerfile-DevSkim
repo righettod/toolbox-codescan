@@ -1,9 +1,0 @@
-FROM ubuntu:24.10
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update
-RUN apt-get install -y dotnet-sdk-8.0 unzip curl wget jq nano zsh git file
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-RUN dotnet tool install --global Microsoft.CST.DevSkim.CLI
-RUN echo "export PATH=$PATH:/root/.dotnet/tools" >> /root/.zshrc
-RUN chmod +x -R /root/.dotnet/tools
-CMD ["/bin/zsh"]
