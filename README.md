@@ -212,6 +212,8 @@ PS> docker run --rm -v "C:/Workspace:/work" --network none -it righettod/devskim
 ➜ devskim analyze --source-code /work/[project-codebase] --output-file findings.json
 ```
 
+📋 This [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-devskim.py) can be used to explore the results of the scan.
+
 ## 🤝 Sources & credits
 
 ### Semgrep analysis rules providers
