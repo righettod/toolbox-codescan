@@ -206,6 +206,7 @@ $ filters-secrets.py leaks-consolidated.json
 🐳 I did not achieved to make it run on the alpine based image of the scan box. So, I created this dedicated [Dockerfile](Dockerfile-DevSkim) to be able to scan a .NET project **in a offline mode**:
 
 ```powershell
+PS> curl -sk --output Dockerfile-DevSkim https://raw.githubusercontent.com/righettod/toolbox-codescan/refs/heads/main/Dockerfile-DevSkim
 PS> docker build -f Dockerfile-DevSkim -t righettod/devskim .
 PS> docker run --rm -v "C:/Workspace:/work" --network none -it righettod/devskim
 ➜ devskim analyze --source-code /work/[project-codebase] --output-file findings.json
