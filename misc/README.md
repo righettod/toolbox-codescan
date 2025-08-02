@@ -6,7 +6,7 @@
 
 🔬 Tests and POC for the implementation of this [idea](https://github.com/righettod/toolbox-codescan/issues/2).
 
-🐞 The sample test application with vulnerabilites was taken from this [project](https://github.com/appsecco/dvja).
+🐞 The sample test applications are custom made to allow to perform specific tests.
 
 📦 File [cwec_v4.17.xml](cwec_v4.17.xml) come from [here](https://cwe.mitre.org/data/xml/cwec_latest.xml.zip).
 

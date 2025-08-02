@@ -9,6 +9,7 @@ Ollama dependencies
     ollama run qwen2.5-coder:latest
 """
 import json
+import sys
 from termcolor import colored
 import xml.etree.ElementTree as ET
 from langchain_ollama import OllamaLLM
@@ -23,7 +24,9 @@ CWE_XML_REFERENTIAL_NAMESPACES = {"cwe": "http://cwe.mitre.org/cwe-7"}
 VULNERABLE_CODEBASE_FOLDER = f"vulnerable-codebase/{SANDBOX_TECHNOLOGY}/"
 
 # Execution context
-INDEX_OF_TESTED_VULNERABILITY = 0  # Zero based
+INDEX_OF_TESTED_VULNERABILITY = 1  # Zero based
+if len(sys.argv) == 2:
+    INDEX_OF_TESTED_VULNERABILITY = int(sys.argv[1])
 
 
 def extract_raw_content(input, code_marker=SANDBOX_TECHNOLOGY):
@@ -106,21 +109,31 @@ response = chain.invoke(user_prompt_values)
 source_file_function_content = extract_raw_content(response)
 print(colored("=> FUNCTION CODE:", "yellow"))
 print(source_file_function_content)
-
+print("")
 
 # Create the final system prompt
 system_prompt = """You are an assistant specializing in source code analysis focusing on security vulnerabilities.
 
 Given a source code and a description of a security vulnerability, output a reply indicating if the given security vulnerability is really present or not.
 
-You must only consider a security vulnerability really present only when it is possible to alter the processing performed by the function or when it is possible to bypass the validation in place.
+Follow these steps to find a reply, this is your decision flow:
+
+1. Identify if it is possible to influence the processing performed by the function using an input parameter of the function.
+2. When it is the case then you must move to the next step. Otherwise you must consider that the vulnerability is not present.
+3. Identify if a processing is applied against the input parameter identified to verify or modify the content of its value.
+4. When it is the case you must move to the next step. Otherwise you must consider that the vulnerability is present.
+5. Identify if the type of processing performed against the value of the input parameter identified effectively prevent to influence the processing performed by the function.
+6. When it is the case you must consider that the vulnerability is not present. Otherwise you must move to the next step.
+7. You must find a value for the input parameter identified that can be used to influence the processing performed by the function.
+8. When you cannot find such value then you must consider that the vulnerability is not present. Otherwise you must move to the next step.
+9. You must verify that the value identified is not blocked or altered by the step 3 and then reach the vulnerable line of code AS IS.
+10. When it is the case you must consider that the vulnerability is not present. Otherwise you must consider that the vulnerability is present.
 
 Your reply must be a json object with the following attributes:
 
-1. The attribute "present" with the value "yes" when you consider that the vulnerability is present. Otherwise the value must be set to "No".
-2. The attribute "explanation" with the technical explanation about why you consider that the vulnerability is present or not. Your explanation must justify why your have set the attribute "present" to the value "Yes" or "No".
+1. The attribute "trace" with the explanation of your decision for all the steps by which you passed through the decision flow described above.
+2. The attribute "present" with the value "yes" when you consider that the vulnerability is present. Otherwise the value must be set to "No".
 3. The attribute "exploit" with a value that can be used to trigger the vulnerability when you consider that the vulnerability is present. Otherwise the value must be set to an empty string.
-
 """
 
 # Create the final user prompt
@@ -129,6 +142,12 @@ user_prompt_template = """This security vulnerability was identified in the give
 
 The type of security vulnerability is the following:
 {cwe_description}
+
+The vulnerable line of source code is the following:
+
+```{source_file_technology}
+{source_code_affected_line_of_code}
+```
 
 This is the source code in which the vulnerability was identified:
 
@@ -139,7 +158,8 @@ This is the source code in which the vulnerability was identified:
 user_prompt_values = {"vulnerability_description": vulnerability_description,
                       "cwe_description": cwe_description,
                       "source_file_technology": source_file_technology,
-                      "source_file_content": source_file_function_content}
+                      "source_file_content": source_file_function_content,
+                      "source_code_affected_line_of_code": source_code_affected_line_of_code}
 
 
 # Use the model to analyse the vulnerability against the code snippet (function/method)
@@ -151,6 +171,5 @@ chain = prompt_template | llm
 # Invoke the chain with the user prompt values
 response = chain.invoke(user_prompt_values)
 raw_response = extract_raw_content(response, "json")
-print("")
 print(colored("=> MODEL REPLY:", "yellow"))
 print(raw_response)

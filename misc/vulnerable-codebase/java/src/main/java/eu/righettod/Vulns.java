@@ -11,8 +11,8 @@ public class Vulns {
         //Real SQL Injection
         Connection connection = DriverManager.getConnection("x", "x", "");
         String sql = String.format("SELECT * FROM USERS WHERE LOGIN='%s'", name);
-        try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate(sql);
+        try (Statement stmt1 = connection.createStatement()) {
+            stmt1.executeUpdate(sql);
         }
     }
 
@@ -29,7 +29,7 @@ public class Vulns {
     public static void fakeOne01(String name) throws Exception {
         //Fake SQL Injection
         Connection connection = DriverManager.getConnection("x", "x", "");
-        if (Pattern.matches("[a-z]+", name)) {
+        if (Pattern.matches("^[a-z]+$", name)) {
             String sql = String.format("SELECT * FROM USERS WHERE LOGIN='%s'", name);
             try (Statement stmt3 = connection.createStatement()) {
                 stmt3.executeUpdate(sql);
