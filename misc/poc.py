@@ -24,7 +24,7 @@ CWE_XML_REFERENTIAL_NAMESPACES = {"cwe": "http://cwe.mitre.org/cwe-7"}
 VULNERABLE_CODEBASE_FOLDER = f"vulnerable-codebase/{SANDBOX_TECHNOLOGY}/"
 
 # Execution context
-INDEX_OF_TESTED_VULNERABILITY = 1  # Zero based
+INDEX_OF_TESTED_VULNERABILITY = 0  # Zero based
 if len(sys.argv) == 2:
     INDEX_OF_TESTED_VULNERABILITY = int(sys.argv[1])
 
@@ -120,19 +120,19 @@ Follow these steps to find a reply, this is your decision flow:
 
 1. Identify if it is possible to influence the processing performed by the function using an input parameter of the function.
 2. When it is the case then you must move to the next step. Otherwise you must consider that the vulnerability is not present.
-3. Identify if a processing is applied against the input parameter identified to verify or modify the content of its value.
-4. When it is the case you must move to the next step. Otherwise you must consider that the vulnerability is present.
+3. Identify if a processing is applied against the input parameter identified to inspect or modify the content of its value.
+4. When it is the case then you must move to the next step. Otherwise you must consider that the vulnerability is present.
 5. Identify if the type of processing performed against the value of the input parameter identified effectively prevent to influence the processing performed by the function.
-6. When it is the case you must consider that the vulnerability is not present. Otherwise you must move to the next step.
+6. When it is the case then you must consider that the vulnerability is not present. Otherwise you must move to the next step.
 7. You must find a value for the input parameter identified that can be used to influence the processing performed by the function.
 8. When you cannot find such value then you must consider that the vulnerability is not present. Otherwise you must move to the next step.
-9. You must verify that the value identified is not blocked or altered by the step 3 and then reach the vulnerable line of code AS IS.
-10. When it is the case you must consider that the vulnerability is not present. Otherwise you must consider that the vulnerability is present.
+9. You must verify that the value identified is not blocked or is not sanitized by the step 3 and then reach the vulnerable line of code without any alteration.
+10. When it is the case then you must consider that the vulnerability is present. Otherwise you must consider that the vulnerability is not present.
 
 Your reply must be a json object with the following attributes:
 
 1. The attribute "trace" with the explanation of your decision for all the steps by which you passed through the decision flow described above.
-2. The attribute "present" with the value "yes" when you consider that the vulnerability is present. Otherwise the value must be set to "No".
+2. The attribute "present" with the value "yes" when you consider that the vulnerability is present. Otherwise the value must be set to "no".
 3. The attribute "exploit" with a value that can be used to trigger the vulnerability when you consider that the vulnerability is present. Otherwise the value must be set to an empty string.
 """
 
