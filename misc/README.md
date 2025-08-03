@@ -19,7 +19,11 @@ ollama pull qwen2.5-coder:latest
 ollama run qwen2.5-coder:latest
 ```
 
-2. Run the script [poc.py](poc.py).
+2. Execute the script [poc.py](poc.py) with the index of the vulnerability in the SemGrep against which you want to run the test:
+
+```shell
+python poc.py 1
+```
 
 ## Obervations
 
