@@ -14,10 +14,12 @@ TODO:
 """
 import json
 import sys
+import re
 from termcolor import colored
 import xml.etree.ElementTree as ET
 from langchain_ollama import OllamaLLM
 from langchain.prompts import ChatPromptTemplate
+from collections import Counter
 
 # Constants
 SANDBOX_TECHNOLOGY = "java"
@@ -118,7 +120,7 @@ print("")
 # Create the final system prompt
 system_prompt = """You are an assistant specializing in source code analysis focusing on security vulnerabilities.
 
-Given a source code and a description of a security vulnerability, output a reply indicating if the given security vulnerability is really present or not.
+Given a source code and a description of a security vulnerability, output a reply indicating if the given security vulnerability is really present or not. Respond by indicating the current status and do not make assumptions about potential exposure to code changes.
 
 Follow these steps to find a reply, this is your decision flow:
 
@@ -138,6 +140,8 @@ Your reply must be a json object with the following attributes:
 1. The attribute "trace" with the explanation of your decision for all the steps by which you passed through the decision flow described above.
 2. The attribute "present" with the value "yes" when you consider that the vulnerability is present. Otherwise the value must be set to "no".
 3. The attribute "exploit" with a value that can be used to trigger the vulnerability when you consider that the vulnerability is present. Otherwise the value must be set to an empty string.
+
+You must ensure that the reply is a valid json object that can be loaded into a json strict parser.
 """
 
 # Create the final user prompt
@@ -177,3 +181,19 @@ response = chain.invoke(user_prompt_values)
 raw_response = extract_raw_content(response, "json")
 print(colored("=> MODEL REPLY:", "yellow"))
 print(raw_response)
+print("")
+
+# Invoke the chain with the user prompt values several times
+# to see if the model increase globally its accuracy
+# TODO: Try adding a memory that is sharing in the call rounds.
+rounds = 3
+decisions = []
+print(colored(f"=> MODEL REPLY AGAINST {rounds} CALL ROUNDS:", "yellow"))
+for round in range(rounds):
+    response = chain.invoke(user_prompt_values)
+    raw_response = extract_raw_content(response, "json")
+    # I use regex because sometime the json contain non escaped double quote so
+    # the json is invalid even with my instruction to ensure that it must be a valid one
+    decision = re.findall(r'"present":\s*"(.*?)"', raw_response, flags=re.DOTALL)[0]
+    decisions.append(decision)
+print(Counter(decisions))

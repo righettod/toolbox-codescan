@@ -35,6 +35,5 @@ public class Vulns {
                 stmt3.executeUpdate(sql);
             }
         }
-
     }
 }
