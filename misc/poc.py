@@ -10,7 +10,6 @@ Ollama dependencies
 
 TODO:
     - Test with different levels of temperature for the call to the model to check if the vuln is present to see if it can made results more accurates.
-    - Using default temperature, test with different sequential call to see after which number of call the model find correctly if the vuln is present or not.
 """
 import json
 import sys
