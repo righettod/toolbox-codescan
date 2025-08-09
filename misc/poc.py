@@ -7,16 +7,12 @@ Python dependencies:
 Ollama dependencies
     ollama pull qwen2.5-coder:latest
     ollama run qwen2.5-coder:latest
-
-TODO:
-    - Test with different levels of temperature for the call to the model to check if the vuln is present to see if it can made results more accurates.
 """
 import json
 import sys
 import re
 import uuid
 import xml.etree.ElementTree as ET
-import pprint
 from termcolor import colored
 from langchain_ollama import OllamaLLM
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -24,7 +20,6 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain.callbacks.base import BaseCallbackHandler
-from collections import Counter
 
 # Constants
 SANDBOX_TECHNOLOGY = "java"
@@ -50,6 +45,7 @@ class MyPromptPrinter(BaseCallbackHandler):
             content = re.sub(r'System:', "\n" + colored("System:", "light_green"), content)
             content = re.sub(r'AI:', "\n" + colored("AI:", "light_red"), content)
             print(content)
+        print(colored("\n[End Prompt]", "cyan"))
 
 
 def extract_raw_content(input, code_marker=SANDBOX_TECHNOLOGY):
@@ -195,21 +191,23 @@ user_prompt_values = {"vulnerability_description": vulnerability_description,
 
 
 # Use the model to analyse the vulnerability against the code snippet (function/method)
-# Use a default behavior of the model via a temperature to default value
-llm = OllamaLLM(model=OLLAMA_MODEL)
+# Use a deterministic behavior of the model via a temperature to zero
+llm = OllamaLLM(model=OLLAMA_MODEL, temperature=0.0)
 prompt_template = ChatPromptTemplate.from_messages([("system", system_prompt), ("human", user_prompt_template)])
 chain = prompt_template | llm
 
 # Invoke the chain with the user prompt values
-# response = chain.invoke(user_prompt_values)
-# raw_response = extract_raw_content(response, "json")
-# print(colored("=> MODEL REPLY:", "yellow"))
-# print(raw_response)
-# print("")
+prompt_printer_callback = MyPromptPrinter()
+conversation_config = {"callbacks": []}
+response = chain.invoke(user_prompt_values, config=conversation_config)
+raw_response = extract_raw_content(response, "json")
+print(colored("=> MODEL REPLY USING CONVERSATION WITHOUT HISTORY:", "yellow"))
+print(raw_response)
+print("")
 
 # Use now a chain with an history with adaptive user prompt to see if the model increase globally its accuracy across the different chat occurences
-rounds = 3
-llm = OllamaLLM(model=OLLAMA_MODEL)
+# Use a deterministic behavior of the model via a temperature to zero
+llm = OllamaLLM(model=OLLAMA_MODEL, temperature=0.0)
 prompt_template = ChatPromptTemplate.from_messages([("system", system_prompt), MessagesPlaceholder("history"), ("human", "{input}")])
 chain = prompt_template | llm
 chain_with_history = RunnableWithMessageHistory(runnable=chain, get_session_history=get_session_history, input_messages_key="input", history_messages_key="history")
@@ -232,27 +230,24 @@ This is the source code in which the vulnerability was identified:
 {source_file_function_content}
 ```"""
 
-prompt_printer = MyPromptPrinter()
-conversation_config = {"callbacks": [prompt_printer], "configurable": {"session_id": str(uuid.uuid4())}}
-decisions = []
-print(colored(f"=> MODEL REPLY AGAINST {rounds} CALL ROUNDS:", "yellow"))
-user_prompt_input = user_prompt_raw
-# ROUND 0: Intial question
-# ROUND 1: Challenge the response provided
-# ROUND 2: Challenge the justification provided
-for round in range(rounds):
-    response = chain_with_history.invoke({"input": user_prompt_input}, config=conversation_config)
-    raw_response = extract_raw_content(response, "json")
-    # I use regex because sometime the json contain non escaped double quote so
-    # the json is invalid even with my instruction to ensure that it must be a valid one
-    decision = re.findall(r'"present":\s*"(.*?)"', raw_response, flags=re.DOTALL)
-    if len(decision) > 0:
-        decision = decision[0]
-        decisions.append(decision)
-        if decision.lower() == "yes":
-            user_prompt_input = "Justify why the validation in place is not effective?"
-        else:
-            user_prompt_input = "Justify why the validation in place is effective?"
-    else:
+prompt_printer_callback = MyPromptPrinter()
+conversation_config = {"callbacks": [], "configurable": {"session_id": str(uuid.uuid4())}}
+print(colored(f"=> MODEL REPLY USING CONVERSATION WITH HISTORY:", "yellow"))
+# ROUND 0: Initial question.
+# ROUND 1: Challenge the response provided.
+# ROUND 2: Challenge the justification provided.
+# ROUND 3: Ask to give a final answer that is YES ou NO about the presence of the vulnerability.
+for round in range(4):
+    if round == 0:
+        user_prompt_input = user_prompt_raw
+    elif round == 1:
+        user_prompt_input = "Justify your decision with technical material and proof from a security perspective!"
+    elif round == 2:
         user_prompt_input = f"Are you sure your statements are correct for the technology {source_file_technology}?"
-pprint.pprint(dict(Counter(decisions)))
+    else:
+        user_prompt_input = "Give me a final reply represented by 'yes' if you consider that the vulnerability is present otherwise reply 'no' if you consider that the vulnerability is not present."
+        user_prompt_input += "\nYou must only reply 'yes' or 'no' and no more information."
+    response = chain_with_history.invoke({"input": user_prompt_input}, config=conversation_config)
+    print(colored(f"\n[ROUND {round}]", "light_cyan"))
+    print(response)
+    print("======")
