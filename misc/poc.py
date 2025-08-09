@@ -237,15 +237,22 @@ conversation_config = {"callbacks": [prompt_printer], "configurable": {"session_
 decisions = []
 print(colored(f"=> MODEL REPLY AGAINST {rounds} CALL ROUNDS:", "yellow"))
 user_prompt_input = user_prompt_raw
+# ROUND 0: Intial question
+# ROUND 1: Challenge the response provided
+# ROUND 2: Challenge the justification provided
 for round in range(rounds):
     response = chain_with_history.invoke({"input": user_prompt_input}, config=conversation_config)
     raw_response = extract_raw_content(response, "json")
     # I use regex because sometime the json contain non escaped double quote so
     # the json is invalid even with my instruction to ensure that it must be a valid one
-    decision = re.findall(r'"present":\s*"(.*?)"', raw_response, flags=re.DOTALL)[0]
-    decisions.append(decision)
-    if decision.lower() == "yes":
-        user_prompt_input = "Justify why the validation in place is not effective?"
+    decision = re.findall(r'"present":\s*"(.*?)"', raw_response, flags=re.DOTALL)
+    if len(decision) > 0:
+        decision = decision[0]
+        decisions.append(decision)
+        if decision.lower() == "yes":
+            user_prompt_input = "Justify why the validation in place is not effective?"
+        else:
+            user_prompt_input = "Justify why the validation in place is effective?"
     else:
-        user_prompt_input = "Justify why the validation in place is effective?"
+        user_prompt_input = f"Are you sure your statements are correct for the technology {source_file_technology}?"
 pprint.pprint(dict(Counter(decisions)))
