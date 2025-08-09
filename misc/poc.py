@@ -14,10 +14,16 @@ TODO:
 import json
 import sys
 import re
-from termcolor import colored
+import uuid
 import xml.etree.ElementTree as ET
+import pprint
+from termcolor import colored
 from langchain_ollama import OllamaLLM
-from langchain.prompts import ChatPromptTemplate
+from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain_core.chat_history import BaseChatMessageHistory
+from langchain.callbacks.base import BaseCallbackHandler
 from collections import Counter
 
 # Constants
@@ -29,9 +35,21 @@ CWE_XML_REFERENTIAL_NAMESPACES = {"cwe": "http://cwe.mitre.org/cwe-7"}
 VULNERABLE_CODEBASE_FOLDER = f"vulnerable-codebase/{SANDBOX_TECHNOLOGY}/"
 
 # Execution context
+CHAT_HISTORY_STORE = {}
 INDEX_OF_TESTED_VULNERABILITY = 0  # Zero based
 if len(sys.argv) == 2:
     INDEX_OF_TESTED_VULNERABILITY = int(sys.argv[1])
+
+
+class MyPromptPrinter(BaseCallbackHandler):
+    def on_llm_start(self, serialized, prompts, **kwargs):
+        print(colored("\n[Prompt Sent to Model]", "cyan"))
+        for p in prompts:
+            content = str(p)
+            content = re.sub(r'Human:', "\n" + colored("Human:", "light_magenta"), content)
+            content = re.sub(r'System:', "\n" + colored("System:", "light_green"), content)
+            content = re.sub(r'AI:', "\n" + colored("AI:", "light_red"), content)
+            print(content)
 
 
 def extract_raw_content(input, code_marker=SANDBOX_TECHNOLOGY):
@@ -39,6 +57,13 @@ def extract_raw_content(input, code_marker=SANDBOX_TECHNOLOGY):
     output = output.replace("```", "")
     output = output.strip(" \n\t\r")
     return output
+
+
+def get_session_history(session_id: str) -> BaseChatMessageHistory:
+    """A function that returns a BaseChatMessageHistory instance for a given session ID."""
+    if session_id not in CHAT_HISTORY_STORE:
+        CHAT_HISTORY_STORE[session_id] = ChatMessageHistory()
+    return CHAT_HISTORY_STORE[session_id]
 
 
 # Load the SemGrep findings
@@ -159,13 +184,13 @@ The vulnerable line of source code is the following:
 This is the source code in which the vulnerability was identified:
 
 ```{source_file_technology}
-{source_file_content}
+{source_file_function_content}
 ```"""
 
 user_prompt_values = {"vulnerability_description": vulnerability_description,
                       "cwe_description": cwe_description,
                       "source_file_technology": source_file_technology,
-                      "source_file_content": source_file_function_content,
+                      "source_file_function_content": source_file_function_content,
                       "source_code_affected_line_of_code": source_code_affected_line_of_code}
 
 
@@ -176,23 +201,51 @@ prompt_template = ChatPromptTemplate.from_messages([("system", system_prompt), (
 chain = prompt_template | llm
 
 # Invoke the chain with the user prompt values
-response = chain.invoke(user_prompt_values)
-raw_response = extract_raw_content(response, "json")
-print(colored("=> MODEL REPLY:", "yellow"))
-print(raw_response)
-print("")
+# response = chain.invoke(user_prompt_values)
+# raw_response = extract_raw_content(response, "json")
+# print(colored("=> MODEL REPLY:", "yellow"))
+# print(raw_response)
+# print("")
 
-# Invoke the chain with the user prompt values several times
-# to see if the model increase globally its accuracy
-# TODO: Try adding a memory that is sharing in the call rounds.
+# Use now a chain with an history with adaptive user prompt to see if the model increase globally its accuracy across the different chat occurences
 rounds = 3
+llm = OllamaLLM(model=OLLAMA_MODEL)
+prompt_template = ChatPromptTemplate.from_messages([("system", system_prompt), MessagesPlaceholder("history"), ("human", "{input}")])
+chain = prompt_template | llm
+chain_with_history = RunnableWithMessageHistory(runnable=chain, get_session_history=get_session_history, input_messages_key="input", history_messages_key="history")
+
+user_prompt_raw = f"""This security vulnerability was identified in the given source code:
+{vulnerability_description}
+
+The type of security vulnerability is the following:
+{cwe_description}
+
+The vulnerable line of source code is the following:
+
+```{source_file_technology}
+{source_code_affected_line_of_code}
+```
+
+This is the source code in which the vulnerability was identified:
+
+```{source_file_technology}
+{source_file_function_content}
+```"""
+
+prompt_printer = MyPromptPrinter()
+conversation_config = {"callbacks": [prompt_printer], "configurable": {"session_id": str(uuid.uuid4())}}
 decisions = []
 print(colored(f"=> MODEL REPLY AGAINST {rounds} CALL ROUNDS:", "yellow"))
+user_prompt_input = user_prompt_raw
 for round in range(rounds):
-    response = chain.invoke(user_prompt_values)
+    response = chain_with_history.invoke({"input": user_prompt_input}, config=conversation_config)
     raw_response = extract_raw_content(response, "json")
     # I use regex because sometime the json contain non escaped double quote so
     # the json is invalid even with my instruction to ensure that it must be a valid one
     decision = re.findall(r'"present":\s*"(.*?)"', raw_response, flags=re.DOTALL)[0]
     decisions.append(decision)
-print(Counter(decisions))
+    if decision.lower() == "yes":
+        user_prompt_input = "Justify why the validation in place is not effective?"
+    else:
+        user_prompt_input = "Justify why the validation in place is effective?"
+pprint.pprint(dict(Counter(decisions)))
