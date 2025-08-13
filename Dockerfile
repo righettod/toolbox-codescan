@@ -10,7 +10,15 @@ LABEL org.opencontainers.image.description="Customized toolbox to perform offlin
 LABEL org.opencontainers.image.base.name="righettod/toolbox-codescan:main"
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
-RUN apt-get install -y bash build-essential cloc coreutils curl libcurl4-openssl-dev dnsutils dotnet-sdk-8.0 dos2unix git golang-go grep highlight jq make python-is-python3 python3 python3-dev python3-setuptools python3-pip python3-venv nano unzip vim wget zip zsh
+RUN apt-get install -y bash build-essential cloc coreutils curl libcurl4-openssl-dev dnsutils dotnet-sdk-8.0 dos2unix git grep highlight jq make nano python-is-python3 python3 python3-dev python3-setuptools python3-pip python3-venv software-properties-common unzip vim wget zip zsh
+# Install last version of Go
+# See https://go.dev/wiki/Ubuntu for details
+RUN apt-get remove -y golang-go
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository -y ppa:longsleep/golang-backports
+RUN apt-get update
+RUN apt-get install -y golang-go
+# Resume installation
 RUN dotnet tool install --global Microsoft.CST.DevSkim.CLI
 RUN /root/.dotnet/tools/devskim --version
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
