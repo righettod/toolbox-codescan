@@ -4,9 +4,8 @@ Code to test the idea and prompts.
 Python dependencies:
     pip install langchain langchain-community langchain-ollama termcolor
 
-Ollama dependencies
-    ollama pull qwen2.5-coder:latest
-    ollama run qwen2.5-coder:latest
+Ollama dependencies:
+    See README.md file for models setup.
 """
 import json
 import sys
@@ -22,9 +21,13 @@ from langchain_core.chat_history import BaseChatMessageHistory
 from langchain.callbacks.base import BaseCallbackHandler
 
 # Constants
+USE_CONVERSATION_WITH_HISTORY_APPROACH = False
 SANDBOX_TECHNOLOGY = "java"
 DEFAULT_ENCODING = "utf-8"
-OLLAMA_MODEL = "qwen2.5-coder"
+OLLAMA_MODEL_CODE_EXTRACTION = "qwen2.5-coder"
+OLLAMA_MODEL_CODE_EXTRACTION_TEMPERATURE = 0.0
+OLLAMA_MODEL_CODE_REASONING = "gemma3:4b"
+OLLAMA_MODEL_CODE_REASONING_TEMPERATURE = 0.0
 CWE_XML_REFERENTIAL = "cwec_v4.17.xml"
 CWE_XML_REFERENTIAL_NAMESPACES = {"cwe": "http://cwe.mitre.org/cwe-7"}
 VULNERABLE_CODEBASE_FOLDER = f"vulnerable-codebase/{SANDBOX_TECHNOLOGY}/"
@@ -96,8 +99,8 @@ cwe_description = cwe_node.text.strip()
 
 # Use the model to extract the code of the function (or method) containing the range of code specified containing the vulnerability
 # Use a deterministic behavior of the model via a temperature to zero
-llm_deterministic = OllamaLLM(model=OLLAMA_MODEL, temperature=0.0)
-system_prompt = """You are an assistant specialized in extracting a function from a source code.
+llm_code_extraction = OllamaLLM(model=OLLAMA_MODEL_CODE_EXTRACTION, temperature=OLLAMA_MODEL_CODE_EXTRACTION_TEMPERATURE)
+system_prompt_code_extraction = """You are an assistant specialized in extracting a function from a source code.
 
 Given a global source code, a line number and a line of source code with a problem: You must extract the source code of the function in which the given line number is located.
 
@@ -109,14 +112,13 @@ Follow these steps to identify the right function:
 2. Identify in the global source code the location of the line number provided.
 3. Extract the complete source code of the function in which the line number provided is located.
 4. Add a comment on the top of the function with the following information:
-  1. The line of code located on the line number provided.
-  2. The explanation about why you have selected this function.
-  3. The name of the function you have selected.
+  A. The line of code located on the line number provided.
+  B. The explanation about why you have selected this function.
+  C. The name of the function you have selected.
 5. Verify that the function you selected contains the line of source code with a problem provided. If it is not the case then restart from zero.
 """
 
-
-user_prompt_template = """The line number is {start_line}.
+user_prompt_template_code_extraction = """The line number is {start_line}.
 
 The line of source code with a problem is `{source_code_affected_line_of_code}`.
 
@@ -125,129 +127,143 @@ The global source code is the following:
 ```{source_file_technology}
 {source_file_content}
 ```"""
-prompt_template = ChatPromptTemplate.from_messages([("system", system_prompt), ("human", user_prompt_template)])
-chain = prompt_template | llm_deterministic
+print(colored(f"=> [{OLLAMA_MODEL_CODE_EXTRACTION}] FUNCTION CODE EXTRACTED:", "yellow"))
+prompt_template = ChatPromptTemplate.from_messages([("system", system_prompt_code_extraction), ("human", user_prompt_template_code_extraction)])
+chain = prompt_template | llm_code_extraction
 user_prompt_values = {"start_line": start_line,
                       "source_file_technology": source_file_technology,
                       "source_file_content": source_file_content,
                       "source_code_affected_line_of_code": source_code_affected_line_of_code}
 response = chain.invoke(user_prompt_values)
 source_file_function_content = extract_raw_content(response)
-print(colored("=> FUNCTION CODE:", "yellow"))
 print(source_file_function_content)
 print("")
 
 # Create the final system prompt
-system_prompt = """You are an assistant specializing in source code analysis focusing on security vulnerabilities.
+system_prompt_code_reasoning = """You are an assistant specializing in source code analysis focusing on security vulnerabilities. Your primary objective is to determine if a given security vulnerability is truly present and exploitable within a provided source code.
 
-Given a source code and a description of a security vulnerability, output a reply indicating if the given security vulnerability is really present or not. Respond by indicating the current status and do not make assumptions about potential exposure to code changes.
+Given a source code and a description of a security vulnerability, output a reply indicating if the given security vulnerability is really present or not. You must operate solely on the code provided and not make assumptions about potential exposure to code changes, external security controls, or other components.
+
+**Strict Rules and Assumptions:**
+
+* **No External Assumptions:** You must not make any assumptions about external security controls such as Web Application Firewalls (WAFs), reverse proxies, or external data sanitizers.
+* **No Encoding Assumptions:** You must not assume a specific data encoding (e.g., UTF-8, ASCII) unless the source code explicitly specifies it. You must consider that the vulnerability can be triggered by any encoding that the underlying system supports.
+* **No Privilege Assumptions:** You must assume a "worst-case scenario" security model, where a malicious actor has full control over the input.
+* **Code is the Single Source of Truth:** The only valid security controls are those you can explicitly identify by tracing the data flow within the provided source code. If a control is not present in the code, it does not exist for the purpose of this analysis.
+* **Strict Evaluation of Code Logic:**
+  * **Fail-Fast on Rejection:** If any sanitization, validation, or transformation step (like a regular expression or a `replace` function) completely rejects the input or renders the proposed exploit ineffective, you **must immediately conclude that the vulnerability is not present**. Do not proceed to subsequent steps like formulating a payload or confirming execution, as these are no longer relevant.
+  * You must strictly adhere to the literal meaning of the code provided. Do not invent or assume behaviors that are not explicitly coded.
+  * When a regular expression is used for validation, you must treat it as an absolute and unbreakable control. A payload can only be considered valid if and only if it precisely and completely matches the pattern.
+  * Any payload that contains characters or a structure not allowed by the regular expression must be considered invalid and will prevent code execution. This means the vulnerable line will not be reached.
+  * When the input data undergoes transformations (e.g., `replace`, `replaceAll`, `trim`, `substring`), you must evaluate the proposed payload on the *transformed* data, not the original input. This is a critical step in verifying if the payload can survive the sanitization process.
 
 Follow these steps to find a reply, this is your decision flow:
 
-1. Identify if it is possible to influence the processing performed by the function using an input parameter of the function.
-2. When it is the case then you must move to the next step. Otherwise you must consider that the vulnerability is not present.
-3. Identify if a processing is applied against the input parameter identified to inspect or modify the content of its value.
-4. When it is the case then you must move to the next step. Otherwise you must consider that the vulnerability is present.
-5. Identify if the type of processing performed against the value of the input parameter identified effectively prevent to influence the processing performed by the function.
-6. When it is the case then you must consider that the vulnerability is not present. Otherwise you must move to the next step.
-7. You must find a value for the input parameter identified that can be used to influence the processing performed by the function.
-8. When you cannot find such value then you must consider that the vulnerability is not present. Otherwise you must move to the next step.
-9. You must verify that the value identified is not blocked or is not sanitized by the step 3 and then reach the vulnerable line of code without any alteration.
-10. When it is the case then you must consider that the vulnerability is present. Otherwise you must consider that the vulnerability is not present.
+1. **Identify Potential Entry Points:** Analyze the source code to identify all possible input parameters or external data sources (like files or network requests) that could influence the function's behavior.
+2. **Trace Data Flow:** From an identified input, trace the data flow to the line(s) of code described in the vulnerability. If the input cannot reach the vulnerable line, the vulnerability is not present.
+3. **Check for Sanitization/Validation:** Determine if any processing is applied to the input parameter to inspect, modify, or sanitize its content before it reaches the vulnerable line.
+4. **Evaluate Effectiveness:** If a sanitization or validation step is found, assess whether it is effective in preventing the vulnerability. A control is only considered effective if the proposed exploit payload is **fully blocked** and cannot reach the vulnerable line of code. If a payload does not conform to the validation, it is completely rejected, and the vulnerability is not present.
+5. **Formulate a Payload:** If the input is not effectively sanitized, propose a specific value or "exploit payload" for the input parameter that could trigger the vulnerability.
+6. **Confirm Execution:** Verify that the proposed payload, after all data transformations (e.g., `replace`, `replaceAll`, `trim`) are applied, successfully bypasses any existing sanitization and reaches the vulnerable line of code without alteration. If the payload is modified in a way that nullifies the attack, the vulnerability is not present. This is a critical step that requires careful, literal evaluation.
+  * **Sub-step: Show Payload Transformation:** Explicitly demonstrate how the proposed exploit payload is affected by each sanitization or transformation step. For example, show the value of the variable after each `replace` or `replaceAll` call. If the payload is rendered ineffective during this process, the vulnerability is not present.
+7. **Final Decision:** Based on the above analysis, conclude whether the vulnerability is present or not. The vulnerability is present only if a payload exists that can reach the vulnerable code.
 
-Your reply must be a json object with the following attributes:
+Your reply must be a valid json object with the following attributes:
 
-1. The attribute "trace" with the explanation of your decision for all the steps by which you passed through the decision flow described above.
-2. The attribute "present" with the value "yes" when you consider that the vulnerability is present. Otherwise the value must be set to "no".
-3. The attribute "exploit" with a value that can be used to trigger the vulnerability when you consider that the vulnerability is present. Otherwise the value must be set to an empty string.
+1.  The attribute **"trace"** with a step-by-step explanation of your decision-making process based on the flow above.
+2.  The attribute **"present"** with the value "yes" if you conclude the vulnerability is present, otherwise "no".
+3.  The attribute **"exploit"** with the value that can be used to trigger the vulnerability when it is present. Otherwise, the value must be an empty string.
 
 You must ensure that the reply is a valid json object that can be loaded into a json strict parser.
 """
 
-# Create the final user prompt
-user_prompt_template = """This security vulnerability was identified in the given source code:
-{vulnerability_description}
+# Use a chain with no history with single system and user prompts to see the result given by the model in one shot
+if not USE_CONVERSATION_WITH_HISTORY_APPROACH:
+    # Create the final user prompt
+    user_prompt_template_code_reasoning = """This security vulnerability was identified in the given source code:
+    {vulnerability_description}
 
-The type of security vulnerability is the following:
-{cwe_description}
+    The type of security vulnerability is the following:
+    {cwe_description}    
 
-The vulnerable line of source code is the following:
+    The vulnerable line of source code is the following:
 
-```{source_file_technology}
-{source_code_affected_line_of_code}
-```
+    ```{source_file_technology}
+    {source_code_affected_line_of_code}
+    ```
 
-This is the source code in which the vulnerability was identified:
+    This is the source code in which the vulnerability was identified:
 
-```{source_file_technology}
-{source_file_function_content}
-```"""
+    ```{source_file_technology}
+    {source_file_function_content}
+    ```"""
 
-user_prompt_values = {"vulnerability_description": vulnerability_description,
-                      "cwe_description": cwe_description,
-                      "source_file_technology": source_file_technology,
-                      "source_file_function_content": source_file_function_content,
-                      "source_code_affected_line_of_code": source_code_affected_line_of_code}
+    user_prompt_values = {"vulnerability_description": vulnerability_description,
+                          "cwe_description": cwe_description,
+                          "source_file_technology": source_file_technology,
+                          "source_file_function_content": source_file_function_content,
+                          "source_code_affected_line_of_code": source_code_affected_line_of_code}
 
+    # Use the model to analyse the vulnerability against the code snippet (function/method)
+    # Use a deterministic behavior of the model via a temperature to zero
+    llm_code_reasoning = OllamaLLM(model=OLLAMA_MODEL_CODE_REASONING, temperature=OLLAMA_MODEL_CODE_REASONING_TEMPERATURE)
+    prompt_template = ChatPromptTemplate.from_messages([("system", system_prompt_code_reasoning), ("human", user_prompt_template_code_reasoning)])
+    chain = prompt_template | llm_code_reasoning
 
-# Use the model to analyse the vulnerability against the code snippet (function/method)
-# Use a deterministic behavior of the model via a temperature to zero
-llm = OllamaLLM(model=OLLAMA_MODEL, temperature=0.0)
-prompt_template = ChatPromptTemplate.from_messages([("system", system_prompt), ("human", user_prompt_template)])
-chain = prompt_template | llm
-
-# Invoke the chain with the user prompt values
-prompt_printer_callback = MyPromptPrinter()
-conversation_config = {"callbacks": []}
-response = chain.invoke(user_prompt_values, config=conversation_config)
-raw_response = extract_raw_content(response, "json")
-print(colored("=> MODEL REPLY USING CONVERSATION WITHOUT HISTORY:", "yellow"))
-print(raw_response)
-print("")
+    # Invoke the chain with the user prompt values
+    print(colored(f"=> [{OLLAMA_MODEL_CODE_REASONING}] REPLY USING CONVERSATION WITHOUT HISTORY:", "yellow"))
+    prompt_printer_callback = MyPromptPrinter()
+    conversation_config = {"callbacks": []}
+    response = chain.invoke(user_prompt_values, config=conversation_config)
+    raw_response = extract_raw_content(response, "json")
+    print(raw_response)
+    print("")
 
 # Use now a chain with an history with adaptive user prompt to see if the model increase globally its accuracy across the different chat occurences
-# Use a deterministic behavior of the model via a temperature to zero
-llm = OllamaLLM(model=OLLAMA_MODEL, temperature=0.0)
-prompt_template = ChatPromptTemplate.from_messages([("system", system_prompt), MessagesPlaceholder("history"), ("human", "{input}")])
-chain = prompt_template | llm
-chain_with_history = RunnableWithMessageHistory(runnable=chain, get_session_history=get_session_history, input_messages_key="input", history_messages_key="history")
+if USE_CONVERSATION_WITH_HISTORY_APPROACH:
+    # Use a deterministic behavior of the model via a temperature to zero
+    llm_code_reasoning = OllamaLLM(model=OLLAMA_MODEL_CODE_REASONING, temperature=OLLAMA_MODEL_CODE_REASONING_TEMPERATURE)
+    prompt_template = ChatPromptTemplate.from_messages([("system", system_prompt_code_reasoning), MessagesPlaceholder("history"), ("human", "{input}")])
+    chain = prompt_template | llm_code_reasoning
+    chain_with_history = RunnableWithMessageHistory(runnable=chain, get_session_history=get_session_history, input_messages_key="input", history_messages_key="history")
 
-user_prompt_raw = f"""This security vulnerability was identified in the given source code:
-{vulnerability_description}
+    user_prompt_raw_code_reasoning = f"""This security vulnerability was identified in the given source code:
+    {vulnerability_description}
 
-The type of security vulnerability is the following:
-{cwe_description}
+    The type of security vulnerability is the following:
+    {cwe_description}        
 
-The vulnerable line of source code is the following:
+    The vulnerable line of source code is the following:
 
-```{source_file_technology}
-{source_code_affected_line_of_code}
-```
+    ```{source_file_technology}
+    {source_code_affected_line_of_code}
+    ```
 
-This is the source code in which the vulnerability was identified:
+    This is the source code in which the vulnerability was identified:
 
-```{source_file_technology}
-{source_file_function_content}
-```"""
+    ```{source_file_technology}
+    {source_file_function_content}
+    ```"""
 
-prompt_printer_callback = MyPromptPrinter()
-conversation_config = {"callbacks": [], "configurable": {"session_id": str(uuid.uuid4())}}
-print(colored(f"=> MODEL REPLY USING CONVERSATION WITH HISTORY:", "yellow"))
-# ROUND 0: Initial question.
-# ROUND 1: Challenge the response provided.
-# ROUND 2: Challenge the justification provided.
-# ROUND 3: Ask to give a final answer that is YES ou NO about the presence of the vulnerability.
-for round in range(4):
-    if round == 0:
-        user_prompt_input = user_prompt_raw
-    elif round == 1:
-        user_prompt_input = "Justify your decision with technical material and proof from a security perspective!"
-    elif round == 2:
-        user_prompt_input = f"Are you sure your statements are correct for the technology {source_file_technology}?"
-    else:
-        user_prompt_input = "Give me a final reply represented by 'yes' if you consider that the vulnerability is present otherwise reply 'no' if you consider that the vulnerability is not present."
-        user_prompt_input += "\nYou must only reply 'yes' or 'no' and no more information."
-    response = chain_with_history.invoke({"input": user_prompt_input}, config=conversation_config)
-    print(colored(f"\n[ROUND {round}]", "light_cyan"))
-    print(response)
-    print("======")
+    prompt_printer_callback = MyPromptPrinter()
+    conversation_config = {"callbacks": [], "configurable": {"session_id": str(uuid.uuid4())}}
+    print(colored(f"=> [{OLLAMA_MODEL_CODE_REASONING}] REPLY USING CONVERSATION WITH HISTORY:", "yellow"))
+    # ROUND 0: Initial question.
+    # ROUND 1: Challenge the response provided.
+    # ROUND 2: Challenge the justification provided.
+    # ROUND 3: Ask to give a final answer that is YES ou NO about the presence of the vulnerability.
+    for round in range(4):
+        if round == 0:
+            user_prompt_input = user_prompt_raw_code_reasoning
+        elif round == 1:
+            user_prompt_input = "Justify your decision with **technical material and proof** from a security perspective!"
+        elif round == 2:
+            # user_prompt_input = f"Are you sure about your understanding of the validation or sanitization in place for the code according to the technology {source_file_technology}?"
+            user_prompt_input = f"Are you sure that your analysis is consistent according to the specificities of the technology {source_file_technology}?"
+        else:
+            user_prompt_input = "Give me a final reply represented by 'yes' if you consider that the vulnerability is present otherwise reply 'no' if you consider that the vulnerability is not present."
+            user_prompt_input += "\nYou must only reply 'yes' or 'no' and no more information."
+        response = chain_with_history.invoke({"input": user_prompt_input}, config=conversation_config)
+        print(colored(f"\n[ROUND {round}]", "light_cyan"))
+        print(response)
+        print("======")

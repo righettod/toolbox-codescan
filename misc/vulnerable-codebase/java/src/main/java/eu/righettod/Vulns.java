@@ -19,7 +19,7 @@ public class Vulns {
     public static void fakeOne00(String name) throws Exception {
         //Fake SQL Injection
         Connection connection = DriverManager.getConnection("x", "x", "");
-        String new_name = name.replaceAll("'", "").replaceAll("-", "").replace('\\', ' ').trim();
+        String new_name = name.replaceAll("'", "").replaceAll("-", "").replaceAll("\\", " ").trim();
         String sql = String.format("SELECT * FROM USERS WHERE LOGIN='%s'", new_name);
         try (Statement stmt2 = connection.createStatement()) {
             stmt2.executeUpdate(sql);
