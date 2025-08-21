@@ -56,7 +56,7 @@ python poc.py 1 java
 
 #### System prompt version 1.0
 
-> [!INFO]
+> [!NOTE]
 > Manually written by me.
 
 ```text
