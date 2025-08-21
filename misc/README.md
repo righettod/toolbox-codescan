@@ -27,7 +27,10 @@ ollama run gemma3:4b
 2. Execute the script [poc.py](poc.py) with the index of the vulnerability in the SemGrep against which you want to run the test:
 
 ```shell
-python poc.py 1
+# Call option n°1 with the index of the vulnerability
+python poc.py 0
+# Call option n°2 with the index of the vulnerability and the sandox project to use
+python poc.py 1 java
 ```
 
 ## Observations & notes

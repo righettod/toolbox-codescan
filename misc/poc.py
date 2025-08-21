@@ -37,6 +37,10 @@ CHAT_HISTORY_STORE = {}
 INDEX_OF_TESTED_VULNERABILITY = 0  # Zero based
 if len(sys.argv) == 2:
     INDEX_OF_TESTED_VULNERABILITY = int(sys.argv[1])
+if len(sys.argv) == 3:
+    INDEX_OF_TESTED_VULNERABILITY = int(sys.argv[1])
+    SANDBOX_TECHNOLOGY = str(sys.argv[2]).lower().strip()
+    VULNERABLE_CODEBASE_FOLDER = f"vulnerable-codebase/{SANDBOX_TECHNOLOGY}/"
 
 
 class MyPromptPrinter(BaseCallbackHandler):
