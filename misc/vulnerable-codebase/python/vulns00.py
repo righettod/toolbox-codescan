@@ -14,7 +14,7 @@ def realOne00():
 
 @app.route('/realOne01', methods=['GET'])
 def realOne01():
-    # Real reflected XSS with ineffective sanitization
+    # Real reflected XSS with an ineffective sanitization
     my_param2 = flask.request.args.get('my_param')
     my_param2 = my_param2.replace("/>", "")
     content = f"<html><body>Hello {my_param2}</body></html>"
