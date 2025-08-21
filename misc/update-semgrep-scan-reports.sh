@@ -5,7 +5,7 @@
 # the community rules of SemGrep.
 ###################################################
 rules_folder="/tmp/semgrep-rules"
-sandboxes=("java")
+sandboxes=("java" "python")
 python -m venv pyenv
 chmod -R +x pyenv
 source pyenv/bin/activate
