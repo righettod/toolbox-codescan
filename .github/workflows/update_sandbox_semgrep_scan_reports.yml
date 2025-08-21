@@ -1,6 +1,10 @@
 name: Update the SemGrep scan reports of sandboxes codebase
 on:
   workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "misc/vulnerable-codebase/**"  
 permissions: read-all   
 jobs:
   build-and-push-image:
