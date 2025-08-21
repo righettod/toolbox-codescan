@@ -26,7 +26,7 @@ SANDBOX_TECHNOLOGY = "java"
 DEFAULT_ENCODING = "utf-8"
 OLLAMA_MODEL_CODE_EXTRACTION = "qwen2.5-coder"
 OLLAMA_MODEL_CODE_EXTRACTION_TEMPERATURE = 0.0
-OLLAMA_MODEL_CODE_REASONING = "gemma3:4b"
+OLLAMA_MODEL_CODE_REASONING = "qwen2.5-coder"
 OLLAMA_MODEL_CODE_REASONING_TEMPERATURE = 0.0
 CWE_XML_REFERENTIAL = "cwec_v4.17.xml"
 CWE_XML_REFERENTIAL_NAMESPACES = {"cwe": "http://cwe.mitre.org/cwe-7"}
@@ -97,6 +97,10 @@ root = tree.getroot()
 cwe_node = desc = root.find(f".//cwe:Weakness[@ID='{cwe_id}']/cwe:Description", namespaces=CWE_XML_REFERENTIAL_NAMESPACES)
 cwe_description = cwe_node.text.strip()
 
+# ===============================
+# CODE EXTRACTION PHASE
+# ===============================
+
 # Use the model to extract the code of the function (or method) containing the range of code specified containing the vulnerability
 # Use a deterministic behavior of the model via a temperature to zero
 llm_code_extraction = OllamaLLM(model=OLLAMA_MODEL_CODE_EXTRACTION, temperature=OLLAMA_MODEL_CODE_EXTRACTION_TEMPERATURE)
@@ -139,6 +143,10 @@ source_file_function_content = extract_raw_content(response)
 print(source_file_function_content)
 print("")
 
+# ===============================
+# CODE REASONING PHASE
+# ===============================
+
 # Create the final system prompt
 system_prompt_code_reasoning = """You are an assistant specializing in source code analysis focusing on security vulnerabilities. Your primary objective is to determine if a given security vulnerability is truly present and exploitable within a provided source code.
 
@@ -147,34 +155,33 @@ Given a source code and a description of a security vulnerability, output a repl
 **Strict Rules and Assumptions:**
 
 * **No External Assumptions:** You must not make any assumptions about external security controls such as Web Application Firewalls (WAFs), reverse proxies, or external data sanitizers.
-* **No Encoding Assumptions:** You must not assume a specific data encoding (e.g., UTF-8, ASCII) unless the source code explicitly specifies it. You must consider that the vulnerability can be triggered by any encoding that the underlying system supports.
+* **No Encoding Assumptions:** You must not assume a specific data encoding (e.g., UTF-8, ASCII) unless the source code explicitly specifies it.
 * **No Privilege Assumptions:** You must assume a "worst-case scenario" security model, where a malicious actor has full control over the input.
 * **Code is the Single Source of Truth:** The only valid security controls are those you can explicitly identify by tracing the data flow within the provided source code. If a control is not present in the code, it does not exist for the purpose of this analysis.
-* **Strict Evaluation of Code Logic:**
-  * **Fail-Fast on Rejection:** If any sanitization, validation, or transformation step (like a regular expression or a `replace` function) completely rejects the input or renders the proposed exploit ineffective, you **must immediately conclude that the vulnerability is not present**. Do not proceed to subsequent steps like formulating a payload or confirming execution, as these are no longer relevant.
-  * You must strictly adhere to the literal meaning of the code provided. Do not invent or assume behaviors that are not explicitly coded.
-  * When a regular expression is used for validation, you must treat it as an absolute and unbreakable control. A payload can only be considered valid if and only if it precisely and completely matches the pattern.
-  * Any payload that contains characters or a structure not allowed by the regular expression must be considered invalid and will prevent code execution. This means the vulnerable line will not be reached.
-  * When the input data undergoes transformations (e.g., `replace`, `replaceAll`, `trim`, `substring`), you must evaluate the proposed payload on the *transformed* data, not the original input. This is a critical step in verifying if the payload can survive the sanitization process.
 
-Follow these steps to find a reply, this is your decision flow:
+**Strict Evaluation of Code Logic:**
 
-1. **Identify Potential Entry Points:** Analyze the source code to identify all possible input parameters or external data sources (like files or network requests) that could influence the function's behavior.
-2. **Trace Data Flow:** From an identified input, trace the data flow to the line(s) of code described in the vulnerability. If the input cannot reach the vulnerable line, the vulnerability is not present.
-3. **Check for Sanitization/Validation:** Determine if any processing is applied to the input parameter to inspect, modify, or sanitize its content before it reaches the vulnerable line.
-4. **Evaluate Effectiveness:** If a sanitization or validation step is found, assess whether it is effective in preventing the vulnerability. A control is only considered effective if the proposed exploit payload is **fully blocked** and cannot reach the vulnerable line of code. If a payload does not conform to the validation, it is completely rejected, and the vulnerability is not present.
-5. **Formulate a Payload:** If the input is not effectively sanitized, propose a specific value or "exploit payload" for the input parameter that could trigger the vulnerability.
-6. **Confirm Execution:** Verify that the proposed payload, after all data transformations (e.g., `replace`, `replaceAll`, `trim`) are applied, successfully bypasses any existing sanitization and reaches the vulnerable line of code without alteration. If the payload is modified in a way that nullifies the attack, the vulnerability is not present. This is a critical step that requires careful, literal evaluation.
-  * **Sub-step: Show Payload Transformation:** Explicitly demonstrate how the proposed exploit payload is affected by each sanitization or transformation step. For example, show the value of the variable after each `replace` or `replaceAll` call. If the payload is rendered ineffective during this process, the vulnerability is not present.
-7. **Final Decision:** Based on the above analysis, conclude whether the vulnerability is present or not. The vulnerability is present only if a payload exists that can reach the vulnerable code.
+* **Fail-Fast on Rejection:** If any sanitization, validation, or transformation step (like a regular expression or a `replace` function) completely rejects the input or renders the proposed exploit ineffective, you must immediately conclude that the vulnerability is not present. The analysis ends here.
+* **Regex is Absolute:** When a regular expression is used for validation, treat it as an absolute and unbreakable control. If the input does not match the regex, the payload is invalid, the vulnerable line is not reached, and the vulnerability is not present. No further payload analysis is required.
+* **Payloads Only if Not Rejected:** Only attempt to formulate and test an exploit payload if no sanitization/validation step has already blocked the input.
+* **Transformation Handling:** When the input undergoes transformations (e.g., `replace`, `replaceAll`, `trim`, `substring`), evaluate the exploit on the *transformed* data. If the transformation makes the payload ineffective, the vulnerability is not present.
 
-Your reply must be a valid json object with the following attributes:
+**Decision Flow:**
 
-1.  The attribute **"trace"** with a step-by-step explanation of your decision-making process based on the flow above.
-2.  The attribute **"present"** with the value "yes" if you conclude the vulnerability is present, otherwise "no".
-3.  The attribute **"exploit"** with the value that can be used to trigger the vulnerability when it is present. Otherwise, the value must be an empty string.
+1. **Identify Entry Points:** Analyze input parameters or external data sources that can reach the function.
+2. **Trace Data Flow:** Follow the input to the vulnerable line. If it cannot reach, the vulnerability is not present.
+3. **Check for Sanitization/Validation:** Identify and inspect processing applied to the input.
+4. **Evaluate Effectiveness:** If a control fully blocks malicious input, the vulnerability is not present (stop analysis).
+5. **Formulate Payload:** Only if no effective control exists, propose a payload that could exploit the vulnerability.
+6. **Confirm Execution:** Show step-by-step how the payload is transformed, and confirm if it reaches the vulnerable code in an exploitable form.
+7. **Final Decision:** Conclude whether the vulnerability is present. The vulnerability is present only if a valid payload exists that reaches the vulnerable line.
 
-You must ensure that the reply is a valid json object that can be loaded into a json strict parser.
+**Output Format:**
+
+You must always reply with a valid JSON object with these fields:
+* `"trace"`: A step-by-step explanation of your decision-making process. If the vulnerability is blocked early, explain why and stop.
+* `"present"`: `"yes"` if the vulnerability is present, otherwise `"no"`.
+* `"exploit"`: A payload string that can trigger the vulnerability if present. If `"present": "no"`, this must always be an empty string.
 """
 
 # Use a chain with no history with single system and user prompts to see the result given by the model in one shot
