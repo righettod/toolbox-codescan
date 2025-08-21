@@ -34,10 +34,19 @@ def fakeOne00():
 def fakeOne01():
     # Fake reflected XSS
     my_param4 = flask.request.args.get('my_param')
-    if len(re.findall(r'^[a-z]+$', my_param4)) == 0:
+    if len(re.findall(r'^[a-z]+$', my_param4)) == 1:
         content = f"<html><body>Hello {my_param4}</body></html>"
     else:
         content = "<html><body>NONE</body></html>"
+    return content
+
+
+@app.route('/fakeOne02', methods=['GET'])
+def realOne01():
+    # Fake reflected XSS
+    my_param5 = flask.request.args.get('my_param')
+    my_param5 = my_param5.replace("<", "").replace(">", "")
+    content = f"<html><body>Hello {my_param5}</body></html>"
     return content
 
 
