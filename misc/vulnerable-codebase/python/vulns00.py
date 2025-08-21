@@ -42,8 +42,9 @@ def fakeOne01():
 
 
 @app.route('/fakeOne02', methods=['GET'])
-def realOne01():
-    # Fake reflected XSS
+def fakeOne02():
+    # Fake reflected XSS as it is not
+    # possible to inject a new tag in the html body.
     my_param5 = flask.request.args.get('my_param')
     my_param5 = my_param5.replace("<", "").replace(">", "")
     content = f"<html><body>Hello {my_param5}</body></html>"

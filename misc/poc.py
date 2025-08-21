@@ -182,6 +182,7 @@ You must always reply with a valid JSON object with these fields:
 * `"trace"`: A step-by-step explanation of your decision-making process. If the vulnerability is blocked early, explain why and stop.
 * `"present"`: `"yes"` if the vulnerability is present, otherwise `"no"`.
 * `"exploit"`: A payload string that can trigger the vulnerability if present. If `"present": "no"`, this must always be an empty string.
+* `"reasoning_for_decision"`: A brief string that explains the final "yes" or "no" decision based on the rules.
 """
 
 # Use a chain with no history with single system and user prompts to see the result given by the model in one shot
