@@ -49,6 +49,7 @@ python poc.py 1 java
 * ChatGPT proposed me this approach for the code reasoning phase:
   1. Use **Qwen2.5-Coder** as your first-pass validator.
   2. Use a reasoning model like **DeepSeek-R1** or **GPT-5** for borderline or complex cases, where you need deep taint analysis across multiple functions/files.
+* So I moved back to the usage of the model **qwen2.5-coder:latest** for the code reasoning phase too.
 
 ## Prompts history
 
