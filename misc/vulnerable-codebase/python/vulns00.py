@@ -30,5 +30,16 @@ def fakeOne00():
     return content
 
 
+@app.route('/fakeOne01', methods=['GET'])
+def fakeOne01():
+    # Fake reflected XSS
+    my_param4 = flask.request.args.get('my_param')
+    if len(re.findall(r'^[a-z]+$', my_param4)) == 0:
+        content = f"<html><body>Hello {my_param4}</body></html>"
+    else:
+        content = "<html><body>NONE</body></html>"
+    return content
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
