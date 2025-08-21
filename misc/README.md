@@ -29,7 +29,7 @@ ollama run gemma3:4b
 ```shell
 # Call option n°1 with the index of the vulnerability
 python poc.py 0
-# Call option n°2 with the index of the vulnerability and the sandox project to use
+# Call option n°2 with the index of the vulnerability and the sandbox project to use
 python poc.py 1 java
 ```
 
