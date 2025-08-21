@@ -22,7 +22,7 @@ from langchain.callbacks.base import BaseCallbackHandler
 
 # Constants
 USE_CONVERSATION_WITH_HISTORY_APPROACH = False
-SANDBOX_TECHNOLOGY = "java"
+SANDBOX_TECHNOLOGY = "python"
 DEFAULT_ENCODING = "utf-8"
 OLLAMA_MODEL_CODE_EXTRACTION = "qwen2.5-coder"
 OLLAMA_MODEL_CODE_EXTRACTION_TEMPERATURE = 0.0
