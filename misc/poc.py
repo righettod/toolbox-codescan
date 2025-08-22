@@ -69,6 +69,13 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
     return CHAT_HISTORY_STORE[session_id]
 
 
+def get_single_line_comment_expression(technology):
+    if technology.lower() in ["python", "perl", "ruby"]:
+        return "#"
+    else:
+        return "//"
+
+
 # Load the SemGrep findings
 with open(f"findings-{SANDBOX_TECHNOLOGY}.json", mode="r", encoding=DEFAULT_ENCODING) as f:
     vulnerabilities = json.load(f)
@@ -76,8 +83,9 @@ with open(f"findings-{SANDBOX_TECHNOLOGY}.json", mode="r", encoding=DEFAULT_ENCO
 # Select one vulnerability for the POC
 vulnerability = vulnerabilities["results"][INDEX_OF_TESTED_VULNERABILITY]
 
-# Load the information of the vulnerability that
-# will be used for the user prompt
+# Load the information of the vulnerability that will be used for the user prompt
+# Make the lines of code unique to prevent the model to extract the false function when the vulnerable code exists in several locations
+# with the exact same syntax
 source_file_path = VULNERABLE_CODEBASE_FOLDER + vulnerability["path"]
 source_file_technology = SANDBOX_TECHNOLOGY
 with open(source_file_path, mode="r", encoding=DEFAULT_ENCODING) as f:
@@ -89,6 +97,16 @@ end_column = vulnerability["end"]["col"]
 vulnerability_description = vulnerability["extra"]["message"]
 cwe = vulnerability["extra"]["metadata"]["cwe"][0]  # Consider that the first CWE is the most relevant one
 source_code_affected_line_of_code = source_file_content.split("\n")[start_line-1].strip("\n\r\t ")  # Arrays are zero indexed
+source_file_content_updated = ""
+line_number = 1
+for line in source_file_content.splitlines():
+    comment = get_single_line_comment_expression(SANDBOX_TECHNOLOGY) + str(line_number) + "\n"
+    source_file_content_updated += line
+    source_file_content_updated += comment
+    line_number += 1
+source_code_affected_line_of_code_updated = (source_code_affected_line_of_code + get_single_line_comment_expression(SANDBOX_TECHNOLOGY) + str(start_line)).strip("\n\r\t ")
+source_file_content = source_file_content_updated
+source_code_affected_line_of_code = source_code_affected_line_of_code_updated
 print(colored("=> VULNERABILITY LINE NUMBER AND LINE OF CODE:", "yellow"))
 print(start_line)
 print(source_code_affected_line_of_code)
@@ -98,7 +116,7 @@ print("")
 cwe_id = cwe.split(":")[0].split("-")[1].strip(" ")
 tree = ET.parse(CWE_XML_REFERENTIAL)
 root = tree.getroot()
-cwe_node = desc = root.find(f".//cwe:Weakness[@ID='{cwe_id}']/cwe:Description", namespaces=CWE_XML_REFERENTIAL_NAMESPACES)
+cwe_node = root.find(f".//cwe:Weakness[@ID='{cwe_id}']/cwe:Description", namespaces=CWE_XML_REFERENTIAL_NAMESPACES)
 cwe_description = cwe_node.text.strip()
 
 # ===============================

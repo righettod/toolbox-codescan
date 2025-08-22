@@ -11,8 +11,8 @@ public class Vulns {
         //Real SQL Injection
         Connection connection = DriverManager.getConnection("x", "x", "");
         String sql = String.format("SELECT * FROM USERS WHERE LOGIN='%s'", name);
-        try (Statement stmt1 = connection.createStatement()) {
-            stmt1.executeUpdate(sql);
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(sql);
         }
     }
 
@@ -21,8 +21,8 @@ public class Vulns {
         Connection connection = DriverManager.getConnection("x", "x", "");
         String new_name = name.replaceAll("'", "").replaceAll("-", "").replaceAll("\\", " ").trim();
         String sql = String.format("SELECT * FROM USERS WHERE LOGIN='%s'", new_name);
-        try (Statement stmt2 = connection.createStatement()) {
-            stmt2.executeUpdate(sql);
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(sql);
         }
     }
 
@@ -31,8 +31,8 @@ public class Vulns {
         Connection connection = DriverManager.getConnection("x", "x", "");
         if (Pattern.matches("^[a-z]+$", name)) {
             String sql = String.format("SELECT * FROM USERS WHERE LOGIN='%s'", name);
-            try (Statement stmt3 = connection.createStatement()) {
-                stmt3.executeUpdate(sql);
+            try (Statement stmt = connection.createStatement()) {
+                stmt.executeUpdate(sql);
             }
         }
     }
