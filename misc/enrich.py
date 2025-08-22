@@ -41,6 +41,8 @@ OLLAMA_MODEL_CODE_EXTRACTION = "qwen2.5-coder"
 OLLAMA_MODEL_CODE_EXTRACTION_TEMPERATURE = 0.0
 OLLAMA_MODEL_CODE_REASONING = "qwen2.5-coder"
 OLLAMA_MODEL_CODE_REASONING_TEMPERATURE = 0.0
+OLLAMA_MODEL_FIX_BROKEN_JSON_REPLY = "qwen2.5-coder"
+OLLAMA_MODEL_FIX_BROKEN_JSON_REPLY_TEMPERATURE = 0.0
 SYSTEM_PROMPT_CODE_EXTRACTION = """You are an assistant specialized in extracting a function from a source code.
 
 Given a global source code, a line number and a line of source code with a problem: You must extract the source code of the function in which the given line number is located.
@@ -124,10 +126,30 @@ USER_PROMPT_TEMPLATE_CODE_REASONING = """This security vulnerability was identif
     {source_file_function_content}
     ```"""
 
+USER_PROMPT_TEMPLATE_FIX_BROKEN_JSON_REPLY = """I will provide a string that is a broken JSON object. Your task is to correct it and return only the valid, corrected JSON object.
+**Rules for Correction:**
+
+1. Ensure all keys and string values are enclosed in double quotes.
+2. Remove any trailing commas from arrays and objects.
+3. Correct any missing or misplaced brackets and braces.
+4. Escape all double quotes (") and backslashes (\\) inside string values.
+5. Remove any leading or trailing markdown formatting, including triple backticks (```json).
+
+Do not add any extra text, explanations, or code block formatting. Return only the valid JSON.
+
+This is the broken JSON object:
+
+%s
+"""
+
 
 class ProcessingPhase:
-    CODE_EXTRACTION = colored("Code Extraction", "light_cyan")
-    CODE_REASONING = colored("Code Reasoning ", "light_magenta")
+    # code extraction
+    # code reasoning
+    # fixing json reply
+    CODE_EXTRACTION = colored("code extraction  ", "light_cyan")
+    CODE_REASONING = colored("code reasoning   ", "light_magenta")
+    FIX_BROKEN_JSON_REPLY = colored("fixing json reply", "light_red")
 
 
 class MyPromptPrinter(BaseCallbackHandler):
@@ -226,8 +248,20 @@ def extract_vulnerability_information(semgrep_json_entry, source_code_base_folde
     return vuln_info
 
 
-def print_progress(prefix, semgrep_vulnerabilities_object, processing_phase_name):
-    print(f"\r[{prefix:>5}][{processing_phase_name}] Analyzing vulnerability => {semgrep_vulnerabilities_object.get_display_id():<80}", end="", flush=True)
+def print_progress(vuln_index, vuln_count, semgrep_vulnerabilities_object, processing_phase_name):
+    print(f"\r[{processing_phase_name}] Analyzing vulnerability {vuln_index} on {vuln_count} => {semgrep_vulnerabilities_object.get_display_id():<80}", end="", flush=True)
+
+
+def extra_json_fix(json_content):
+    content = json_content
+    content = re.sub(r'[\n\r\t]+', '', content)
+    content = re.sub(r'[\s]{2,}', ' ', content)
+    content = re.sub(r'[`]+', "'", content)
+    if not content.startswith("{"):
+        content = "{" + content
+    if not content.endswith("}"):
+        content = content + "}"
+    return content
 
 
 if __name__ == "__main__":
@@ -242,7 +276,9 @@ if __name__ == "__main__":
     print(colored("[+] Initialization...", "yellow"))
     llm_code_extraction = OllamaLLM(model=OLLAMA_MODEL_CODE_EXTRACTION, temperature=OLLAMA_MODEL_CODE_EXTRACTION_TEMPERATURE)
     llm_code_reasoning = OllamaLLM(model=OLLAMA_MODEL_CODE_REASONING, temperature=OLLAMA_MODEL_CODE_REASONING_TEMPERATURE)
+    llm_fix_broken_json_reply = OllamaLLM(model=OLLAMA_MODEL_FIX_BROKEN_JSON_REPLY, temperature=OLLAMA_MODEL_FIX_BROKEN_JSON_REPLY_TEMPERATURE)
     cwe_xml_document = ET.parse(CWE_XML_REFERENTIAL)
+    print("Done.")
     print(colored("[+] Load the collection of vulnerability identified by SemGrep...", "yellow"))
     with open(semgrep_data_file, mode="r", encoding=DEFAULT_ENCODING) as f:
         semgrep_data = json.load(f)
@@ -263,14 +299,14 @@ if __name__ == "__main__":
     prompt_template_code_reasoning = ChatPromptTemplate.from_messages([("system", SYSTEM_PROMPT_CODE_REASONING), ("human", USER_PROMPT_TEMPLATE_CODE_REASONING)])
     chain_code_reasoning = prompt_template_code_reasoning | llm_code_reasoning
     for semgrep_vulnerabilities_object in semgrep_vulnerabilities_objects:
-        print_progress(f"{index+1}/{semgrep_vulnerabilities_objects_count}", semgrep_vulnerabilities_object, ProcessingPhase.CODE_EXTRACTION)
+        print_progress(index+1, semgrep_vulnerabilities_objects_count, semgrep_vulnerabilities_object, ProcessingPhase.CODE_EXTRACTION)
         user_prompt_values = {"start_line": semgrep_vulnerabilities_object.start_line,
                               "source_file_technology": semgrep_vulnerabilities_object.technology,
                               "source_file_content": semgrep_vulnerabilities_object.source_file_content,
                               "source_code_affected_line_of_code": semgrep_vulnerabilities_object.source_code_affected_line_of_code}
         response = chain_code_extraction.invoke(user_prompt_values)
         source_file_function_content = extract_raw_content(response, semgrep_vulnerabilities_object.technology)
-        print_progress(f"{index+1}/{semgrep_vulnerabilities_objects_count}", semgrep_vulnerabilities_object, ProcessingPhase.CODE_REASONING)
+        print_progress(index+1, semgrep_vulnerabilities_objects_count, semgrep_vulnerabilities_object, ProcessingPhase.CODE_REASONING)
         conversation_config = {"callbacks": []}
         user_prompt_values = {"vulnerability_description": semgrep_vulnerabilities_object.description,
                               "cwe_description": semgrep_vulnerabilities_object.cwe_description,
@@ -280,18 +316,30 @@ if __name__ == "__main__":
         response = chain_code_reasoning.invoke(user_prompt_values, config=conversation_config)
         raw_response = extract_raw_content(response, "json")
         semgrep_vulnerability = semgrep_vulnerabilities[index]
+        # Compact the response
+        raw_response = re.sub(r'[\r\n\t]+', '', raw_response)
+        raw_response = re.sub(r'[\s]{2,}', ' ', raw_response)
         # Sometime the output is not a valid json as some double quotes are not well escaped or other encoding issues
         semgrep_vulnerability["hints_for_analysis"] = {}
         try:
-            json_response = json.loads(raw_response, encoding=DEFAULT_ENCODING)
+            json_response = json.loads(raw_response)
             semgrep_vulnerability["hints_for_analysis"]["details_as_object"] = json_response
         except:
-            semgrep_vulnerability["hints_for_analysis"]["details_as_text"] = raw_response
+            # Try to fix the broken json via a call to a model with specific instruction
+            try:
+                print_progress(index+1, semgrep_vulnerabilities_objects_count, semgrep_vulnerabilities_object, ProcessingPhase.FIX_BROKEN_JSON_REPLY)
+                user_prompt_fix_broken_json = USER_PROMPT_TEMPLATE_FIX_BROKEN_JSON_REPLY % raw_response
+                fixed_json_response = llm_fix_broken_json_reply.invoke(user_prompt_fix_broken_json)
+                fixed_json_response = extra_json_fix(extract_raw_content(fixed_json_response, "json"))
+                json_response = json.loads(fixed_json_response)
+                semgrep_vulnerability["hints_for_analysis"]["details_as_object"] = json_response
+            except Exception as e:
+                semgrep_vulnerability["hints_for_analysis"]["details_as_text"] = raw_response
         vuln_is_present = re.findall(r'"present":\s*"(yes|no)"', raw_response, flags=re.IGNORECASE)[0].lower()
         semgrep_vulnerability["hints_for_analysis"]["vuln_is_false_positive"] = (vuln_is_present == "no")
         semgrep_enriched_results.append(semgrep_vulnerability)
         index += 1
-    print(f"\rDone.{' ':<80}")
+    print(f"\rDone.{' ':<120}")
     print(colored("[+] Save enriched results...", "yellow"))
     semgrep_data_file_enriched = semgrep_data_file.replace(".json", "_enriched.json")
     semgrep_data["results"] = semgrep_enriched_results
