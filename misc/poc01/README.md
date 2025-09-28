@@ -1,4 +1,4 @@
-[Update the GitLeaks scan reports of sandboxes codebase](https://github.com/righettod/toolbox-codescan/actions/workflows/poc01_update_sandbox_gitleaks_scan_reports.yml/badge.svg)
+![Update the GitLeaks scan reports of sandboxes codebase](https://github.com/righettod/toolbox-codescan/actions/workflows/poc01_update_sandbox_gitleaks_scan_reports.yml/badge.svg)
 
 ## Description
 
