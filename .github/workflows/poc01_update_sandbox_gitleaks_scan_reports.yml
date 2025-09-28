@@ -1,0 +1,20 @@
+name: POC01 - Update the GitLeaks scan reports of sandboxes codebase
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "misc/poc01/vulnerable-codebase/**"  
+permissions: read-all   
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Update the scans
+        run: cd misc/poc01; chmod +x update-gitleaks-scan-reports.sh; bash update-gitleaks-scan-reports.sh
+      - name: Update report file
+        run: git config --global user.email "gha@github.com"; git config --global user.name "GHActionBot"; git commit -m "Sync GitLeakns report file" misc/poc01/findings.json; git push
