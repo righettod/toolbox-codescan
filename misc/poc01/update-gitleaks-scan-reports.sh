@@ -9,6 +9,7 @@ wget -q -O /tmp/gl.tgz $GITLEAKS_RELEASE_LOCATION
 wget -q -O /tmp/rules.toml $GITLEAKS_RULES_LOCATION
 tar -xzf /tmp/gl.tgz -C /tmp
 chmod +x * /tmp/gitleaks
-/tmp/gitleaks detect --no-git --config /tmp/rules.toml --no-banner --report-format json --report-path findings.json --source "$(pwd)/vulnerable-codebase" --verbose
+/tmp/gitleaks detect --no-git --config /tmp/rules.toml --no-banner --report-format json --report-path "$(pwd)/findings.json" --source "$(pwd)/vulnerable-codebase" --verbose
+pwd
 ls -l findings.json
 exit 0

@@ -7,7 +7,7 @@ on:
       - "misc/poc00/vulnerable-codebase/**"  
 permissions: read-all   
 jobs:
-  build-and-push-image:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write

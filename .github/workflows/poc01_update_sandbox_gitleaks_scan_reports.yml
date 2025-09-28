@@ -7,7 +7,7 @@ on:
       - "misc/poc01/vulnerable-codebase/**"  
 permissions: read-all   
 jobs:
-  build-and-push-image:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -17,4 +17,4 @@ jobs:
       - name: Update the scans
         run: cd misc/poc01; chmod +x update-gitleaks-scan-reports.sh; bash update-gitleaks-scan-reports.sh
       - name: Update report file
-        run: git config --global user.email "gha@github.com"; git config --global user.name "GHActionBot"; git commit -m "Sync GitLeakns report file" misc/poc01/findings.json; git push
+        run: git config --global user.email "gha@github.com"; git config --global user.name "GHActionBot"; git commit -m "Sync GitLeaks report file" misc/poc01/findings.json; git push
