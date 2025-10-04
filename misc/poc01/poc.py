@@ -54,7 +54,7 @@ def get_technology_from_filename(filename):
         tech = "python"
     elif filename.endswith(".sh"):
         tech = "bash"
-    elif filename.endswith(".txt"):
+    elif filename.endswith(".txt") or filename.endswith(".pem"):
         tech = "raw text"
     else:
         tech = Path(filename).suffix.strip(".")
@@ -76,9 +76,9 @@ print(len(secrets))
 print("")
 print(colored("=> SECRET:", "yellow"))
 msg = colored("Programming language:", "cyan")
-print(f"{msg}\n{secret_file_technology}.")
+print(f"{msg}\n{secret_file_technology}")
 msg = colored("Text value:", "cyan")
-print(f"{msg}\n{secret_value}.")
+print(f"{msg}\n{secret_value}")
 print("")
 
 # ===============================
@@ -92,8 +92,9 @@ Given a text value and the name of the programmping language in which the value 
 
 **Decision Flow:**
 
-1. **Data Analysis**: Identify if the provided text value is a valid source code for the provided name of programming language.
-2. **Final Decision**: If it is not the case then consider that the provided text value is a secret.
+**Data Analysis** - Follow the steps below in sequence:  
+  1. Identify if the provided text value is a valid source code for the provided name of programming language. If it is the case then consider that the provided text value is a not a real secret. Otherwise move to the next step.
+  2. Identify if the provided text value is a word that you know. If it is the case then consider that the provided text value is a not a real secret. Otherwise consider that the value is a real secret.
 
 **Output Format:**
 

@@ -32,6 +32,9 @@ $ python poc.py
 * Analysing minified JavaScript (JS) code is hard because it lead to false-positive identification results, for example:
   * `key: !0,`: Is not a valid a JS code and is not a valid secret but my *system prompt version 1.0* identify is as a real secret.
   * `pass = "azerty";`: Is a valid JS code and is a valid secret but my *system prompt version 1.0* identify is as a non real secret.
+* Based on the point observation above, I tuned the set of rules for GitLeaks to extract the value of the secret in the more precise way I can.
+  * By the way, it allowed me to enhance my custom rules set 😊.
+  * This lead to the creation of *system prompt version 1.1*.
 
 ## Prompts history
 

@@ -1,2 +1,2 @@
-/usr/bin/myprogram -value 'AAA' -password 'azerty1' -value 'BBB'
-/usr/bin/myprogram -password 'azerty2'
+/usr/bin/myprogram -value 'AAA' -password 'UXIrNFMp0N1' -value 'BBB'
+/usr/bin/myprogram -password 'UXIrNFMp0N2'
