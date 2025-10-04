@@ -22,7 +22,7 @@ ollama pull [MODEL_NAME]
 ollama run [MODEL_NAME]
 ```
 
-2. Execute the script [poc.py](poc.py) with the index of the vulnerability in the SemGrep against which you want to run the test:
+2. Execute the script [poc.py](poc.py) with the index of the vulnerability in the SemGrep report against which you want to run the test:
 
 ```shell
 # Call option n°1 with the index of the vulnerability
