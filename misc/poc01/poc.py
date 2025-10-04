@@ -65,9 +65,14 @@ secret = secrets[INDEX_OF_TESTED_SECRET]
 # Load the information of the secret that will be used for the user prompt
 secret_value = secret["Secret"]
 secret_file_technology = get_technology_from_filename(secret["File"])
+print(colored("=> SECRETS COUNT :", "yellow"))
+print(len(secrets))
+print("")
 print(colored("=> SECRET:", "yellow"))
-print(f"Programming language: {secret_file_technology}.")
-print(f"Text value:\n{secret_value}.")
+msg = colored("Programming language:", "cyan")
+print(f"{msg}\n{secret_file_technology}.")
+msg = colored("Text value:", "cyan")
+print(f"{msg}\n{secret_value}.")
 print("")
 
 # ===============================

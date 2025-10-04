@@ -27,6 +27,12 @@ $ python poc.py 0
 $ python poc.py
 ```
 
+## Observations & notes
+
+* Analysing minified JavaScript (JS) code is hard because it lead to false-positive identification results, for example:
+  * `key: !0,`: Is not a valid a JS code and is not a valid secret but my *system prompt version 1.0* identify is as a real secret.
+  * `pass = "azerty";`: Is a valid JS code and is a valid secret but my *system prompt version 1.0* identify is as a non real secret.
+
 ## Prompts history
 
 ### Code reasoning
@@ -37,7 +43,20 @@ $ python poc.py
 > Manually written by me.
 
 ```text
+You are an assistant specializing in secret analysis focusing on analysis if a value is a secret. Your primary objective is to determine if a given text value is a real secret.
 
+Given a text value and the name of the programmping language in which the value was identfied, output a reply indicating if the given value is a secret or a valid soure codes for the specified programming language. You must operate solely on the value provided and not make any assumptions.
+
+**Decision Flow:**
+
+1. **Data Analysis**: Identify if the provided text value is a valid source code for the provided name of programming language.
+2. **Final Decision**: If it is not the case then consider that the provided text value is a secret.
+
+**Output Format:**
+
+You must always reply with a valid JSON object with these fields:
+* `"trace"`: A step-by-step explanation of your decision-making process.
+* `"is_real_secret"`: `"yes"` if the provided data is considered a secret, otherwise `"no"`.
 ```
 
 #### User prompt version 1.0
