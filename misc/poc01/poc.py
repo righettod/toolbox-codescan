@@ -10,6 +10,7 @@ Ollama dependencies:
 import json
 import sys
 import re
+from pathlib import Path
 from termcolor import colored
 from langchain_ollama import OllamaLLM
 from langchain.callbacks.base import BaseCallbackHandler
@@ -47,13 +48,12 @@ def extract_raw_content(input):
 
 
 def get_technology_from_filename(filename):
-    tech = "text"
     if filename.endswith(".js"):
         tech = "javascript"
     elif filename.endswith(".py"):
         tech = "python"
-    elif filename.endswith(".xml"):
-        tech = "xml"
+    else:
+        tech = Path(filename).suffix.strip(".")
     return tech
 
 
