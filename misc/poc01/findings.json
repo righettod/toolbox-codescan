@@ -1,5 +1,27 @@
 [
  {
+  "RuleID": "generic-secret-in-xml-element",
+  "Description": "Detect generic password/secret in a XML element",
+  "StartLine": 4,
+  "EndLine": 4,
+  "StartColumn": 6,
+  "EndColumn": 23,
+  "Match": "\u003cpassword\u003eazerty\u003c/",
+  "Secret": "azerty",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 2.5849626,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml:generic-secret-in-xml-element:4"
+ },
+ {
   "RuleID": "generic-secret",
   "Description": "Detect generic password/secret",
   "StartLine": 2,
