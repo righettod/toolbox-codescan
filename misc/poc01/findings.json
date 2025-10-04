@@ -22,6 +22,28 @@
   "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml:generic-secret-in-xml-element:4"
  },
  {
+  "RuleID": "generic-secret-in-json-attribute",
+  "Description": "Detect generic password/secret in a JSON attribute",
+  "StartLine": 3,
+  "EndLine": 3,
+  "StartColumn": 6,
+  "EndColumn": 25,
+  "Match": "\"password\": \"azerty\"",
+  "Secret": "azerty",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 2.5849626,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json:generic-secret-in-json-attribute:3"
+ },
+ {
   "RuleID": "generic-secret",
   "Description": "Detect generic password/secret",
   "StartLine": 2,
@@ -44,18 +66,18 @@
   "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py:generic-secret:2"
  },
  {
-  "RuleID": "generic-secret-in-json-attribute",
-  "Description": "Detect generic password/secret in a JSON attribute",
-  "StartLine": 3,
-  "EndLine": 3,
-  "StartColumn": 6,
-  "EndColumn": 25,
-  "Match": "\"password\": \"azerty\"",
-  "Secret": "azerty",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json",
+  "RuleID": "generic-secret-in-url",
+  "Description": "Detect generic password/secret in a URL",
+  "StartLine": 4,
+  "EndLine": 4,
+  "StartColumn": 9,
+  "EndColumn": 46,
+  "Match": "https://user123:pass123@test.com/login",
+  "Secret": "user123:pass123",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py",
   "SymlinkFile": "",
   "Commit": "",
-  "Entropy": 2.5849626,
+  "Entropy": 3.189898,
   "Author": "",
   "Email": "",
   "Date": "",
@@ -63,6 +85,6 @@
   "Tags": [
    "secret"
   ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json:generic-secret-in-json-attribute:3"
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py:generic-secret-in-url:4"
  }
 ]
