@@ -108,7 +108,7 @@ Given a text value and the name of the programmping language in which the value 
 3. Identify if the provided text value is a reference to an **environment variable** from an operating system perspective:
   * If yes then consider that the provided text value is not a real secret.
   * If no then move to the next step.
-4. Identify if the provided text value is a **Expression Language placeholder** from the programming language perspective:
+4. Identify if the provided text value is a **Expression Language placeholder** from the specified programming language perspective:
   * If yes then consider that the provided text value is not a real secret.
   * If no then move to the next step.    
 5. Identify if the provided text value is a word that **you know**:
