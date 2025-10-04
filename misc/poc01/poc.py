@@ -85,6 +85,8 @@ print("")
 # CODE REASONING PHASE
 # ===============================
 
+# TODO: Update the decision flow to add a step, via a TOOL, to verify that if the secret is a word know by the model then is not part of a colleciton of weak passwords.
+
 # Create the final system prompt
 system_prompt_code_reasoning = """You are an assistant specializing in secret analysis focusing on analysis if a value is a secret. Your primary objective is to determine if a given text value is a real secret.
 
