@@ -22,7 +22,8 @@ tags = ["secret"]
 [[rules]]
 id = "generic-secret-in-xml-element"
 description = "Detect generic password/secret in a XML element"
-regex = '''(?i)<.*(?:password|pass|pwd|passwd|passphrase|secret|token|key)>.+<\/'''
+regex = '''(?i)<.*(?:password|pass|pwd|passwd|passphrase|secret|token|key)>(.+)<\/'''
+secretGroup = 1
 tags = ["secret"]
 
 [[rules]]

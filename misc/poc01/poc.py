@@ -52,6 +52,8 @@ def get_technology_from_filename(filename):
         tech = "javascript"
     elif filename.endswith(".py"):
         tech = "python"
+    elif filename.endswith(".xml"):
+        tech = "xml"
     return tech
 
 
