@@ -1,71 +1,5 @@
 [
  {
-  "RuleID": "generic-secret-in-xml-element",
-  "Description": "Detect generic password/secret in a XML element",
-  "StartLine": 4,
-  "EndLine": 4,
-  "StartColumn": 6,
-  "EndColumn": 23,
-  "Match": "\u003cpassword\u003eazerty\u003c/",
-  "Secret": "azerty",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 2.5849626,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml:generic-secret-in-xml-element:4"
- },
- {
-  "RuleID": "password-as-dash-param",
-  "Description": "Detect passwords passed as parameter with a dash prefix",
-  "StartLine": 1,
-  "EndLine": 1,
-  "StartColumn": 33,
-  "EndColumn": 58,
-  "Match": "-password 'azerty' -value ",
-  "Secret": "azerty' -value",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sh",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 3.5216405,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sh:password-as-dash-param:1"
- },
- {
-  "RuleID": "password-in-sql-instruction",
-  "Description": "Detect passwords in a SQL instruction",
-  "StartLine": 1,
-  "EndLine": 1,
-  "StartColumn": 30,
-  "EndColumn": 55,
-  "Match": " IDENTIFIED BY 'password';",
-  "Secret": "password",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sql",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 2.75,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sql:password-in-sql-instruction:1"
- },
- {
   "RuleID": "generic-secret-in-json-attribute",
   "Description": "Detect generic password/secret in a JSON attribute",
   "StartLine": 3,
@@ -86,6 +20,28 @@
    "secret"
   ],
   "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json:generic-secret-in-json-attribute:3"
+ },
+ {
+  "RuleID": "generic-secret-in-xml-element",
+  "Description": "Detect generic password/secret in a XML element",
+  "StartLine": 4,
+  "EndLine": 4,
+  "StartColumn": 6,
+  "EndColumn": 23,
+  "Match": "\u003cpassword\u003eazerty\u003c/",
+  "Secret": "azerty",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 2.5849626,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml:generic-secret-in-xml-element:4"
  },
  {
   "RuleID": "generic-secret",
@@ -130,5 +86,49 @@
    "secret"
   ],
   "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py:generic-secret-in-url:4"
+ },
+ {
+  "RuleID": "password-in-sql-instruction",
+  "Description": "Detect passwords in a SQL instruction",
+  "StartLine": 1,
+  "EndLine": 1,
+  "StartColumn": 30,
+  "EndColumn": 55,
+  "Match": " IDENTIFIED BY 'password';",
+  "Secret": "password",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sql",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 2.75,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sql:password-in-sql-instruction:1"
+ },
+ {
+  "RuleID": "password-as-dash-param",
+  "Description": "Detect passwords passed as parameter with a dash prefix",
+  "StartLine": 1,
+  "EndLine": 1,
+  "StartColumn": 33,
+  "EndColumn": 51,
+  "Match": "-password 'azerty' ",
+  "Secret": "azerty",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sh",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 2.5849626,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sh:password-as-dash-param:1"
  }
 ]
