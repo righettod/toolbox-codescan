@@ -1,0 +1,1 @@
+/usr/bin/myprogram -value 'AAA' -password 'azerty' -value 'BBB'
