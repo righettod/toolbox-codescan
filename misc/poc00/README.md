@@ -10,6 +10,14 @@
 
 📦 File [cwec_v4.17.xml](cwec_v4.17.xml) come from [here](https://cwe.mitre.org/data/xml/cwec_latest.xml.zip).
 
+ℹ️ Developed with the following version of **langchain** packages:
+
+| Package             | Version |
+|---------------------|---------|
+| langchain           | 0.3.27  |
+| langchain-community | 0.3.27  |
+| langchain-ollama    | 0.3.6   |
+
 ## Execution steps of the POC
 
 > [!NOTE]

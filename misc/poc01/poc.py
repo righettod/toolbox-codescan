@@ -9,18 +9,28 @@ Ollama dependencies:
 """
 import json
 import sys
-import re
 from pathlib import Path
 from termcolor import colored
 from langchain_ollama import OllamaLLM
-from langchain.callbacks.base import BaseCallbackHandler
 from langchain.prompts import ChatPromptTemplate
+from langchain.agents import Tool
+from langchain.agents import initialize_agent, AgentType
+from langchain.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
+import warnings
+
+# As it is a POC with a single tool call then I explicitly want to use langchain.
+warnings.filterwarnings(
+    "ignore",
+    message="LangChain agents will continue to be supported, but it is recommended for new use cases to be built with LangGraph"
+)
+
 
 # Constants
 DEFAULT_ENCODING = "utf-8"
 OLLAMA_MODEL_CODE_REASONING = "qwen2.5-coder"
 OLLAMA_MODEL_CODE_REASONING_TEMPERATURE = 0.0
 GITLEAKS_REPORT_FILE = "findings.json"
+WEAK_PASSWORDS_LIST = ["password, azerty"]
 
 # Execution context
 INDEX_OF_TESTED_SECRET = 0  # Zero based
@@ -28,16 +38,9 @@ if len(sys.argv) == 2:
     INDEX_OF_TESTED_SECRET = int(sys.argv[1])
 
 
-class MyPromptPrinter(BaseCallbackHandler):
-    def on_llm_start(self, serialized, prompts, **kwargs):
-        print(colored("\n[Prompt Sent to Model]", "cyan"))
-        for p in prompts:
-            content = str(p)
-            content = re.sub(r'Human:', "\n" + colored("Human:", "light_magenta"), content)
-            content = re.sub(r'System:', "\n" + colored("System:", "light_green"), content)
-            content = re.sub(r'AI:', "\n" + colored("AI:", "light_red"), content)
-            print(content)
-        print(colored("\n[End Prompt]", "cyan"))
+def is_know_weak_password(value: str) -> bool:
+    """Return a boolean indicating if a string specified by the 'value' parameter is know to be a weak password."""
+    return (value in WEAK_PASSWORDS_LIST)
 
 
 def extract_raw_content(input):
@@ -85,7 +88,7 @@ print("")
 # CODE REASONING PHASE
 # ===============================
 
-# TODO: Update the decision flow to add a step, via a TOOL, to verify that if the secret is a word know by the model then is not part of a colleciton of weak passwords.
+# TODO: Update the decision flow to add a step to detect if the value specified is a placeholder to a properties file.
 
 # Create the final system prompt
 system_prompt_code_reasoning = """You are an assistant specializing in secret analysis focusing on analysis if a value is a secret. Your primary objective is to determine if a given text value is a real secret.
@@ -95,8 +98,21 @@ Given a text value and the name of the programmping language in which the value 
 **Decision Flow:**
 
 **Data Analysis** - Follow the steps below in sequence:  
-  1. Identify if the provided text value is a valid source code for the provided name of programming language. If it is the case then consider that the provided text value is a not a real secret. Otherwise move to the next step.
-  2. Identify if the provided text value is a word that you know. If it is the case then consider that the provided text value is a not a real secret. Otherwise consider that the value is a real secret.
+  1. Identify if the provided text value is a valid source code for the provided name of programming language:
+    * If yes then consider that the provided text value is not a real secret.
+    * If no then move to the next step.
+  2. Identify if the provided text value is a **know weak password**:
+    * If yes then consider that the provided text value is a real secret.
+    * If no then move to the next step.
+  3. Identify if the provided text value is a reference to an **environment variable**:
+    * If yes then consider that the provided text value is not a real secret.
+    * If no then move to the next step.
+  4. Identify if the provided text value is a **Expression Language placeholder**:
+    * If yes then consider that the provided text value is not a real secret.
+    * If no then move to the next step.    
+  5. Identify if the provided text value is a word that **you know**:
+    * If yes then consider that the provided text value is not a real secret.
+    * If no then consider that the provided text value is a real secret.  
 
 **Output Format:**
 
@@ -108,7 +124,7 @@ You must always reply with a valid JSON object with these fields:
 # Create the final user prompt
 user_prompt_template_code_reasoning = """The programming language is `{secret_file_technology}`.
 
-The text value to analyse is `{secret_value}.`
+The text value to analyse is `{secret_value}`.
 """
 
 user_prompt_values = {"secret_file_technology": secret_file_technology, "secret_value": secret_value}
@@ -116,14 +132,17 @@ user_prompt_values = {"secret_file_technology": secret_file_technology, "secret_
 # Use the model to analyse the secret
 # Use a deterministic behavior of the model via a temperature to zero
 llm_code_reasoning = OllamaLLM(model=OLLAMA_MODEL_CODE_REASONING, temperature=OLLAMA_MODEL_CODE_REASONING_TEMPERATURE)
-prompt_template = ChatPromptTemplate.from_messages([("system", system_prompt_code_reasoning), ("human", user_prompt_template_code_reasoning)])
-chain = prompt_template | llm_code_reasoning
-
-# Invoke the chain with the user prompt values
+# Use an agent to include call to the tools
 print(colored(f"=> [{OLLAMA_MODEL_CODE_REASONING}] REPLY:", "yellow"))
-prompt_printer_callback = MyPromptPrinter()
-conversation_config = {"callbacks": []}
-response = chain.invoke(user_prompt_values, config=conversation_config)
-raw_response = extract_raw_content(response)
-print(raw_response)
-print("")
+is_know_weak_password_tool_description = "Verify if a string specified is know to be a weak password. Return TRUE only if the string specified is know to be a weak password.\n"
+is_know_weak_password_tool_description += "Parameters:\n"
+is_know_weak_password_tool_description += "- value (str): The password to evaluate."
+is_know_weak_password_tool = Tool(name="is_know_weak_password", func=is_know_weak_password, description=is_know_weak_password_tool_description)
+system_prompt = SystemMessagePromptTemplate.from_template(system_prompt_code_reasoning)
+human_prompt = HumanMessagePromptTemplate.from_template(user_prompt_template_code_reasoning)
+prompt_template = ChatPromptTemplate.from_messages([system_prompt, human_prompt])
+agent = initialize_agent(tools=[is_know_weak_password_tool], llm=llm_code_reasoning, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=False, handle_parsing_errors=True)
+# Invoke the agent with the user prompt values
+formatted_prompt = prompt_template.format(**user_prompt_values)
+response = agent.invoke(formatted_prompt)
+print(extract_raw_content(response["output"]))

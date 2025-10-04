@@ -70,7 +70,7 @@ You must always reply with a valid JSON object with these fields:
 ```text
 The programming language is `{secret_file_technology}`.
 
-The text value to analyse is `{secret_value}.`
+The text value to analyse is `{secret_value}`.
 ```
 
 #### System prompt version 1.1
@@ -86,8 +86,15 @@ Given a text value and the name of the programmping language in which the value 
 **Decision Flow:**
 
 **Data Analysis** - Follow the steps below in sequence:  
-  1. Identify if the provided text value is a valid source code for the provided name of programming language. If it is the case then consider that the provided text value is a not a real secret. Otherwise move to the next step.
-  2. Identify if the provided text value is a word that you know. If it is the case then consider that the provided text value is a not a real secret. Otherwise consider that the value is a real secret.
+  1. Identify if the provided text value is a valid source code for the provided name of programming language:
+    * If yes then consider that the provided text value is a not a real secret.
+    * If no then move to the next step.
+  2. Identify if the provided text value is a **know weak password**:
+    * If yes then consider that the provided text value is a real secret.
+    * If no then move to the next step.
+  3. Identify if the provided text value is a word that **you know**:
+    * If yes then consider that the provided text value is not a real secret.
+    * If no then consider that the provided text value is a real secret.  
 
 **Output Format:**
 
