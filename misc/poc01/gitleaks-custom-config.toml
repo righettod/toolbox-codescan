@@ -9,7 +9,8 @@ paths = ['''leaks.*''', '''test''', '''.*/test/.*''', '''.*\/test\/.*''']
 [[rules]]
 id = "private-key"
 description = "Detect private keys"
-regex = '''-----BEGIN (:?[A-Z\-\s]*)PRIVATE KEY-----'''
+regex = '''(?s)(-----BEGIN (:?[A-Z\-\s]*)PRIVATE KEY-----.+-----END (:?[A-Z\-\s]*)PRIVATE KEY-----)'''
+secretGroup = 1
 tags = ["key"]
 	
 [[rules]]
