@@ -1,0 +1,86 @@
+# Reference
+# https://github.com/gitleaks/gitleaks/tree/master?tab=readme-ov-file#configuration
+title = "gitleaks custom config"
+
+[allowlist]
+description = "Skip test content"
+paths = ['''leaks.*''', '''test''', '''.*/test/.*''', '''.*\/test\/.*''']
+
+[[rules]]
+id = "private-key"
+description = "Detect private keys"
+regex = '''-----BEGIN (:?[A-Z\-\s]*)PRIVATE KEY-----'''
+tags = ["key"]
+	
+[[rules]]
+id = "generic-secret"
+description = "Detect generic password/secret"
+regex = '''(?i)(?:password|pass|pwd|passwd|passphrase|secret|token|key)\s*(?:=|:)\s*(.+)'''
+secretGroup = 1
+tags = ["secret"]
+
+[[rules]]
+id = "generic-secret-in-xml-element"
+description = "Detect generic password/secret in a XML element"
+regex = '''(?i)<.*(?:password|pass|pwd|passwd|passphrase|secret|token|key)>.+<\/'''
+tags = ["secret"]
+
+[[rules]]
+id = "generic-secret-in-json-attribute"
+description = "Detect generic password/secret in a JSON attribute"
+regex = '''(?i)".*(?:password|pass|pwd|passwd|passphrase|secret|token|key)"\s*:\s*".+"'''
+tags = ["secret"]
+
+[[rules]]
+id = "generic-secret-in-url"
+description = "Detect generic password/secret in a URL"
+regex = '''(?i)(?:http|amqp|ftp|ws|sftp|git|ssh|svn)s?:\/\/(.*?:.*?)@[a-zA-Z0-9.-:]+'''
+tags = ["secret"]
+
+[[rules]]
+id = "password-in-sql-instruction"
+description = "Detect passwords in a SQL instruction"
+regex = '''(?i)\s+identified\s+by\s+.+;'''
+tags = ["secret"]
+
+[[rules]]
+id = "password-as-dash-param"
+description = "Detect passwords passed as parameter with a dash prefix"
+regex = '''(?i)-+pass[a-z]*\s+['"]?[a-z0-9-_]+['"]?.+'''
+tags = ["secret"]
+
+[[rules]]
+id = "hash-with-identifier"
+description = "Detect password hash"
+regex = '''\$[a-zA-Z0-9]+\$[a-zA-Z0-9/\.\$=]{5,}'''
+tags = ["hash"]
+
+[[rules]]
+id = "token-jwt"
+description = "Detect JWT token"
+regex = '''ey[A-Za-z0-9]{15,}\.[A-Za-z0-9]{15,}\.[A-Za-z0-9_-]*'''
+tags = ["secret"]
+
+[[rules]]
+id = "private-ipv4-range10"
+description = "Detect private IPv4 range 10"
+regex = '''[\s"':=]{1}10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'''
+tags = ["private-ipv4"]
+
+[[rules]]
+id = "private-ipv4-range172"
+description = "Detect private IPv4 range 172.16"
+regex = '''[\s"':=]{1}172\.16\.[0-9]{1,3}\.[0-9]{1,3}'''
+tags = ["private-ipv4"]
+
+[[rules]]
+id = "private-ipv4-range192"
+description = "Detect private IPv4 range 192.168"
+regex = '''[\s"':=]{1}192\.168\.[0-9]{1,3}\.[0-9]{1,3}'''
+tags = ["private-ipv4"]
+
+[[rules]]
+id = "licensekey-devexpress"
+description = "Detect license key for DevExpress softwares"
+regex = '''e[A-Za-z0-9=]{60,}\.[A-Za-z0-9=/+]+'''
+tags = ["licensekey"]
