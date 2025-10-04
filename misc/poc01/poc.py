@@ -54,6 +54,8 @@ def get_technology_from_filename(filename):
         tech = "python"
     elif filename.endswith(".sh"):
         tech = "bash"
+    elif filename.endswith(".txt"):
+        tech = "raw text"
     else:
         tech = Path(filename).suffix.strip(".")
     return tech

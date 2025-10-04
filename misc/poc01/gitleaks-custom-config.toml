@@ -58,7 +58,8 @@ tags = ["secret"]
 [[rules]]
 id = "hash-with-identifier"
 description = "Detect password hash"
-regex = '''\$[a-zA-Z0-9]+\$[a-zA-Z0-9/\.\$=]{5,}'''
+regex = '''(\$[a-zA-Z0-9]+\$[a-zA-Z0-9/\.\$=]{5,})'''
+secretGroup = 1
 tags = ["hash"]
 
 [[rules]]
