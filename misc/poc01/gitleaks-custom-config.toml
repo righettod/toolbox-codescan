@@ -37,6 +37,7 @@ tags = ["secret"]
 id = "generic-secret-in-url"
 description = "Detect generic password/secret in a URL"
 regex = '''(?i)(?:http|amqp|ftp|ws|sftp|git|ssh|svn)s?:\/\/(.*?:.*?)@[a-zA-Z0-9.-:]+'''
+secretGroup = 1
 tags = ["secret"]
 
 [[rules]]
