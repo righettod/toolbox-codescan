@@ -65,25 +65,29 @@ tags = ["hash"]
 [[rules]]
 id = "token-jwt"
 description = "Detect JWT token"
-regex = '''ey[A-Za-z0-9]{15,}\.[A-Za-z0-9]{15,}\.[A-Za-z0-9_-]*'''
+regex = '''(ey[A-Za-z0-9]{15,}\.[A-Za-z0-9]{15,}\.[A-Za-z0-9_-]*)'''
+secretGroup = 1
 tags = ["secret"]
 
 [[rules]]
 id = "private-ipv4-range10"
 description = "Detect private IPv4 range 10"
-regex = '''[\s"':=]{1}10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'''
+regex = '''[\s"':=]{1}(10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})'''
+secretGroup = 1
 tags = ["private-ipv4"]
 
 [[rules]]
 id = "private-ipv4-range172"
 description = "Detect private IPv4 range 172.16"
-regex = '''[\s"':=]{1}172\.16\.[0-9]{1,3}\.[0-9]{1,3}'''
+regex = '''[\s"':=]{1}(172\.16\.[0-9]{1,3}\.[0-9]{1,3})'''
+secretGroup = 1
 tags = ["private-ipv4"]
 
 [[rules]]
 id = "private-ipv4-range192"
 description = "Detect private IPv4 range 192.168"
-regex = '''[\s"':=]{1}192\.168\.[0-9]{1,3}\.[0-9]{1,3}'''
+regex = '''[\s"':=]{1}(192\.168\.[0-9]{1,3}\.[0-9]{1,3})'''
+secretGroup = 1
 tags = ["private-ipv4"]
 
 [[rules]]
