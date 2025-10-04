@@ -43,7 +43,8 @@ tags = ["secret"]
 [[rules]]
 id = "password-in-sql-instruction"
 description = "Detect passwords in a SQL instruction"
-regex = '''(?i)\s+identified\s+by\s+.+;'''
+regex = '''(?i)\s+identified\s+by\s+(.+);'''
+secretGroup = 1
 tags = ["secret"]
 
 [[rules]]
