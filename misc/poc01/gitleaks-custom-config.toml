@@ -22,14 +22,14 @@ tags = ["secret"]
 [[rules]]
 id = "generic-secret-in-xml-element"
 description = "Detect generic password/secret in a XML element"
-regex = '''(?i)<.*(?:password|pass|pwd|passwd|passphrase|secret|token|key)>(.+)<\/'''
+regex = '''(?i)<.*(?:password|pass|pwd|passwd|passphrase|secret|token|key).*>(.+)<\/'''
 secretGroup = 1
 tags = ["secret"]
 
 [[rules]]
 id = "generic-secret-in-json-attribute"
 description = "Detect generic password/secret in a JSON attribute"
-regex = '''(?i)".*(?:password|pass|pwd|passwd|passphrase|secret|token|key)"\s*:\s*"(.+)"'''
+regex = '''(?i)".*(?:password|pass|pwd|passwd|passphrase|secret|token|key).*"\s*:\s*"(.+)"'''
 secretGroup = 1
 tags = ["secret"]
 
@@ -50,7 +50,7 @@ tags = ["secret"]
 [[rules]]
 id = "password-as-dash-param"
 description = "Detect passwords passed as parameter with a dash prefix"
-regex = '''(?i)-+pass[a-z]*\s+['"]?(.+)['"]?[\s\n\r\t]+'''
+regex = '''(?i)-+pass[a-z]*\s+['"]?(.+?)['"]?[\s\n\r\t]+'''
 secretGroup = 1
 tags = ["secret"]
 
