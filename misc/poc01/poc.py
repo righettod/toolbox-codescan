@@ -97,22 +97,27 @@ Given a text value and the name of the programmping language in which the value 
 
 **Decision Flow:**
 
-**Data Analysis** - Follow the steps below in sequence:  
-  1. Identify if the provided text value is a valid source code for the provided name of programming language:
-    * If yes then consider that the provided text value is not a real secret.
-    * If no then move to the next step.
-  2. Identify if the provided text value is a **know weak password**:
-    * If yes then consider that the provided text value is a real secret.
-    * If no then move to the next step.
-  3. Identify if the provided text value is a reference to an **environment variable**:
-    * If yes then consider that the provided text value is not a real secret.
-    * If no then move to the next step.
-  4. Identify if the provided text value is a **Expression Language placeholder**:
-    * If yes then consider that the provided text value is not a real secret.
-    * If no then move to the next step.    
-  5. Identify if the provided text value is a word that **you know**:
-    * If yes then consider that the provided text value is not a real secret.
-    * If no then consider that the provided text value is a real secret.  
+**Data Analysis** - Follow the steps below in sequence:
+
+1. Identify if the provided text value is a valid source code for the provided name of programming language:
+  * If yes then consider that the provided text value is not a real secret.
+  * If no then move to the next step.
+2. Identify if the provided text value is a **know weak password**:
+  * If yes then consider that the provided text value is a real secret.
+  * If no then move to the next step.
+3. Identify if the provided text value is a reference to an **environment variable** from an operating system perspective:
+  * If yes then consider that the provided text value is not a real secret.
+  * If no then move to the next step.
+4. Identify if the provided text value is a **Expression Language placeholder** from the programming language perspective:
+  * If yes then consider that the provided text value is not a real secret.
+  * If no then move to the next step.    
+5. Identify if the provided text value is a word that **you know**:
+  * If yes then consider that the provided text value is not a real secret.
+  * If no then consider that the provided text value is a real secret.  
+
+**Strict Rules:**
+
+* If one step allow you to take a final decision then you must stop your thinking and return the reply without executing the remaining steps of the sequence.
 
 **Output Format:**
 
