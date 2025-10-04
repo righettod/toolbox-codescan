@@ -1,159 +1,5 @@
 [
  {
-  "RuleID": "generic-secret-in-xml-element",
-  "Description": "Detect generic password/secret in a XML element",
-  "StartLine": 4,
-  "EndLine": 4,
-  "StartColumn": 6,
-  "EndColumn": 24,
-  "Match": "\u003cpassword\u003eazerty1\u003c/",
-  "Secret": "azerty1",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 2.807355,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml:generic-secret-in-xml-element:4"
- },
- {
-  "RuleID": "generic-secret-in-xml-element",
-  "Description": "Detect generic password/secret in a XML element",
-  "StartLine": 5,
-  "EndLine": 5,
-  "StartColumn": 6,
-  "EndColumn": 27,
-  "Match": "\u003cpassword-db\u003eazerty2\u003c/",
-  "Secret": "azerty2",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 2.807355,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml:generic-secret-in-xml-element:5"
- },
- {
-  "RuleID": "generic-secret-in-url",
-  "Description": "Detect generic password/secret in a URL",
-  "StartLine": 4,
-  "EndLine": 4,
-  "StartColumn": 9,
-  "EndColumn": 46,
-  "Match": "https://user123:pass123@test.com/login",
-  "Secret": "user123:pass123",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 3.189898,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py:generic-secret-in-url:4"
- },
- {
-  "RuleID": "generic-secret",
-  "Description": "Detect generic password/secret",
-  "StartLine": 2,
-  "EndLine": 2,
-  "StartColumn": 2,
-  "EndColumn": 20,
-  "Match": "password = \"azerty\"",
-  "Secret": "\"azerty\"",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 2.75,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py:generic-secret:2"
- },
- {
-  "RuleID": "generic-secret-in-json-attribute",
-  "Description": "Detect generic password/secret in a JSON attribute",
-  "StartLine": 3,
-  "EndLine": 3,
-  "StartColumn": 6,
-  "EndColumn": 26,
-  "Match": "\"password\": \"azerty1\"",
-  "Secret": "azerty1",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 2.807355,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json:generic-secret-in-json-attribute:3"
- },
- {
-  "RuleID": "generic-secret-in-json-attribute",
-  "Description": "Detect generic password/secret in a JSON attribute",
-  "StartLine": 4,
-  "EndLine": 4,
-  "StartColumn": 6,
-  "EndColumn": 29,
-  "Match": "\"password-db\": \"azerty2\"",
-  "Secret": "azerty2",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 2.807355,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json:generic-secret-in-json-attribute:4"
- },
- {
-  "RuleID": "private-key",
-  "Description": "Detect private keys",
-  "StartLine": 1,
-  "EndLine": 1,
-  "StartColumn": 1,
-  "EndColumn": 0,
-  "Match": "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQCBwGd3kOzqny84Tw6/YFUiQdcNr02i2VU9nYoVflknxowIs3Dk\nMNukPXCF+CDT3/FWR0PUdF7mlnh8cikRDLYE8GOFHKfunWEsi/nxuQIL2Br6bWhl\n+XIn4ghRB1pjp5CekX/qTHHgViV13SoF866Qz8QvX3fTDtoWkIBlJKdm/QIDAQAB\nAoGAE+QqOINIPsO+mnRMP3yGMKVFUbzBOyj0T2jaZWckRdvDVgYkVWdEFM6ydGdQ\nqQqY1fBA7s4USmdg+zsJHqsDME4ByUHTJDSFriXWuVqYMCiDbymdxtfD3WGwFMPx\nHO+2rOxRmrAObEMiM2vvLSQxrMdUw/car5asFwi+cxe4i0UCQQD5P+YZvx7auRXa\nWRrpuVHUXrKN9J3+w6CqTkLsGLJqa6A26NqcI3VWnnu7Ro9LZWCbGktNKGogM28+\nkjkYiqxzAkEAhUP/8rgkvtzq59P5GRYnllVs3m9CbGhTjh5Vc1hL4gL2Eqvg4+Ah\noFjEaqUWAFmsuj4gnaun/JjMwTc6Y2qyzwJBAO1CFhaMByLM7DBcgXHaJjqxqeXW\n5E6OiXGT7cAwAiWrLWcXYIEgf6FkWwN5tw1eAwehj+xyfBMK4un85rylxGECQGA/\nMEc4PzGpk+5C5ZD8szKcF7i+Wha5cj8eIVDg4E0nHll10UJCyYZpFdJ/0FgIa/tG\ni3/UTcrdAGQ7YuwST3kCQFHQm+drssN7eEVfYpn9fs6B2z+14HBcmlwi84L6CFSk\nM1KncxVYW5HwBKL3DG1n/Dm54B5ZdPW/4LaXncZeecE=\n-----END RSA PRIVATE KEY-----",
-  "Secret": "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQCBwGd3kOzqny84Tw6/YFUiQdcNr02i2VU9nYoVflknxowIs3Dk\nMNukPXCF+CDT3/FWR0PUdF7mlnh8cikRDLYE8GOFHKfunWEsi/nxuQIL2Br6bWhl\n+XIn4ghRB1pjp5CekX/qTHHgViV13SoF866Qz8QvX3fTDtoWkIBlJKdm/QIDAQAB\nAoGAE+QqOINIPsO+mnRMP3yGMKVFUbzBOyj0T2jaZWckRdvDVgYkVWdEFM6ydGdQ\nqQqY1fBA7s4USmdg+zsJHqsDME4ByUHTJDSFriXWuVqYMCiDbymdxtfD3WGwFMPx\nHO+2rOxRmrAObEMiM2vvLSQxrMdUw/car5asFwi+cxe4i0UCQQD5P+YZvx7auRXa\nWRrpuVHUXrKN9J3+w6CqTkLsGLJqa6A26NqcI3VWnnu7Ro9LZWCbGktNKGogM28+\nkjkYiqxzAkEAhUP/8rgkvtzq59P5GRYnllVs3m9CbGhTjh5Vc1hL4gL2Eqvg4+Ah\noFjEaqUWAFmsuj4gnaun/JjMwTc6Y2qyzwJBAO1CFhaMByLM7DBcgXHaJjqxqeXW\n5E6OiXGT7cAwAiWrLWcXYIEgf6FkWwN5tw1eAwehj+xyfBMK4un85rylxGECQGA/\nMEc4PzGpk+5C5ZD8szKcF7i+Wha5cj8eIVDg4E0nHll10UJCyYZpFdJ/0FgIa/tG\ni3/UTcrdAGQ7YuwST3kCQFHQm+drssN7eEVfYpn9fs6B2z+14HBcmlwi84L6CFSk\nM1KncxVYW5HwBKL3DG1n/Dm54B5ZdPW/4LaXncZeecE=\n-----END RSA PRIVATE KEY-----",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.pem",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 5.994571,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "key"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.pem:private-key:1"
- },
- {
   "RuleID": "password-in-sql-instruction",
   "Description": "Detect passwords in a SQL instruction",
   "StartLine": 1,
@@ -218,5 +64,181 @@
    "secret"
   ],
   "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sh:password-as-dash-param:2"
+ },
+ {
+  "RuleID": "hash-with-identifier",
+  "Description": "Detect password hash",
+  "StartLine": 1,
+  "EndLine": 1,
+  "StartColumn": 1,
+  "EndColumn": 60,
+  "Match": "$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW",
+  "Secret": "$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.txt",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 4.956565,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "hash"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.txt:hash-with-identifier:1"
+ },
+ {
+  "RuleID": "generic-secret",
+  "Description": "Detect generic password/secret",
+  "StartLine": 2,
+  "EndLine": 2,
+  "StartColumn": 2,
+  "EndColumn": 20,
+  "Match": "password = \"azerty\"",
+  "Secret": "\"azerty\"",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 2.75,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py:generic-secret:2"
+ },
+ {
+  "RuleID": "generic-secret-in-url",
+  "Description": "Detect generic password/secret in a URL",
+  "StartLine": 4,
+  "EndLine": 4,
+  "StartColumn": 9,
+  "EndColumn": 46,
+  "Match": "https://user123:pass123@test.com/login",
+  "Secret": "user123:pass123",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 3.189898,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py:generic-secret-in-url:4"
+ },
+ {
+  "RuleID": "generic-secret-in-xml-element",
+  "Description": "Detect generic password/secret in a XML element",
+  "StartLine": 4,
+  "EndLine": 4,
+  "StartColumn": 6,
+  "EndColumn": 24,
+  "Match": "\u003cpassword\u003eazerty1\u003c/",
+  "Secret": "azerty1",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 2.807355,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml:generic-secret-in-xml-element:4"
+ },
+ {
+  "RuleID": "generic-secret-in-xml-element",
+  "Description": "Detect generic password/secret in a XML element",
+  "StartLine": 5,
+  "EndLine": 5,
+  "StartColumn": 6,
+  "EndColumn": 27,
+  "Match": "\u003cpassword-db\u003eazerty2\u003c/",
+  "Secret": "azerty2",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 2.807355,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml:generic-secret-in-xml-element:5"
+ },
+ {
+  "RuleID": "generic-secret-in-json-attribute",
+  "Description": "Detect generic password/secret in a JSON attribute",
+  "StartLine": 3,
+  "EndLine": 3,
+  "StartColumn": 6,
+  "EndColumn": 26,
+  "Match": "\"password\": \"azerty1\"",
+  "Secret": "azerty1",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 2.807355,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json:generic-secret-in-json-attribute:3"
+ },
+ {
+  "RuleID": "generic-secret-in-json-attribute",
+  "Description": "Detect generic password/secret in a JSON attribute",
+  "StartLine": 4,
+  "EndLine": 4,
+  "StartColumn": 6,
+  "EndColumn": 29,
+  "Match": "\"password-db\": \"azerty2\"",
+  "Secret": "azerty2",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 2.807355,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json:generic-secret-in-json-attribute:4"
+ },
+ {
+  "RuleID": "private-key",
+  "Description": "Detect private keys",
+  "StartLine": 1,
+  "EndLine": 1,
+  "StartColumn": 1,
+  "EndColumn": 0,
+  "Match": "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQCBwGd3kOzqny84Tw6/YFUiQdcNr02i2VU9nYoVflknxowIs3Dk\nM1KncxVYW5HwBKL3DG1n/Dm54B5ZdPW/4LaXncZeecE=\n-----END RSA PRIVATE KEY-----",
+  "Secret": "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQCBwGd3kOzqny84Tw6/YFUiQdcNr02i2VU9nYoVflknxowIs3Dk\nM1KncxVYW5HwBKL3DG1n/Dm54B5ZdPW/4LaXncZeecE=\n-----END RSA PRIVATE KEY-----",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.pem",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 5.4233785,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "key"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.pem:private-key:1"
  }
 ]
