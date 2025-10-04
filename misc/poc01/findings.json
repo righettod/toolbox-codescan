@@ -42,5 +42,27 @@
    "secret"
   ],
   "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.py:generic-secret:2"
+ },
+ {
+  "RuleID": "generic-secret-in-json-attribute",
+  "Description": "Detect generic password/secret in a JSON attribute",
+  "StartLine": 3,
+  "EndLine": 3,
+  "StartColumn": 6,
+  "EndColumn": 25,
+  "Match": "\"password\": \"azerty\"",
+  "Secret": "azerty",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 2.5849626,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json:generic-secret-in-json-attribute:3"
  }
 ]
