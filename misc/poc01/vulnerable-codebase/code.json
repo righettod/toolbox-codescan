@@ -1,4 +1,5 @@
 {
     "path": "/tmp",
-    "password": "azerty"
+    "password": "azerty1",
+    "password-db": "azerty2"
 }

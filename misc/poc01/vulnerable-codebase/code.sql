@@ -1,1 +1,1 @@
-CREATE USER 'username'@'host' IDENTIFIED BY 'password';
+CREATE USER 'username'@'host' IDENTIFIED BY 'azerty';

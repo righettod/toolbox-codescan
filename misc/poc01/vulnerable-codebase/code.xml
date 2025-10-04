@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
     <path>/tmp</path>
-    <password>azerty</password>
+    <password>azerty1</password>
+    <password-db>azerty2</password-db>
 </root>
