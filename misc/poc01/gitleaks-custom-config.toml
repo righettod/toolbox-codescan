@@ -51,7 +51,7 @@ tags = ["secret"]
 [[rules]]
 id = "password-as-dash-param"
 description = "Detect passwords passed as parameter with a dash prefix"
-regex = '''(?i)-+pass[a-z]*\s+['"]?(.+?)['"]?[\s\n\r\t]+'''
+regex = '''(?i)-+pass[a-z]*\s+['"]?(.+?)['"]?[\s\n\r\t]*'''
 secretGroup = 1
 tags = ["secret"]
 
