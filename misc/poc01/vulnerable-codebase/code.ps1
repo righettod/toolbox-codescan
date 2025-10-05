@@ -1,1 +1,1 @@
-myprogram --password "$env:VALUE"
+Do-Something --password "$env:VALUE"
