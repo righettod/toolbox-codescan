@@ -103,10 +103,6 @@ Given a text value and the name of the programmping language in which the value 
   * If yes then consider that the provided text value is not a real secret.
   * If no then consider that the provided text value is a real secret.  
 
-**Strict Rules:**
-
-* If one step allow you to take a final decision then you must stop your thinking and return the reply without executing the remaining steps of the sequence.
-
 **Output Format:**
 
 You must always reply with a valid JSON object with these fields:

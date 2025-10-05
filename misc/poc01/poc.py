@@ -29,6 +29,7 @@ warnings.filterwarnings(
 DEFAULT_ENCODING = "utf-8"
 OLLAMA_MODEL_CODE_REASONING = "qwen2.5-coder"
 OLLAMA_MODEL_CODE_REASONING_TEMPERATURE = 0.0
+OLLAMA_MODEL_RESPONSE_TIMEOUT_IN_SECONDS = 60
 GITLEAKS_REPORT_FILE = "findings.json"
 WEAK_PASSWORDS_LIST = ["password, azerty"]
 
@@ -46,7 +47,7 @@ def is_know_weak_password(value: str) -> bool:
 def extract_raw_content(input):
     output = input.replace(f"```json", "")
     output = output.replace("```", "")
-    output = output.strip(" \n\t\r")
+    output = output.strip(" \n\t\r*")
     return output
 
 
@@ -57,6 +58,8 @@ def get_technology_from_filename(filename):
         tech = "python"
     elif filename.endswith(".sh"):
         tech = "bash"
+    elif filename.endswith(".ps1"):
+        tech = "powershell"
     elif filename.endswith(".txt") or filename.endswith(".pem"):
         tech = "raw text"
     else:
@@ -132,7 +135,7 @@ user_prompt_values = {"secret_file_technology": secret_file_technology, "secret_
 
 # Use the model to analyse the secret
 # Use a deterministic behavior of the model via a temperature to zero
-llm_code_reasoning = OllamaLLM(model=OLLAMA_MODEL_CODE_REASONING, temperature=OLLAMA_MODEL_CODE_REASONING_TEMPERATURE)
+llm_code_reasoning = OllamaLLM(model=OLLAMA_MODEL_CODE_REASONING, temperature=OLLAMA_MODEL_CODE_REASONING_TEMPERATURE, timeout=OLLAMA_MODEL_RESPONSE_TIMEOUT_IN_SECONDS)
 # Use an agent to include call to the tools
 print(colored(f"=> [{OLLAMA_MODEL_CODE_REASONING}] REPLY:", "yellow"))
 is_know_weak_password_tool_description = "Verify if a string specified is know to be a weak password. Return TRUE only if the string specified is know to be a weak password.\n"
