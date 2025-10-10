@@ -13,7 +13,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Update the scans
         run: cd misc/poc00; chmod +x update-semgrep-scan-reports.sh; bash update-semgrep-scan-reports.sh
       - name: Update report files
