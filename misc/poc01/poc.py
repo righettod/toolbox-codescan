@@ -12,9 +12,6 @@ import sys
 from pathlib import Path
 from termcolor import colored
 from langchain_ollama import OllamaLLM
-from langchain.prompts import ChatPromptTemplate
-from langchain.agents import Tool
-from langchain.agents import initialize_agent, AgentType
 from langchain.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 import warnings
 
@@ -26,12 +23,13 @@ warnings.filterwarnings(
 
 
 # Constants
+VERBOSE_AGENT_MODE = True
 DEFAULT_ENCODING = "utf-8"
 OLLAMA_MODEL_CODE_REASONING = "qwen2.5-coder"
 OLLAMA_MODEL_CODE_REASONING_TEMPERATURE = 0.0
 OLLAMA_MODEL_RESPONSE_TIMEOUT_IN_SECONDS = 60
 GITLEAKS_REPORT_FILE = "findings.json"
-WEAK_PASSWORDS_LIST = ["password, azerty"]
+WEAK_PASSWORDS_LIST = ["password", "azerty"]
 
 # Execution context
 INDEX_OF_TESTED_SECRET = 0  # Zero based
@@ -39,9 +37,11 @@ if len(sys.argv) == 2:
     INDEX_OF_TESTED_SECRET = int(sys.argv[1])
 
 
-def is_know_weak_password(value: str) -> bool:
-    """Return a boolean indicating if a string specified by the 'value' parameter is know to be a weak password."""
-    return (value in WEAK_PASSWORDS_LIST)
+def is_know_weak_password(value: str) -> str:
+    if value in WEAK_PASSWORDS_LIST:
+        return f"YES — '{value}' **IS ** a known weak password."
+    else:
+        return f"NO — '{value}' **IS NOT** a known weak password."
 
 
 def extract_raw_content(input):
@@ -91,8 +91,6 @@ print("")
 # CODE REASONING PHASE
 # ===============================
 
-# TODO: Update the decision flow to add a step to detect if the value specified is a placeholder to a properties file.
-
 # Create the final system prompt
 system_prompt_code_reasoning = """You are an assistant specializing in secret analysis focusing on analysis if a value is a secret. Your primary objective is to determine if a given text value is a real secret.
 
@@ -100,53 +98,51 @@ Given a text value and the name of the programmping language in which the value 
 
 **Decision Flow:**
 
-**Data Analysis** - Follow the steps below in sequence:
+**Data Analysis** - Follow the steps below in sequence. Once a condition allow you to conclude the analysis then **proceed directly** to the **Output Format**:
 
-1. Identify if the provided text value is a valid source code for the provided name of programming language:
-  * If yes then consider that the provided text value is not a real secret.
-  * If no then move to the next step.
-2. Identify if the provided text value is a **know weak password**:
-  * If yes then consider that the provided text value is a real secret.
-  * If no then move to the next step.
+1. Identify if the provided text value is a **know weak password** leveraging the function provided when needed:
+  * **If YES:** Conclude **IS a real secret**.
+  * **If NO:** Proceed to Step 2.
+2. Identify if the provided text value is a valid source code for the provided name of programming language:
+  * **If YES:** Conclude **NOT a real secret**.
+  * **If NO:** Proceed to Step 3.
 3. Identify if the provided text value is a reference to an **environment variable** from an operating system perspective:
-  * If yes then consider that the provided text value is not a real secret.
-  * If no then move to the next step.
+  * **If YES:** Conclude **NOT a real secret**.
+  * **If NO:** Proceed to Step 4.
 4. Identify if the provided text value is a **Expression Language placeholder** from the specified programming language perspective:
-  * If yes then consider that the provided text value is not a real secret.
-  * If no then move to the next step.    
-5. Identify if the provided text value is a word that **you know**:
-  * If yes then consider that the provided text value is not a real secret.
-  * If no then consider that the provided text value is a real secret.  
+  * **If YES:** Conclude **NOT a real secret**.
+  * **If NO:** Proceed to Step 5.
+5. Identify if the provided text value is a asymmetric private key or a **hash** like MD5, SHA1, BCRYPT, etc.:
+  * **If YES:** Conclude **IS a real secret**.
+  * **If NO:** Proceed to Step 6.
+6. Identify if the provided text value is a word that **you know**:
+  * **If YES:** Conclude **NOT a real secret**.
+  * **If NO:** Conclude **IS a real secret** and it require manual validation because the value is unknown. 
 
 **Output Format:**
 
-You must always reply with a valid JSON object with these fields:
-* `"trace"`: A step-by-step explanation of your decision-making process.
-* `"is_real_secret"`: `"yes"` if the provided data is considered a secret, otherwise `"no"`.
+You must **always** reply with a single valid JSON object containing **only** these fields:
+* `"trace"`: A concise, step-by-step summary detailing which check was applied and why, leading to the final decision. Reference the step number (1-6) that yielded the final result.
+* `"is_real_secret"`: `"yes"` if the provided data is considered a real secret, otherwise `"no"`.
 """
 
 # Create the final user prompt
 user_prompt_template_code_reasoning = """The programming language is `{secret_file_technology}`.
 
 The text value to analyse is `{secret_value}`.
+
+Observation from weak password tool: `{weak_password_check}`.
 """
 
-user_prompt_values = {"secret_file_technology": secret_file_technology, "secret_value": secret_value}
+user_prompt_values = {"secret_file_technology": secret_file_technology, "secret_value": secret_value, "weak_password_check": is_know_weak_password(secret_value)}
 
 # Use the model to analyse the secret
 # Use a deterministic behavior of the model via a temperature to zero
 llm_code_reasoning = OllamaLLM(model=OLLAMA_MODEL_CODE_REASONING, temperature=OLLAMA_MODEL_CODE_REASONING_TEMPERATURE, timeout=OLLAMA_MODEL_RESPONSE_TIMEOUT_IN_SECONDS)
-# Use an agent to include call to the tools
-print(colored(f"=> [{OLLAMA_MODEL_CODE_REASONING}] REPLY:", "yellow"))
-is_know_weak_password_tool_description = "Verify if a string specified is know to be a weak password. Return TRUE only if the string specified is know to be a weak password.\n"
-is_know_weak_password_tool_description += "Parameters:\n"
-is_know_weak_password_tool_description += "- value (str): The password to evaluate."
-is_know_weak_password_tool = Tool(name="is_know_weak_password", func=is_know_weak_password, description=is_know_weak_password_tool_description)
 system_prompt = SystemMessagePromptTemplate.from_template(system_prompt_code_reasoning)
 human_prompt = HumanMessagePromptTemplate.from_template(user_prompt_template_code_reasoning)
 prompt_template = ChatPromptTemplate.from_messages([system_prompt, human_prompt])
-agent = initialize_agent(tools=[is_know_weak_password_tool], llm=llm_code_reasoning, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=False, handle_parsing_errors=True)
-# Invoke the agent with the user prompt values
-formatted_prompt = prompt_template.format(**user_prompt_values)
-response = agent.invoke(formatted_prompt)
-print(extract_raw_content(response["output"]))
+final_prompt = prompt_template.format(**user_prompt_values)
+print(colored(f"=> [{OLLAMA_MODEL_CODE_REASONING}] REPLY:", "yellow"))
+response = llm_code_reasoning.invoke(final_prompt)
+print(extract_raw_content(response))
