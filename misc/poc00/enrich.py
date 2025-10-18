@@ -2,7 +2,7 @@
 Script to enrich the json report of SemGrep with information regarding the possible false positive state.
 
 Python dependencies:
-    pip install langchain langchain-community langchain-ollama termcolor
+    pip install langchain langchain-community langchain-ollama termcolor tabulate
 
 Ollama dependencies:
     See README.md file for models setup.
