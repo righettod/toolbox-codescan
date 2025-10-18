@@ -2,28 +2,21 @@
 Code to test the idea and prompts.
 
 Python dependencies:
-    pip install langchain langchain-community langchain-ollama termcolor
+    pip install langchain langchain-community langchain-ollama termcolor pygments
 
 Ollama dependencies:
     See README.md file for models setup.
 """
 import json
 import sys
-from pathlib import Path
 from termcolor import colored
 from langchain_ollama import OllamaLLM
 from langchain.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
-import warnings
-
-# As it is a POC with a single tool call then I explicitly want to use langchain.
-warnings.filterwarnings(
-    "ignore",
-    message="LangChain agents will continue to be supported, but it is recommended for new use cases to be built with LangGraph"
-)
+from pygments.lexers import get_lexer_for_filename
+from pygments.util import ClassNotFound
 
 
 # Constants
-VERBOSE_AGENT_MODE = True
 DEFAULT_ENCODING = "utf-8"
 OLLAMA_MODEL_CODE_REASONING = "qwen2.5-coder"
 OLLAMA_MODEL_CODE_REASONING_TEMPERATURE = 0.0
@@ -39,7 +32,7 @@ if len(sys.argv) == 2:
 
 def is_know_weak_password(value: str) -> str:
     if value in WEAK_PASSWORDS_LIST:
-        return f"YES — '{value}' **IS ** a known weak password."
+        return f"YES — '{value}' **IS** a known weak password."
     else:
         return f"NO — '{value}' **IS NOT** a known weak password."
 
@@ -52,19 +45,10 @@ def extract_raw_content(input):
 
 
 def get_technology_from_filename(filename):
-    if filename.endswith(".js"):
-        tech = "javascript"
-    elif filename.endswith(".py"):
-        tech = "python"
-    elif filename.endswith(".sh"):
-        tech = "bash"
-    elif filename.endswith(".ps1"):
-        tech = "powershell"
-    elif filename.endswith(".txt") or filename.endswith(".pem"):
-        tech = "raw text"
-    else:
-        tech = Path(filename).suffix.strip(".")
-    return tech
+    try:
+        return get_lexer_for_filename(filename).name
+    except ClassNotFound:
+        return "Raw text"
 
 
 # Load the GitLeaks findings
