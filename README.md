@@ -208,7 +208,7 @@ filters-secrets.py leaks-consolidated.json
 * I created and added this [script](https://github.com/righettod/toolbox-pentest-web/blob/master/scripts/generate-report-devskim.py) as `report-code-devskim.py` to explore the results of the scan.
 * I created the alias `scan-code-devskim` to scan the current folder with `DevSkim` and generate the results in the json file `findings.json` to stay consistent with other scripts of the toolbox.
 
-## 🧪 Misc
+## ⚗️ Misc
 
 The folder [misc](misc/) contains several POC exploring the usage of AI (local model) in the context of a secure code review activity.
 
