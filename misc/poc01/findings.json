@@ -1,17 +1,17 @@
 [
  {
-  "RuleID": "generic-secret",
-  "Description": "Detect generic password/secret",
-  "StartLine": 2,
-  "EndLine": 2,
-  "StartColumn": 21,
-  "EndColumn": 48,
-  "Match": "password = \"${db.password}\";",
-  "Secret": "\"${db.password}\";",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.java",
+  "RuleID": "generic-secret-in-xml-element",
+  "Description": "Detect generic password/secret in a XML element",
+  "StartLine": 4,
+  "EndLine": 4,
+  "StartColumn": 6,
+  "EndColumn": 28,
+  "Match": "\u003cpassword\u003eUXIrNFMp0N1\u003c/",
+  "Secret": "UXIrNFMp0N1",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml",
   "SymlinkFile": "",
   "Commit": "",
-  "Entropy": 3.7345216,
+  "Entropy": 3.2776134,
   "Author": "",
   "Email": "",
   "Date": "",
@@ -19,7 +19,95 @@
   "Tags": [
    "secret"
   ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.java:generic-secret:2"
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml:generic-secret-in-xml-element:4"
+ },
+ {
+  "RuleID": "generic-secret-in-xml-element",
+  "Description": "Detect generic password/secret in a XML element",
+  "StartLine": 5,
+  "EndLine": 5,
+  "StartColumn": 6,
+  "EndColumn": 31,
+  "Match": "\u003cpassword-db\u003eUXIrNFMp0N2\u003c/",
+  "Secret": "UXIrNFMp0N2",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 3.2776134,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml:generic-secret-in-xml-element:5"
+ },
+ {
+  "RuleID": "generic-secret-in-json-attribute",
+  "Description": "Detect generic password/secret in a JSON attribute",
+  "StartLine": 3,
+  "EndLine": 3,
+  "StartColumn": 6,
+  "EndColumn": 30,
+  "Match": "\"password\": \"UXIrNFMp0N1\"",
+  "Secret": "UXIrNFMp0N1",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 3.2776134,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json:generic-secret-in-json-attribute:3"
+ },
+ {
+  "RuleID": "generic-secret-in-json-attribute",
+  "Description": "Detect generic password/secret in a JSON attribute",
+  "StartLine": 4,
+  "EndLine": 4,
+  "StartColumn": 6,
+  "EndColumn": 33,
+  "Match": "\"password-db\": \"UXIrNFMp0N2\"",
+  "Secret": "UXIrNFMp0N2",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 3.2776134,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json:generic-secret-in-json-attribute:4"
+ },
+ {
+  "RuleID": "private-key",
+  "Description": "Detect private keys",
+  "StartLine": 1,
+  "EndLine": 1,
+  "StartColumn": 1,
+  "EndColumn": 0,
+  "Match": "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQCBwGd3kOzqny84Tw6/YFUiQdcNr02i2VU9nYoVflknxowIs3Dk\nM1KncxVYW5HwBKL3DG1n/Dm54B5ZdPW/4LaXncZeecE=\n-----END RSA PRIVATE KEY-----",
+  "Secret": "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQCBwGd3kOzqny84Tw6/YFUiQdcNr02i2VU9nYoVflknxowIs3Dk\nM1KncxVYW5HwBKL3DG1n/Dm54B5ZdPW/4LaXncZeecE=\n-----END RSA PRIVATE KEY-----",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.pem",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 5.4233785,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "key"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.pem:private-key:1"
  },
  {
   "RuleID": "password-as-dash-param",
@@ -42,6 +130,28 @@
    "secret"
   ],
   "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.ps1:password-as-dash-param:1"
+ },
+ {
+  "RuleID": "password-in-sql-instruction",
+  "Description": "Detect passwords in a SQL instruction",
+  "StartLine": 1,
+  "EndLine": 1,
+  "StartColumn": 30,
+  "EndColumn": 58,
+  "Match": " IDENTIFIED BY 'UXIrNFMp0N1';",
+  "Secret": "UXIrNFMp0N1",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sql",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 3.2776134,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "secret"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sql:password-in-sql-instruction:1"
  },
  {
   "RuleID": "password-as-dash-param",
@@ -132,138 +242,6 @@
   "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sh:generic-secret:4"
  },
  {
-  "RuleID": "generic-secret-in-json-attribute",
-  "Description": "Detect generic password/secret in a JSON attribute",
-  "StartLine": 3,
-  "EndLine": 3,
-  "StartColumn": 6,
-  "EndColumn": 30,
-  "Match": "\"password\": \"UXIrNFMp0N1\"",
-  "Secret": "UXIrNFMp0N1",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 3.2776134,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json:generic-secret-in-json-attribute:3"
- },
- {
-  "RuleID": "generic-secret-in-json-attribute",
-  "Description": "Detect generic password/secret in a JSON attribute",
-  "StartLine": 4,
-  "EndLine": 4,
-  "StartColumn": 6,
-  "EndColumn": 33,
-  "Match": "\"password-db\": \"UXIrNFMp0N2\"",
-  "Secret": "UXIrNFMp0N2",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 3.2776134,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.json:generic-secret-in-json-attribute:4"
- },
- {
-  "RuleID": "generic-secret-in-xml-element",
-  "Description": "Detect generic password/secret in a XML element",
-  "StartLine": 4,
-  "EndLine": 4,
-  "StartColumn": 6,
-  "EndColumn": 28,
-  "Match": "\u003cpassword\u003eUXIrNFMp0N1\u003c/",
-  "Secret": "UXIrNFMp0N1",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 3.2776134,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml:generic-secret-in-xml-element:4"
- },
- {
-  "RuleID": "generic-secret-in-xml-element",
-  "Description": "Detect generic password/secret in a XML element",
-  "StartLine": 5,
-  "EndLine": 5,
-  "StartColumn": 6,
-  "EndColumn": 31,
-  "Match": "\u003cpassword-db\u003eUXIrNFMp0N2\u003c/",
-  "Secret": "UXIrNFMp0N2",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 3.2776134,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.xml:generic-secret-in-xml-element:5"
- },
- {
-  "RuleID": "password-in-sql-instruction",
-  "Description": "Detect passwords in a SQL instruction",
-  "StartLine": 1,
-  "EndLine": 1,
-  "StartColumn": 30,
-  "EndColumn": 58,
-  "Match": " IDENTIFIED BY 'UXIrNFMp0N1';",
-  "Secret": "UXIrNFMp0N1",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sql",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 3.2776134,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "secret"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.sql:password-in-sql-instruction:1"
- },
- {
-  "RuleID": "private-key",
-  "Description": "Detect private keys",
-  "StartLine": 1,
-  "EndLine": 1,
-  "StartColumn": 1,
-  "EndColumn": 0,
-  "Match": "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQCBwGd3kOzqny84Tw6/YFUiQdcNr02i2VU9nYoVflknxowIs3Dk\nM1KncxVYW5HwBKL3DG1n/Dm54B5ZdPW/4LaXncZeecE=\n-----END RSA PRIVATE KEY-----",
-  "Secret": "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQCBwGd3kOzqny84Tw6/YFUiQdcNr02i2VU9nYoVflknxowIs3Dk\nM1KncxVYW5HwBKL3DG1n/Dm54B5ZdPW/4LaXncZeecE=\n-----END RSA PRIVATE KEY-----",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.pem",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 5.4233785,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "key"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.pem:private-key:1"
- },
- {
   "RuleID": "generic-secret",
   "Description": "Detect generic password/secret",
   "StartLine": 2,
@@ -352,28 +330,6 @@
   "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.txt:token-jwt:3"
  },
  {
-  "RuleID": "private-ipv4-range10",
-  "Description": "Detect private IPv4 range 10",
-  "StartLine": 5,
-  "EndLine": 5,
-  "StartColumn": 1,
-  "EndColumn": 8,
-  "Match": "10.1.2.6",
-  "Secret": "10.1.2.6",
-  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.txt",
-  "SymlinkFile": "",
-  "Commit": "",
-  "Entropy": 2.1556392,
-  "Author": "",
-  "Email": "",
-  "Date": "",
-  "Message": "",
-  "Tags": [
-   "private-ipv4"
-  ],
-  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.txt:private-ipv4-range10:5"
- },
- {
   "RuleID": "private-ipv4-range172",
   "Description": "Detect private IPv4 range 172.16",
   "StartLine": 7,
@@ -394,6 +350,28 @@
    "private-ipv4"
   ],
   "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.txt:private-ipv4-range172:7"
+ },
+ {
+  "RuleID": "private-ipv4-range10",
+  "Description": "Detect private IPv4 range 10",
+  "StartLine": 5,
+  "EndLine": 5,
+  "StartColumn": 1,
+  "EndColumn": 8,
+  "Match": "10.1.2.6",
+  "Secret": "10.1.2.6",
+  "File": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.txt",
+  "SymlinkFile": "",
+  "Commit": "",
+  "Entropy": 2.1556392,
+  "Author": "",
+  "Email": "",
+  "Date": "",
+  "Message": "",
+  "Tags": [
+   "private-ipv4"
+  ],
+  "Fingerprint": "/home/runner/work/toolbox-codescan/toolbox-codescan/misc/poc01/vulnerable-codebase/code.txt:private-ipv4-range10:5"
  },
  {
   "RuleID": "private-ipv4-range192",
