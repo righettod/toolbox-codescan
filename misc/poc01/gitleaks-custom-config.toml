@@ -16,7 +16,7 @@ tags = ["key"]
 [[rules]]
 id = "generic-secret"
 description = "Detect generic password/secret"
-regex = '''(?i)(?:password|pass|pwd|passwd|passphrase|secret|token|key).*\s*(?:=|:)\s*(.+)'''
+regex = '''(?i)(?:password|pass|pwd|passwd|passphrase|secret|token|key)[^\s"']*\s*(?:=|:)\s*(.+)'''
 secretGroup = 1
 tags = ["secret"]
 
