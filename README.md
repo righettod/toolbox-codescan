@@ -27,7 +27,7 @@ The goal of this image is to provide a ready-to-use toolbox to perform **offline
 * ❌ If a rule has its **PR rejected** then it stay permanently into this folder.
 * ✅ If a rule has its **PR merged** then it is removed from this folder as it become part of the semgrep rules registry. Accepted rules are keep, as backup, into the folder **[archived-rules](archived-rules)**.
 
-😉 The folder `/tools/semgrep-rules-righettod` represent my cutom semgrep rules registry.
+😉 The folder `/tools/semgrep-rules-righettod` represent my custom semgrep rules registry.
 
 ## 📦 Build
 
