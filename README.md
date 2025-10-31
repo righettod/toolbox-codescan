@@ -21,6 +21,7 @@ The goal of this image is to provide a ready-to-use toolbox to perform **offline
 * ✅ <https://github.com/semgrep/semgrep-rules/pull/3650>
 * ⌛ <https://github.com/semgrep/semgrep-rules/pull/3706>
 * ⌛ <https://github.com/semgrep/semgrep-rules/pull/3707>
+* ⌛ <https://github.com/semgrep/semgrep-rules/pull/3708>
 
 💡 In order to be able to use proposed rules during the period in which corresponding PR are pending, all proposed rules are imported into the folder `/tools/semgrep-rules-righettod`:
 
