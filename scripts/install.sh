@@ -11,13 +11,24 @@ python -m pip install wheel semgrep pipreqs tabulate colorama termcolor regexplo
 semgrep --version
 echo "[+] Clone Semgrep rules repo from 'Semgrep' provider..."
 git clone --depth 1 https://github.com/semgrep/semgrep-rules.git /tools/semgrep-rules
+rm -rf /tools/semgrep-rules/.git
 echo "[+] Clone Semgrep rules repo from 'Trail of Bits' provider..."
 git clone --depth 1 https://github.com/trailofbits/semgrep-rules.git /tools/semgrep-rules-trailofbits
+rm -rf /tools/semgrep-rules-trailofbits/.git
 echo "[+] Clone Semgrep rules repo from 'NJS Scan' provider..."
 mkdir /tools/semgrep-rules-njsscan
 git clone --depth 1 https://github.com/ajinabraham/njsscan.git
 mv njsscan/njsscan/rules/semantic_grep /tools/semgrep-rules-njsscan/javascript
 rm -rf njsscan
+echo "[+] Clone Semgrep rules repo from 'Elttam' provider..."
+git clone --depth 1 https://github.com/elttam/semgrep-rules.git /tools/semgrep-rules-elttam
+mv /tools/semgrep-rules-elttam/rules-audit/* /tools/semgrep-rules-elttam/
+mv /tools/semgrep-rules-elttam/rules/* /tools/semgrep-rules-elttam/
+rm -rf /tools/semgrep-rules-elttam/rules-audit
+rm -rf /tools/semgrep-rules-elttam/rules
+rm -rf /tools/semgrep-rules-elttam/docs
+rm -rf /tools/semgrep-rules-elttam/perf-templates
+rm -rf /tools/semgrep-rules-elttam/.git
 echo "[+] Install GitLeaks..."
 git clone https://github.com/gitleaks/gitleaks.git /tools/gitleaks
 cd /tools/gitleaks
