@@ -22,9 +22,13 @@ mv njsscan/njsscan/rules/semantic_grep /tools/semgrep-rules-njsscan/javascript
 rm -rf njsscan
 echo "[+] Clone Semgrep rules repo from 'Elttam' provider..."
 git clone --depth 1 https://github.com/elttam/semgrep-rules.git /tools/semgrep-rules-elttam
+# ---
 # Remove rules that cause SemGrep parsing errors as well as causing too many false positives
 rm -rf /tools/semgrep-rules-elttam/rules-audit/java/jax-rs/security/audit/entrypoints
 rm -rf /tools/semgrep-rules-elttam/rules-audit/java/spring/security/audit/entrypoints
+rm -rf /tools/semgrep-rules-elttam/rules-audit/java/struts2/security/audit/entrypoints
+rm -rf /tools/semgrep-rules-elttam/rules/java/spring/security/audit/remoting
+# ---
 cp -R /tools/semgrep-rules-elttam/rules-audit/* /tools/semgrep-rules-elttam/
 cp -R /tools/semgrep-rules-elttam/rules/* /tools/semgrep-rules-elttam/
 rm -rf /tools/semgrep-rules-elttam/rules-audit
