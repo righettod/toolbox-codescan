@@ -25,9 +25,11 @@ The goal of this image is to provide a ready-to-use toolbox to perform **offline
 
 💡 In order to be able to use proposed rules during the period in which corresponding PR are pending, all proposed rules are imported into the folder `/tools/semgrep-rules-righettod`:
 
-* ❌ If a rule has its **PR rejected** then it stay permanently into this folder.
-* ✅ If a rule has its **PR merged** then it is removed from this folder as it become part of the semgrep rules registry. Accepted rules are keep, as backup, into the folder **[archived-rules](archived-rules)**.
-* 🔬 Indicates that the PR is under review from the SemGrep team.
+* ❌ Indicates that the PR was **rejected**.
+  * If a rule has its PR rejected then it stay permanently into this folder.
+* ✅ Indicates that the PR was **merged**.
+  * If a rule has its PR merged then it is removed from this folder as it become part of the semgrep rules registry. Accepted rules are keep, as backup, into the folder **[archived-rules](archived-rules)**.
+* 🔬 Indicates that the PR is **under review** from the SemGrep team.
 
 😉 The folder `/tools/semgrep-rules-righettod` represent my custom semgrep rules registry.
 
