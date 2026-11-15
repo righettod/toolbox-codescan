@@ -1,15 +1,15 @@
 [
     {
-        "Id": "sha256:a55158aa9563e6aa7b25a8807f852a96bdde628d0fcaf3c9a4c663e26f6b4d57",
+        "Id": "sha256:24cdd25698cfedb55adc166dabe420beb10a958544dea199991908de62f48a72",
         "RepoTags": [
             "ghcr.io/righettod/toolbox-codescan:main",
             "ghcr.io/righettod/toolbox-codescan:nightly"
         ],
         "RepoDigests": [
-            "ghcr.io/righettod/toolbox-codescan@sha256:a55158aa9563e6aa7b25a8807f852a96bdde628d0fcaf3c9a4c663e26f6b4d57"
+            "ghcr.io/righettod/toolbox-codescan@sha256:24cdd25698cfedb55adc166dabe420beb10a958544dea199991908de62f48a72"
         ],
         "Comment": "buildkit.dockerfile.v0",
-        "Created": "2026-11-08T00:28:04.387056323Z",
+        "Created": "2026-11-15T00:27:43.935286746Z",
         "Config": {
             "Env": [
                 "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
@@ -22,11 +22,11 @@
             "Labels": {
                 "org.opencontainers.image.authors": "dominique.righetto@gmail.com",
                 "org.opencontainers.image.base.name": "righettod/toolbox-codescan:main",
-                "org.opencontainers.image.created": "2026-11-08T00:25:19.659Z",
+                "org.opencontainers.image.created": "2026-11-15T00:25:09.932Z",
                 "org.opencontainers.image.description": "Customized toolbox to perform offline scanning of a code base.",
                 "org.opencontainers.image.documentation": "https://github.com/righettod/toolbox-codescan",
                 "org.opencontainers.image.licenses": "GPL-3.0",
-                "org.opencontainers.image.revision": "9d790e19e056f1170b807041d52b00ea97eee103",
+                "org.opencontainers.image.revision": "9c7f48a437a2ff2f8e0e7afb4f39daa2529d4977",
                 "org.opencontainers.image.source": "https://github.com/righettod/toolbox-codescan",
                 "org.opencontainers.image.title": "toolbox-codescan",
                 "org.opencontainers.image.url": "https://github.com/righettod/toolbox-codescan",
@@ -37,55 +37,55 @@
         },
         "Architecture": "amd64",
         "Os": "linux",
-        "Size": 1307030220,
+        "Size": 1315571442,
         "RootFS": {
             "Type": "layers",
             "Layers": [
-                "sha256:bec87777bc2fb2edcdf9af11df1531469e7df911309c1413082b18fcb8610278",
-                "sha256:48fea681e8fa9cb3c2b7ef8892b0c7c80b493da56c7143f8d400b33d0c91c8d7",
-                "sha256:c47d97f72d17b9ec70042590bed639fa3bd695d0e7e11d482ff3c1a26b7d2be0",
+                "sha256:21210938f5a37a9887b2d0a20428917b923a636ca6efe038c3c7d9cd9f1f9b61",
+                "sha256:1fde3463e845357b532db1911238d5b24d23b65e87a689876c72eefe3a92de8b",
+                "sha256:f18a80a7b689ca87cda83c38be0203887dd7a3a6315ab59df6ecae7f97b8d470",
                 "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
                 "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
-                "sha256:c46b535f605710dcdc3063333eed52541d79ff8786f4540027567999f6e4152e",
+                "sha256:a6bc7308d6b9831b7a45c1dd90c5b666d7fa704d47c789db63f62d30249ecb91",
                 "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
-                "sha256:c0493d09359a63982f1b0c4d6954a06680bd976f19f7812c25c44a1ebd0ecf0b",
-                "sha256:49b1fe2a4801d84fae5dc86b29503067ac17e9d0b79864c4d76b7feaf843a8bc",
+                "sha256:2c2ccf5ba4c20db18bab03a60542c48a41800e0ab3d1ede309d1aa3a4f8e7dea",
+                "sha256:45e7d8c2d2cbfdc1ab4c71fe6a5aa7b38b8369db7de6c65e59baa417067a11e3",
                 "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
-                "sha256:94e2ff0370c9931aa73e2a1d3fdf33a1a329f6f7c07f4f9196121dd04ae4a80d",
-                "sha256:8559c2f7324275f4068beacb5d86e840ebb8875416727c10da2a98d5afa9612a",
-                "sha256:e8c7dac5d7402ce8336c07d27b49f9295937f6b97d6f33455bbecf82bda40412",
-                "sha256:a459e8cc77de4174582d39f83b2bac874492124b174c20c02e368912f8ed77c3",
-                "sha256:d10091a2261744b39cefc60d09999733489c0d6dd8527738d043b9bce9fdc754",
-                "sha256:481597a54a39d3ebc86cd6b8cbdfd4b4693f698bb3a84522c6088196fa7641a2",
-                "sha256:1154b8b717f189268519c43c51f613f88ab538fd90a768314e5c1c6483954919",
-                "sha256:bfca1dfc39d071fe6425fc38fad2fab25667489cfb0d7bc3ee7bb7b6cade2404",
-                "sha256:aba9fced55ad87a454b9e3cdf1b81be86cd5cbfcce5dfc46eba2f004ff8d17fd",
-                "sha256:27777f6b4adf2c1a3ad6f57861be4c649bfa09fe06484c40b5c8bc198642fecf",
-                "sha256:5747333cfedb93718fcdfa46a769cce07686e0b0136991de5ecbe1c668567411",
-                "sha256:6b14b3617d022730021a133f501613a45acc3ee3d29c7aac1f78f510f60c749a",
-                "sha256:fca9bc17d374d513a806e5899374c6463e7c129de15d85bdb2eb5cb21d13823e",
-                "sha256:b1af31fb9ec9b975a5f53be185adbc96bfb72edeefc4c8fb00bb140f6cfc7f7b",
+                "sha256:c4b76aa8190d2a34edd1e59ea582f32a9453c2403d4011c2f1f47745df3234d8",
+                "sha256:6d986b3c806fcf2af2f7211a608548a17c329c02bf15fd3f46822e717e1043bb",
+                "sha256:3e2387acf64582aef6caecc81e3fea8cdd451843159ba814eb276e819bfa6e19",
+                "sha256:0ec30e0518237a5c2f322516265210d01b2ea3fc23c9e1e12ba0d40115e1dc72",
+                "sha256:433fa66ed6909bf7a228a3decb1dc487756fa63f760aca7b3f58659886d3f407",
+                "sha256:fc6a0abf38b62655b27dd4618c47f0a087b5762b841c39deff0a59424353de2f",
+                "sha256:506e29d2b86929402cad0cb3e671bd08998ca0f1b997d438f04a1e67c971e782",
+                "sha256:d6156c0e84bfab8948932454e31d38f0523f35c5dcada0d64f8ed7561f8667b4",
+                "sha256:e86335af557b9870287ee5143c388eb8fa8f07eea835b50a4b0a5504a043aa0c",
+                "sha256:984df4d9cc49b1361d924417021112fb78d69a8538bac1076127e2e59b92b0c8",
+                "sha256:e5c8142bdf1163c8b9a279717af3f9311838250b2b0c4b5d36eb652a0d33c6c2",
+                "sha256:c2328d8eaa6ae3bcf574e532404d37bc96b0277756c6f3dd9753381d143e003d",
+                "sha256:0b8758b4deb28d002351e33d6e3c15f1a1d222be1531b92d1fdbad10eab4af57",
+                "sha256:5b2d603d6a1afa249abc694d4692b3cc0f9dd10fdac810f6f43343ff090a958f",
                 "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
-                "sha256:665c912d545d3a64b90893010963836b58f37f9503f0aebdd9c5ccf081939e7b",
-                "sha256:464eb74d0cce9ad204a66bf997b9bbcb393af85ce0f0c0fa20fd9b2dfe27f412",
-                "sha256:442f821cdcf08ba554f289d91de6b6519cc433e3d13c5d87cc8ecc8b99c7cee9",
-                "sha256:83ea5cb86ea8889f4fab11329984a2438e25bdc434b0da3e6bd8f017bad91837",
-                "sha256:4c9221d4e1dfd7ada3a7ac1d3ef497884ada09ffd84e7b5a0cf9aab7b6700718"
+                "sha256:dd595b8ea1cc40751bef73be750c2b0ea04a0ad2ee86de8104d8f538e16c5788",
+                "sha256:56e0370a1edb758895a8b006b49c3cd57a89984506fb839479c7d444727b629f",
+                "sha256:15da3e092b2286c2f2d84ea32bb27030603ab404f5a5695ef539add494510e3f",
+                "sha256:7c8629a8b6ab73665f4d4f06a70cb69169866649046ec901a3965ea2b3a27d1c",
+                "sha256:bc8800322acd064a3020be969617899f794a7a33ab694af0a31a954ad4a8da99"
             ]
         },
         "Metadata": {
-            "LastTagTime": "2026-11-08T00:28:52.460765186Z"
+            "LastTagTime": "2026-11-15T00:28:19.670414346Z"
         },
         "Descriptor": {
             "mediaType": "application/vnd.oci.image.index.v1+json",
-            "digest": "sha256:a55158aa9563e6aa7b25a8807f852a96bdde628d0fcaf3c9a4c663e26f6b4d57",
+            "digest": "sha256:24cdd25698cfedb55adc166dabe420beb10a958544dea199991908de62f48a72",
             "size": 856
         },
         "Identity": {
             "Build": [
                 {
-                    "Ref": "o59i4z4ozrn89kiod831t90fu",
-                    "CreatedAt": "2026-11-08T00:28:52.472397957Z"
+                    "Ref": "j2evrdop4wbxp322sib4pqncb",
+                    "CreatedAt": "2026-11-15T00:28:19.675256934Z"
                 }
             ]
         }
