@@ -1,5 +1,5 @@
 ####################################################################
-# Script to search for occurence of Work In Progress (WIP)markers
+# Script to search for occurences of Work In Progress (WIP )markers
 ####################################################################
 WORK="/tmp/work.tmp"
 MARKERS=("FIXME" "TODO")

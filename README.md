@@ -203,7 +203,17 @@ Script to allow filtering a large leaks file that uses the [GITLEAKS](https://gi
 💻 Usage:
 
 ```bash
-filters-secrets.py leaks-consolidated.json
+$ filters-secrets.py leaks-consolidated.json
+```
+
+### Script 'find-wip-markers.sh'
+
+Script to search for occurences of Work In Progress (WIP) markers.
+
+💻 Usage:
+
+```bash
+$ find-wip-markers.sh
 ```
 
 ## 🔬 Analyse a .NET project
