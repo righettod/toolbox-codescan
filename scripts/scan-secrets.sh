@@ -1,3 +1,4 @@
+#!/bin/bash
 ################################################
 # Script to scan the current folder using
 # gitleaks to find credentials/secrets/...
