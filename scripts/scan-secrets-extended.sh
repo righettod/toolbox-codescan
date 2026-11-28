@@ -1,3 +1,4 @@
+#!/bin/bash
 ################################################
 # Script to scan the current folder using
 # a dictionary of secret common variables names
